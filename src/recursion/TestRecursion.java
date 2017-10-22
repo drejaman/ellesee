@@ -17,6 +17,12 @@ public void test()
 	printAllWordsRepeat(chars,"",chars.length);
 }
 
+
+/**
+ * Generate Fibonacci Number Recursively
+ * @param n - for which Fib need to created
+ * @return Fib number
+ */
 public int Fibonacci(int n)
 {
 	if(n==2) return 1;
