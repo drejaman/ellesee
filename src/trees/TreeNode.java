@@ -1,35 +1,35 @@
-package bst;
+package trees;
 public class TreeNode
 {
 	TreeNode left,right;
-	int value;
+	int val;
 	
 	public TreeNode()
 	{
-		left=right=null;		
-		value=-1;
+		left = right = null;		
+		val = -1;
 	}
 	
-	public TreeNode(int val)
+	public TreeNode(int x)
 	{
-		left=right=null;	
-		value=val;		
+		left = right = null;	
+		val = x;		
 	}
 
 	public TreeNode(TreeNode node)
 	{
-		this.value=node.value;
+		this.val = node.val;
 	}
 	
 	
 	public void setLeft(TreeNode left)
 	{
-		this.left=left;
+		this.left = left;
 	}
 
 	public void setRight(TreeNode right)
 	{
-		this.right=right;
+		this.right = right;
 	}
 	
 	public TreeNode getLeft()
@@ -42,13 +42,13 @@ public class TreeNode
 		return right;
 	}
 	
-	public void setValue(int val)
+	public void setValue(int x)
 	{
-		value=val;
+		val = x;
 	}
 	
 	public int getValue()
 	{
-		return value;
+		return val;
 	}
 }

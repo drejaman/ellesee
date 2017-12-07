@@ -1,4 +1,7 @@
 package bst;
+
+import trees.TreeNode;
+
 public class TestBST
 {
 	public TestBST()

@@ -59,4 +59,18 @@ public class TestTrees {
 		
 	}
 
+	// https://leetcode.com/problems/merge-two-binary-trees/description/
+	// Runtime O(n + m) = O(n) considering n > m. Best possible time as we have to traverse all the nodes of each tree
+	// Variation: If we have a list of trees that needs merging? Take 2 trees at a time and merge them 
+	// and take the next tree with the merged tree 
+    public TreeNode mergeTrees(TreeNode t1, TreeNode t2) {
+    		// Terminating condition
+	    	if(t1 == null && t2 == null) return null;
+	    	
+	    	TreeNode mergedRoot = new TreeNode((t1 != null ? t1.val : 0) + (t2 != null ? t2.val : 0));
+	    	mergedRoot.left = mergeTrees(t1 != null ? t1.left : null, t2 != null ? t2.left : null);
+	    	mergedRoot.right = mergeTrees(t1 != null ? t1.right : null, t2 != null ? t2.right : null);
+	     
+	    return mergedRoot;
+    }
 }
