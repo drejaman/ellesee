@@ -1,5 +1,8 @@
 package trees;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TestTrees {
 
 	public TestTrees()
@@ -72,5 +75,56 @@ public class TestTrees {
 	    	mergedRoot.right = mergeTrees(t1 != null ? t1.right : null, t2 != null ? t2.right : null);
 	     
 	    return mergedRoot;
+    }
+
+    // https://leetcode.com/problems/minimum-absolute-difference-in-bst/description/
+    // The trick here is that the min difference between any nodes in any positions in the tree
+    // that means do a sorted traversal (inorder) and then get the difference between pairs and return the minimum difference
+    // Runtime is O(N) + O(N) = O(N)
+    public int getMinimumDifference(TreeNode root) {
+        if(root == null) return Integer.MAX_VALUE;
+        
+        int min = Integer.MAX_VALUE;
+        
+        ArrayList<TreeNode> nodes = (ArrayList<TreeNode>) this.InOrderTraversal(root); 
+        for(int i = 0; i < nodes.size() - 1; i++)
+        {
+        	TreeNode current = nodes.get(i);
+        	TreeNode next = nodes.get(i + 1);
+        	
+        	if(Math.abs(next.val - current.val) < min)
+        	{
+        		min = Math.abs(next.val - current.val);
+        	}
+        }
+        
+        return min;
+    }
+    
+    // Inorder traversal and Store the nodes in a list
+    private List<TreeNode> InOrderTraversal(TreeNode node)
+    {
+    	if(node == null) return null;
+    	
+    	ArrayList<TreeNode> nodes = new ArrayList<TreeNode>();
+    	
+    	if(node.left != null) nodes.addAll(InOrderTraversal(node.left));
+    	nodes.add(node);
+    	if(node.right != null) nodes.addAll(InOrderTraversal(node.right));
+
+    	return nodes;    	
+    }
+    
+    public int findTilt(TreeNode root) {
+        if(root == null) return 0;
+        
+        return Math.abs(this.TreeSum(root.left) - this.TreeSum(root.right));
+    }
+    
+    public int TreeSum(TreeNode root)
+    {
+    	if(root == null) return 0;
+    	
+    	return root.val + this.TreeSum(root.left) + this.TreeSum(root.right);
     }
 }

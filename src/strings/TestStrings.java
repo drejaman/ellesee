@@ -2,19 +2,22 @@ package strings;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map.Entry;
 
 public class TestStrings {
 public TestStrings()
 {
 }
 
+
 public void test()
 {
 	//System.out.println(checkAnagram("last","stal"));
 	//System.out.println(checkAnagram("last","fast"));	
 	
-	findWords(new String[] {"Hello", "Alaska", "Dad", "Peace"});
-	
+//	findWords(new String[] {"Hello", "Alaska", "Dad", "Peace"});
+	firstUniqChar("leetcode");	
 }
 
 
@@ -136,5 +139,40 @@ private boolean isValidWordUsingSameKBLine(String word, ArrayList<Character> lin
 	
 	return true;
 }
+
+/// https://leetcode.com/problems/first-unique-character-in-a-string/description/
+public int firstUniqChar(String s) {
+	char[] allChars = s.toCharArray();
+	
+	// this keeps track of the characters the way it is inserted
+	LinkedHashMap<Character, Integer> map = new LinkedHashMap<Character, Integer>();
+	
+	for(int i = 0; i < allChars.length; i++)
+	{
+		char key = allChars[i];
+		
+		if(map.containsKey(key))
+		{
+			map.remove(key);
+			map.put(key, -1);
+		}
+		else
+		{
+			map.put(key, i);
+		}
+	}
+	
+	for(Entry<Character, Integer> entry : map.entrySet())
+	{
+		if(entry.getValue() != -1)
+		{
+			return entry.getValue();
+		}
+	}
+	
+	return -1;
+}
+
+
 
 }
