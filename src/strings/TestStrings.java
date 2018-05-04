@@ -2,7 +2,11 @@ package strings;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 public class TestStrings {
@@ -17,7 +21,10 @@ public void test()
 	//System.out.println(checkAnagram("last","fast"));	
 	
 //	findWords(new String[] {"Hello", "Alaska", "Dad", "Peace"});
-	firstUniqChar("leetcode");	
+//	firstUniqChar("leetcode");
+//	shortestToChar("loveleetcode", 'e');
+//	shortestToChar("loveleetcode", 'l');
+	subdomainVisits(new String[] {"9001 discuss.leetcode.com"});
 }
 
 
@@ -173,6 +180,138 @@ public int firstUniqChar(String s) {
 	return -1;
 }
 
+// https://leetcode.com/problems/jewels-and-stones/
+public int numJewelsInStones(String J, String S) { 
+	ArrayList<Character> jewels = new ArrayList<Character>();
+	
+	// adds the jewels
+	for(char ch : J.toCharArray())
+	{
+		jewels.add(ch);
+	}
+	
+	int jewelCount = 0;
+	
+	// checks each stone if they are jewel
+	for(char ch : S.toCharArray())
+	{
+		if(jewels.contains(ch))
+		{
+			jewelCount++;
+		}
+	}
+	
+	return jewelCount;
+}
 
+// https://leetcode.com/problems/shortest-distance-to-a-character/description/
+public int[] shortestToChar(String S, char C) {
+	ArrayList<Integer> positionsOfC = new ArrayList<Integer>();
+	
+	char[] sChars = S.toCharArray();
+	
+	// determining the indices of C in the String
+	for(int i = 0; i < sChars.length; i++ )
+	{
+		if (sChars[i] == C)
+		{
+			positionsOfC.add(i);
+		}
+	}
+	
+	int cIndex = 0;
+	
+	int[] shortestDistance = new int[S.length()];
+	
+	for(int i = 0; i < sChars.length; i++)
+	{
+		// if the currentIndex of the Character C is not the last one then
+		if(cIndex < positionsOfC.size() - 1)
+		{
+			shortestDistance[i] = Math.min(Math.abs(i - positionsOfC.get(cIndex)), Math.abs(i - positionsOfC.get(cIndex + 1)));
+
+			if(i >= positionsOfC.get(cIndex + 1)) cIndex++;				
+		}
+		else
+		{
+			shortestDistance[i] = Math.abs(i - positionsOfC.get(cIndex));
+		}
+		
+	}
+		
+	return shortestDistance;
+}
+
+// https://leetcode.com/problems/subdomain-visit-count/description/
+public List<String> subdomainVisits(String[] cpdomains) {
+	HashMap<String, Integer> subDomainCount = new HashMap<String, Integer>();
+	
+	for(String domain : cpdomains)
+	{
+		String[] domainWithCount = domain.split(" ");
+		
+		int count = Integer.parseInt(domainWithCount[0]);
+		
+		String[] subDomains = domainWithCount[1].split("\\.");
+		
+		//Each address will have either 1 or 2 "." characters.
+		// mail.google.com -> mail, google, com [0, 1, 2] -> mail.google.com [0, 1, 2], google.com [1, 2], com [2] 
+		// discuss.leetcode.com
+		// hotmail.com -> hotmail, com [0, 1] -> hotmail.com [0, 1], com[1]
+
+		if(subDomains.length == 3)
+		{
+			String subDomain = domainWithCount[1];
+			
+			if(subDomainCount.containsKey(subDomain))
+			{
+				int currentCount = subDomainCount.remove(subDomain);
+				subDomainCount.put(subDomain, currentCount + count);
+			}
+			else
+			{
+				subDomainCount.put(subDomain, count);				
+			}
+		}
+		
+		// when the length is 2/3
+		String subDomain = subDomains[subDomains.length - 2] + "." + subDomains[subDomains.length - 1]; 
+
+		if(subDomainCount.containsKey(subDomain))
+		{
+			int currentCount = subDomainCount.remove(subDomain);
+			subDomainCount.put(subDomain, currentCount + count);
+		}
+		else
+		{
+			subDomainCount.put(subDomain, count);				
+		}
+
+		subDomain = subDomains[subDomains.length - 1];
+		
+		if(subDomainCount.containsKey(subDomain))
+		{
+			int currentCount = subDomainCount.remove(subDomain);
+			subDomainCount.put(subDomain, currentCount + count);
+		}
+		else
+		{
+			subDomainCount.put(subDomain, count);				
+		}
+	}
+	
+	ArrayList <String> output = new ArrayList<String>();
+	
+	Iterator it = subDomainCount.entrySet().iterator();
+	
+	while(it.hasNext())
+	{
+		Map.Entry entry = (Map.Entry) it.next();
+		output.add(entry.getValue() + " " + entry.getKey());
+		it.remove();
+	}
+	
+	return output;
+}
 
 }
