@@ -252,6 +252,8 @@ public List<String> subdomainVisits(String[] cpdomains) {
 		
 		int count = Integer.parseInt(domainWithCount[0]);
 		
+		// the dot(.) in the split need to be handled as special character
+		//https://stackoverflow.com/questions/14833008/java-string-split-with-dot
 		String[] subDomains = domainWithCount[1].split("\\.");
 		
 		//Each address will have either 1 or 2 "." characters.
@@ -313,5 +315,4 @@ public List<String> subdomainVisits(String[] cpdomains) {
 	
 	return output;
 }
-
 }

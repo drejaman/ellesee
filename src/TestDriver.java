@@ -11,11 +11,12 @@ public class TestDriver {
 		//basic.TestBasic tester = new basic.TestBasic();
 		//moderate.TestModerate tester = new moderate.TestModerate();
 		//hard.TestHard tester = new hard.TestHard();
-		strings.TestStrings tester = new strings.TestStrings();
+//		strings.TestStrings tester = new strings.TestStrings();
 		//filepattern.TestFilePattern tester = new filepattern.TestFilePattern();
 //		algorithm.TestAlgorithm tester = new algorithm.TestAlgorithm(); 
 //		trees.TestTrees tester=new trees.TestTrees(); 
 //		numbers.TestNumbers tester= new numbers.TestNumbers();
+		linklist.TestLinkList tester = new linklist.TestLinkList();
 		tester.test();		
 	}
 }
