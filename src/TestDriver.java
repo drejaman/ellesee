@@ -14,9 +14,9 @@ public class TestDriver {
 //		strings.TestStrings tester = new strings.TestStrings();
 		//filepattern.TestFilePattern tester = new filepattern.TestFilePattern();
 //		algorithm.TestAlgorithm tester = new algorithm.TestAlgorithm(); 
-//		trees.TestTrees tester=new trees.TestTrees(); 
+		trees.TestTrees tester=new trees.TestTrees(); 
 //		numbers.TestNumbers tester= new numbers.TestNumbers();
-		linklist.TestLinkList tester = new linklist.TestLinkList();
+//		linklist.TestLinkList tester = new linklist.TestLinkList();
 		tester.test();		
 	}
 }

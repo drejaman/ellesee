@@ -89,5 +89,4 @@ public class BitManipulate {
 		
 		return num%1001;
 	}
-
 }

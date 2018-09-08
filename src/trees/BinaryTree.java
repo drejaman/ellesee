@@ -49,4 +49,9 @@ public class BinaryTree extends Tree{
 		if(node.getRight()!=null)
 			preOrderPrint(node.getRight());
 	}
+	
+	public boolean IsLeaf(TreeNode node)
+	{
+		return node.left == null && node.right == null;
+	}
 }
