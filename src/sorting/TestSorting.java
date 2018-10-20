@@ -21,7 +21,6 @@ public class TestSorting {
 	public void testAnagrams()
 	{
 		String[] strings= {"Hello", "Hola","Voila", "Hillow"};
-		Arrays.sort(strings,new AnagramComparator());
 		for(String str:strings)
 		{
 			System.out.println(str);

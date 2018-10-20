@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 
 public class TestStrings {
 public TestStrings()
@@ -24,7 +25,8 @@ public void test()
 //	firstUniqChar("leetcode");
 //	shortestToChar("loveleetcode", 'e');
 //	shortestToChar("loveleetcode", 'l');
-	subdomainVisits(new String[] {"9001 discuss.leetcode.com"});
+//	subdomainVisits(new String[] {"9001 discuss.leetcode.com"});
+	String tinyUrl = encode("https://leetcode.com/problems/design-tinyurl");
 }
 
 
@@ -315,4 +317,61 @@ public List<String> subdomainVisits(String[] cpdomains) {
 	
 	return output;
 }
+
+// https://leetcode.com/problems/encode-and-decode-tinyurl/description/
+// Straight forward implementation using a HashMap
+private static HashMap<String, String> urlMapper = new HashMap<String, String>();
+
+public String encode(String longUrl) {
+	
+	// when the url is already mapped
+	if(urlMapper.containsValue(longUrl))
+	{
+		Iterator it = urlMapper.entrySet().iterator();
+		
+		while(it.hasNext())
+		{
+			Map.Entry entry = (Map.Entry) it.next();
+			if(entry.getValue().equals(longUrl))
+				return entry.getKey().toString();
+		}
+	}
+	
+	// otherwise gets a new entry
+    String newKey = "http:////tinyurl.com//" + GenerateRandomString(6);
+    
+    // ensuring that we are using a new key
+    while(urlMapper.containsKey(newKey))
+    {
+    		newKey = "http:////tinyurl.com//" + GenerateRandomString(6);
+    }
+    
+    urlMapper.put(newKey, longUrl);
+    
+    return newKey;
+}
+
+// Decodes a shortened URL to its original URL.
+public String decode(String shortUrl) {
+	if(urlMapper.containsKey(shortUrl))
+		return urlMapper.get(shortUrl);
+	
+	return "";
+}
+
+private String GenerateRandomString(int len){
+	String AlphaNumeric = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	
+	StringBuilder randomString = new StringBuilder();
+	
+	Random rand = new Random();
+	
+	for(int i = 0; i < len; i++)
+	{
+		int randomIndex = rand.nextInt(35);
+		randomString.append(AlphaNumeric.charAt(randomIndex));
+	}
+	
+	return randomString.toString();}
+
 }
