@@ -99,7 +99,7 @@ public class TestNumbers {
      return verticalSum == 0 && horizontalSum == 0;
     }
     
-    // not working for special cases
+    // notworking for special cases
     // https://leetcode.com/problems/divide-two-integers/description/
     // corner case -2147483648, -1 as -2147483648 is the INT_MIN but 2147483648 is not INT_MAX (2147483647)
     public int divide(int dividend, int divisor) {

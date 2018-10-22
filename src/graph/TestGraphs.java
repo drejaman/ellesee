@@ -14,7 +14,7 @@ public class TestGraphs {
 	
 	// https://leetcode.com/problems/all-paths-from-source-to-target/description/
     public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
-     List<List<Integer>> paths = new ArrayList<>();
+     List<List<Integer>> paths = new ArrayList<List<Integer>>();
      List<Integer> path = new ArrayList<Integer>();
      
      path.add(0);
@@ -43,6 +43,7 @@ public class TestGraphs {
                 path.remove(path.size() - 1);
     		}
     }
+  
     //notworking    
     //https://leetcode.com/problems/find-bottom-left-tree-value/
     //idea: BFS. when you reach a left leaf update minimum. at the end of graph traversal return graph left minimum

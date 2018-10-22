@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import linklist.ListNode;
+
 public class TestTrees {
 
 	public TestTrees()
@@ -62,7 +64,6 @@ public class TestTrees {
 		*/
 		tree.preOrderPrint(root);
 		//tree.postOrderPrint(root);
-		
 	}
 
 	// https://leetcode.com/problems/merge-two-binary-trees/description/
@@ -82,7 +83,8 @@ public class TestTrees {
 
     // https://leetcode.com/problems/minimum-absolute-difference-in-bst/description/
     // The trick here is that the min difference between any nodes in any positions in the tree
-    // that means do a sorted traversal (inorder) and then get the difference between pairs and return the minimum difference
+    // that means do a sorted traversal (inorder) and then get the difference between pairs and 
+    // return the minimum difference
     // Runtime is O(N) + O(N) = O(N)
     public int getMinimumDifference(TreeNode root) {
         if(root == null) return Integer.MAX_VALUE;
@@ -184,7 +186,7 @@ public class TestTrees {
     	return maxPosition;
     }
     
-    
+
     // notworking according to the specifications
     //https://leetcode.com/problems/binary-tree-pruning/description/
     public TreeNode pruneTree(TreeNode root) {
@@ -217,8 +219,8 @@ public class TestTrees {
     	return HasZeroInTree(root.left) && HasZeroInTree(root.right);
     }
     
+    // notworking - Says memory limit reached
     // https://leetcode.com/problems/n-ary-tree-level-order-traversal/description/
-    // Not Working - Says memory limit reached
     public List<List<Integer>> levelOrder(Node root) {
         List<List<Node>> levelNodes = new ArrayList<List<Node>>();
         List<List<Integer>> levelNumbers = new ArrayList<List<Integer>>();
@@ -262,10 +264,6 @@ public class TestTrees {
     // if right child is not empty then push the right child in the stack, then node.right = node.left and then recursively call the method with node.left
     // once it get backs to the same node then the returningNode.right = flatten(pop())
     static Stack<TreeNode> treeStack = new Stack<TreeNode>();
-//
-//    public static void flatten(TreeNode root) {
-//    	flattenTree(root);
-//    }
     
     public static TreeNode flattenTree(TreeNode root) {
     	if(root == null) return null;
@@ -300,7 +298,8 @@ public class TestTrees {
     	flatten(root.right);
     	flatten(root.left);
     	
-    	// when the right subtree is flattened then the head of right subtree becomes prev and tail of left subtree is root
+    	// when the right subtree is flattened then the head of right subtree becomes prev 
+    	// and tail of left subtree is root
     	// tailLeftST(root).right <- prev(headRightST)
     	root.right = prev;
     	// in the flatten process left is always set to null
@@ -360,5 +359,57 @@ public class TestTrees {
     	}
 
     	return root;
+    }
+    
+    //https://leetcode.com/problems/balanced-binary-tree/
+    public boolean isBalanced(TreeNode root) {
+        if(root == null) return true;
+        
+        return (Math.abs(maxDepth(root.left) - maxDepth(root.right)) <= 1)
+        		&& isBalanced(root.left)
+        		&& isBalanced(root.right);
+    }
+    
+    public int maxDepth(TreeNode node)
+    {
+    	if(node == null) return 0;
+    	
+    	return Math.max(maxDepth(node.left), maxDepth(node.right)) + 1;
+    }
+    
+    //https://leetcode.com/problems/convert-sorted-list-to-binary-search-tree/
+    // this is Bottom up approach
+    private ListNode list;
+    
+    public TreeNode sortedListToBST(ListNode head) {
+        
+    	ListNode p = head;
+        int n = 0;
+        
+        while( p != null)
+        {
+        	p = p.next;
+        	n++;
+        }
+        
+        // set the head to begin with
+        list = head;
+        
+        return sortedListToBST(0, n-1);
+    }
+
+    private TreeNode sortedListToBST(int start, int end)
+    {
+        if(start > end) return null;
+        
+        int mid = (start + end) /2 ;
+        
+        TreeNode leftChild = sortedListToBST(start, mid - 1);
+        TreeNode parent = new TreeNode(list.val);
+        list = list.next;
+        parent.left = leftChild;
+        parent.right = sortedListToBST(mid + 1, end);
+        
+        return parent;
     }
 }
