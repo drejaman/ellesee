@@ -11,7 +11,7 @@ public class TestGraphs {
 	}
 	
     public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
-     List<List<Integer>> paths = new ArrayList<>();
+     List<List<Integer>> paths = new ArrayList<List<Integer>>();
      List<Integer> path = new ArrayList<Integer>();
      
      path.add(0);
@@ -26,7 +26,7 @@ public class TestGraphs {
     		if(node == graph.length - 1) 
     		{
                 // a new array is required to ensure that we capture the whole path instead of 
-                // the list path that is going through the recusrions stacks
+                // the list path that is going through the recursion stacks
     			paths.add(new ArrayList<Integer>(path));
     			return;
     		}

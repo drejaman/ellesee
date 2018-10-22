@@ -51,8 +51,6 @@ public class BinarySearchTree
 		//System.out.println("Printing finished");
 	}
 	
-
-	
 	public int treeHeight(TreeNode node)
 	{		
 		int lH = 0,rH = 0;
@@ -170,40 +168,32 @@ public class BinarySearchTree
 		}		
 	}
 	
-	public boolean sameTree(TreeNode node1,TreeNode node2)
+	//https://leetcode.com/problems/same-tree/submissions/
+	public boolean sameTree(TreeNode p,TreeNode q)
 	{
-		if(node1.getValue()!=node2.getValue())
-		{
-			return false;
-		}
-		
-		boolean leftB=false,rightB=false;
-		
-		if(node1.getLeft()==null && node2.getLeft()==null)
-			leftB=true;
-		else 
-			if(node1.getLeft()!=null && node2.getLeft()!=null)
-				leftB=sameTree(node1.getLeft(),node2.getLeft());
-		if(node1.getRight()==null && node2.getRight()==null)
-			rightB=true;
-		else
-			if(node1.getRight()!=null && node2.getRight()!=null)
-				rightB=sameTree(node1.getRight(),node2.getRight());
-		return (leftB&&rightB);
+        if(p == null && q ==null) return true;
+        
+        if((p == null && q != null) || (p != null && q == null))
+            return false;
+        
+        if(p.val == q.val)
+        {
+            return sameTree(p.left, q.left)
+                && sameTree(p.right, q.right);
+        }
+        
+        return false;
 	}
 	
-	// this is not the right implementation
-	public boolean isBST(TreeNode node)
-	{
-		if((node.getLeft()!=null&&(node.getLeft().getValue()>node.getValue())) || (node.getRight()!=null&&(node.getRight().getValue()<=node.getValue())))
-			return false;
-			
-		boolean leftB=false,rightB=false;
-		if(node.getLeft()!=null)
-			leftB=isBST(node.getLeft());
-		if(node.getRight()!=null)
-			rightB=isBST(node.getRight());
-		return (leftB&&rightB);
-	}	
+	//https://leetcode.com/problems/validate-binary-search-tree/
+	private boolean valid(TreeNode p, Integer low, Integer high) 
+	{   
+		if (p == null) return true;    
+	 
+		return (low == null || p.val > low) 
+	     && (high == null || p.val < high)          
+	     && valid(p.left, low, p.val)          
+	     && valid(p.right, p.val, high); 
+	} 
 }
 

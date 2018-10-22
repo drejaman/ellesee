@@ -8,8 +8,6 @@ String value;
 int intValue;
 ArrayList <MyTreeNode> children=new ArrayList<MyTreeNode>();;
 
-
-
 public MyTreeNode()
 {	
 }
@@ -73,6 +71,4 @@ public ArrayList<MyTreeNode> getChildren() {
 public void setChildren(ArrayList<MyTreeNode> children) {
 	this.children = children;
 }
-
-
 }

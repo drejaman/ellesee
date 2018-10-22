@@ -90,8 +90,7 @@ private String reverseWhole(String s) {
 	{
 		char temp = stringChars[i];
 		stringChars[i] = stringChars[j];
-		stringChars[j] = temp;
-		
+		stringChars[j] = temp;		
 	}
 	
 	return new String(stringChars);
@@ -372,6 +371,217 @@ private String GenerateRandomString(int len){
 		randomString.append(AlphaNumeric.charAt(randomIndex));
 	}
 	
-	return randomString.toString();}
+	return randomString.toString();
+}
+
+
+//https://leetcode.com/problems/find-and-replace-pattern/
+public List<String> findAndReplacePattern(String[] words, String pattern) {
+	List<String> matchedWords = new ArrayList<String>();
+ HashMap<Character, Character> patternMapper = new HashMap<Character, Character>();
+ char[] patternChars = pattern.toCharArray();
+ 
+ for(String word: words)
+ {
+ 	char[] wordChars = word.toCharArray();
+ 	
+ 	if(wordChars.length != patternChars.length) continue;
+ 	
+ 	// resets the mapper for new word
+ 	patternMapper.clear();
+ 	boolean isMatched = true;
+ 	
+ 	for(int i = 0; i < wordChars.length; i++)
+ 	{
+ 		// pattern key is already in mapper
+ 		if(patternMapper.containsKey(patternChars[i]))
+ 		{
+ 			// they matched
+ 			if(patternMapper.get(patternChars[i]) == wordChars[i])
+ 			{
+ 				continue;
+ 			}
+ 			// they don't match
+ 			else
+ 			{
+     			isMatched = false;
+     			break;    				
+ 			}
+ 		}
+ 		// this logic is important to make sure "abb" and "ccc" are not matched
+ 		// as c is already keyed with a. without this logic c will be also keyed with b
+ 		else if(patternMapper.containsValue(wordChars[i]))
+ 		{
+ 			isMatched = false;
+ 			break;
+ 		}
+ 		// otherwise add the key
+ 		else
+ 		{
+ 			patternMapper.put(patternChars[i], wordChars[i]);    			
+ 		}
+ 	}
+ 	
+ 	if(isMatched)
+ 	{
+ 		matchedWords.add(word);
+ 	}
+ }
+ 
+ return matchedWords;
+}
+
+//https://leetcode.com/problems/implement-strstr/
+public int strStr(String haystack, String needle) {
+	if(needle == null || needle.isEmpty()) return 0;
+	
+	if(haystack == null || haystack.isEmpty()) return -1;
+	
+	for(int i = 0; i < haystack.length(); i++)
+	{
+		int matchingIndex = i;
+		
+		for(int j = 0; j < needle.length() && (j + needle.length()) < haystack.length() ; j++)
+		{
+			while(i < haystack.length() && j < needle.length() &&
+					Character.toLowerCase(haystack.charAt(i)) == Character.toLowerCase(needle.charAt(j)))
+			{
+				i++;
+				j++;
+			}
+			
+			if(j == needle.length()) return matchingIndex;
+		}
+	}
+	
+	return -1;
+}
+
+
+	//https://leetcode.com/problems/reverse-words-in-a-string/
+    public String reverseWords1(String s) {
+        if(s == null || s.isEmpty()) return s;
+        
+        int j = s.length();
+        
+        StringBuilder builder = new StringBuilder();
+        
+        for(int i = s.length() - 1; i >= 0; i--)
+        {
+            if(s.charAt(i) == ' '){
+                j = i;
+            }
+            
+            // we have reached end of a word
+            else if(i == 0 || s.charAt(i - 1) == ' ')
+            {
+                if(builder.length() != 0)
+                {
+                    builder.append(' ');
+                }
+                
+                builder.append(s.substring(i, j));
+            }
+        }
+        
+        return builder.toString();
+    }
+
+
+    //https://leetcode.com/problems/string-to-integer-atoi/
+    public int myAtoi(String str) { 
+    	// need to return 0 as required by Leetcode
+    	if(str == null || str.isEmpty()) return 0;
+    	
+    	// required to handle overflow
+    	int maxDiv10 = Integer.MAX_VALUE / 10;
+    	
+    	int i = 0;
+    	int len = str.length();
+    	
+    	while(i < len && Character.isWhitespace(str.charAt(i))) i++;
+    	
+    	int number = 0;
+    	int sign = 1;
+
+    	if(i < len && str.charAt(i) == '-')
+		{
+			sign = -1;
+			i++;
+		}
+    	else if(i < len && str.charAt(i) == '+')
+		{
+			i++;
+		}
+
+    	// as required by Leetcode any non alphanumeric character will result into 0
+    	while(i < len && Character.isDigit(str.charAt(i)))
+    	{
+		      int digit = Character.getNumericValue(str.charAt(i));       
+		      
+		      // required to handle overflow		      
+		      if (number > maxDiv10 || number == maxDiv10 && digit >= 8) 
+		      {          
+		    	  return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;       
+		      }
+				number = number * 10 + digit;
+    		i++;
+    	}
+
+    	/* alternate implementation
+    	 * case like "why this is 987" will return 987
+    	while(i < len)
+    	{	
+    		if(Character.isDigit(str.charAt(i)))
+    		{	
+		      int digit = Character.getNumericValue(str.charAt(i));       
+		      
+		      // required to handle overflow		      
+		      if (number > maxDiv10 || number == maxDiv10 && digit >= 8) 
+		      {          
+		    	  return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;       
+		      }
+				number = number * 10 + digit;
+			}
+    		i++;
+    	}
+    	*/
+
+    	return sign * number;
+    }
+    
+    //https://leetcode.com/problems/longest-substring-without-repeating-characters/submissions/
+    public int lengthOfLongestSubstring(String s) {
+    	boolean exists[] = new boolean[256];
+    	
+    	int maxLen = 0, i = 0;
+    	
+    	for(int j = 0; j < s.length(); j++)
+    	{
+    		while(i < s.length() && exists[s.charAt(j)])
+    		{
+    			// keep on incrementing i until we past the first occurence of the repeated character
+    			// in the current substring
+    			// for example in abcdcefg j = 4 when we get the current max substring abcd
+    			// the next possible non repeated substring will start from index, i = 3 (d) as then
+    			// so after i is increased to 2 then exists[c] is reset resulting into i = 3 and this while 
+    			// loop breaks
+    			exists[s.charAt(i)] = false;
+    			i++;
+    		}
+    		
+    		exists[s.charAt(j)] = true;
+    		maxLen = Math.max(j - i + 1, maxLen);
+    	}
+    	
+    	return maxLen;
+    }
 
 }
+
+
+
+
+
+
+

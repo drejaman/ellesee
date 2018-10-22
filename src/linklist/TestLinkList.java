@@ -94,4 +94,28 @@ public class TestLinkList {
     	beforeXcurrent.next = afterX;
         return beforeX;
     }
+    
+    //https://leetcode.com/problems/add-two-numbers/
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+    		return addTwoNumbers(l1, l2, 0); 
+		}
+
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2, int carry) {
+    	if(l1 == null && l2 == null)
+    	{
+    		if(carry == 0) return null;
+    		else return new ListNode(carry);
+    	}
+    	
+		int value = carry;
+		
+		if(l1 != null) value += l1.val;
+		if(l2 != null) value += l2.val;
+		
+		ListNode node = new ListNode(value % 10);
+		node.next = addTwoNumbers(l1 != null ? l1.next: null, l2 != null ? l2.next: null, value/10);
+		
+		return node;
+}
+
 }
