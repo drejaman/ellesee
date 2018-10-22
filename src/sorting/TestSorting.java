@@ -1,6 +1,6 @@
 package sorting;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 
 public class TestSorting {
 
@@ -26,5 +26,19 @@ public class TestSorting {
 			System.out.println(str);
 		}
 	}
-
+	
+	// https://leetcode.com/problems/custom-sort-string/description/
+    public String customSortString(String S, String T) {
+    	
+        ArrayList<Character> sourceIndex = new ArrayList<Character>();
+        
+        for(char ch: S.toCharArray())
+        {
+        	sourceIndex.add(ch);
+        }
+        
+        // now sort the Test String, T
+        
+        return T;
+    }
 }

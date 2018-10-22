@@ -1,8 +1,8 @@
 package trees;
 public class TreeNode
 {
-	TreeNode left,right;
-	int val;
+	public TreeNode left,right;
+	public int val;
 	
 	public TreeNode()
 	{

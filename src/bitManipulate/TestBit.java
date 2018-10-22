@@ -16,4 +16,34 @@ public class TestBit {
 		//System.out.println(bmp.updateMintoN(182, 21, 2, 6));
 		System.out.println(bmp.decimalFractionToBinary("3.75"));
 	}
+	
+	// https://leetcode.com/problems/counting-bits/description/
+	// need to do more work to fulfil additional requirements like
+	// - can you do it in linear time O(n) /possibly in a single pass?
+	// - Space complexity should be O(n).
+    public int[] countBits(int num) {
+        
+    	int[] noOfBits = new int[num + 1];
+    	
+    	for(int i = 0; i <= num; i++)
+    	{
+    		noOfBits[i] = bitCount(i);
+     	}
+    	
+    	return noOfBits;
+    }
+    
+    // Can you do it like a boss? Do it without using any builtin function like __builtin_popcount in c++ or in any other language.
+    private int bitCount(int n)
+    {
+    	int count = 0;
+    	
+    	while(n > 0)
+    	{
+    		count++;
+    		n /= 2;
+    	}
+    	
+    	return count;
+    }
 }

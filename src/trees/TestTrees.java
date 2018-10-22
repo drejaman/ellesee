@@ -32,7 +32,7 @@ public class TestTrees {
 //		tree.addNode(root, child4);
 //		tree.preOrderPrint(root);
 		//tree.postOrderPrint(root);
-		TreeNode root = constructMaximumBinaryTree(new int[] {3,2,1,6,0,5});
+//		TreeNode root = constructMaximumBinaryTree(new int[] {3,2,1,6,0,5});
 		isValidSerialization("9,3,4,#,#,1,#,#,2,#,6,#,#");
 	}
 	
@@ -185,11 +185,11 @@ public class TestTrees {
     }
     
     
-    // not working according to the specifications
+    // notworking according to the specifications
     //https://leetcode.com/problems/binary-tree-pruning/description/
     public TreeNode pruneTree(TreeNode root) {
     	
-    	if(root == null)
+    	if(root == null) return null;
     	
     	if(root.left != null)
     	{
@@ -267,7 +267,7 @@ public class TestTrees {
 //    	flattenTree(root);
 //    }
     
-    private static TreeNode flattenTree(TreeNode root) {
+    public static TreeNode flattenTree(TreeNode root) {
     	if(root == null) return null;
     	
     	if(root.left == null && root.right != null) flattenTree(root.right);
@@ -332,5 +332,33 @@ public class TestTrees {
             if (!node.equals("#")) edgeCount += 2;
         }
         return edgeCount == 0;
+    }
+    
+    //notworking (stack overflow error)
+    // https://leetcode.com/problems/insert-into-a-binary-search-tree/description/
+    public TreeNode insertIntoBST(TreeNode root, int val) {
+    	if(root == null) return new TreeNode(val);
+    	
+    	if(val >= root.val && root.right == null)
+    	{
+    		root.right = new TreeNode(val);
+    	}
+    	
+    	if(val < root.val && root.left == null)
+    	{
+    		root.left = new TreeNode(val);
+    	}
+    	
+    	if(val >= root.val && root.right != null)
+    	{
+    		insertIntoBST(root.right, val);
+    	}
+
+    	if(val < root.val && root.left != null)
+    	{
+    		insertIntoBST(root.left, val);
+    	}
+
+    	return root;
     }
 }
