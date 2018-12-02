@@ -79,7 +79,7 @@ public class TestBST
 	
 	public void findPlace(TreeNode node,int referenceValue,int[] elements,int index,int len)
 	{
-		if(index==len)
+		if(index == len)
 			return;
 		//if(elements[index]>referenceValue && node.getValue()!=referenceValue)
 		//	return;
@@ -101,6 +101,5 @@ public class TestBST
 			node.setLeft(new TreeNode(elements[index]));
 			findPlace(node.getLeft(),referenceValue,elements,index+1,len);			
 		}
-	}
-	
+	}	
 }

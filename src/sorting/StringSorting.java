@@ -23,6 +23,4 @@ public int searchString(String required,String[] str,int lo,int hi)
 		return searchString(required,str,mid+1,hi);
 	else return -1;
 }
-
-
 }

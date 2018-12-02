@@ -164,7 +164,6 @@ public class TestNumbers {
     }
     
     // https://leetcode.com/problems/array-partition-i/
-    // the idea is we sort the whole array and add only a[even] to the sume as the first number of the pair will always be smaller
     public int arrayPairSum(int[] nums) {
     	int len = nums.length;
     	int sum = 0;
@@ -484,5 +483,26 @@ public class TestNumbers {
     		findWays(n - currentNumber, squares, index, finalResult, currentCombination);
     		findWays(n - currentNumber, squares, index + 1, finalResult, currentCombination);
     	}
+    }
+
+    //https://leetcode.com/problems/powx-n
+    //notworking for n = IntMax or n = IntMin
+    public double myPow(double x, int n) {
+    	long nl = n;
+    	
+    	return myPowD(x, nl);
+    }
+    
+    private double myPowD(double x, double n)
+    {
+        if(n == 0) return 1.0;
+        
+        if(n < 0)
+        {
+        	n = -n;
+        	x = 1/x;
+        }
+        
+        return n % 2 == 0 ? myPowD(x * x, n/2) : x * myPowD(x * x, n/2);    	
     }
 }

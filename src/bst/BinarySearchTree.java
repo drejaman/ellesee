@@ -186,7 +186,7 @@ public class BinarySearchTree
 	}
 	
 	//https://leetcode.com/problems/validate-binary-search-tree/
-	private boolean valid(TreeNode p, Integer low, Integer high) 
+	public boolean valid(TreeNode p, Integer low, Integer high) 
 	{   
 		if (p == null) return true;    
 	 
@@ -196,4 +196,3 @@ public class BinarySearchTree
 	     && valid(p.right, p.val, high); 
 	} 
 }
-

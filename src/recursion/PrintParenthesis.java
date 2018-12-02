@@ -1,5 +1,9 @@
 package recursion;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
+
 public class PrintParenthesis {
 int n;
 
@@ -33,4 +37,79 @@ void doPrint(char[] output, int i, int left, int right)
 	}
 }
 
+//https://leetcode.com/problems/generate-parentheses/
+public List<String> generateParenthesis(int n) {
+    List<String> result = new ArrayList<String>();
+
+    if(n == 0) 
+    {
+    	result.add("");
+    }
+    else
+    {
+        generateParenthesis(result, n, n, "");
+    }
+
+    return result;
+}
+
+private void generateParenthesis(List<String> result, int left, int right, String currentList)
+{
+	if(right == 0) 
+	{
+		result.add(currentList);
+		return;
+	}
+	
+	if(left < right)
+	{
+		generateParenthesis(result, left, right - 1, currentList + ")");
+	}
+	
+    if(left > 0)
+	{
+		generateParenthesis(result, left - 1, right, currentList + "(");		
+	}
+}
+
+//https://leetcode.com/problems/longest-valid-parentheses/
+// O(n) time and O(n) space
+/*
+ * we start by pushing −1 onto the stack.
+
+For every 
+‘(’
+‘(’ encountered, we push its index onto the stack.
+
+For every 
+‘)’
+‘)’ encountered, we pop the topmost element and subtract the current element's index from the top element of the stack, 
+which gives the length of the currently encountered valid string of parentheses. If while popping the element, 
+the stack becomes empty, we push the current element's index onto the stack. 
+ * 
+ * */
+public int longestValidParentheses(String s) {
+    int maxans = 0;
+    
+    Stack<Integer> stack = new Stack<>();
+    
+    // this is key as when we will encounter a ')' then ')' index - (-1) will represent the length
+    stack.push(-1);
+    
+    for (int i = 0; i < s.length(); i++) {
+        if (s.charAt(i) == '(') {
+            stack.push(i);
+        } else {
+        	//this in general should pop the '(' before
+            stack.pop();
+            if (stack.empty()) {
+                stack.push(i);
+            } else {
+            	// index of ')' - (-1)
+                maxans = Math.max(maxans, i - stack.peek());
+            }
+        }
+    }
+    return maxans;
+}
 }

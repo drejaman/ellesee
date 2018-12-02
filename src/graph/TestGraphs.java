@@ -1,7 +1,14 @@
 package graph;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import trees.TreeNode;
 
 import trees.TreeNode;
 
@@ -137,7 +144,9 @@ public class TestGraphs {
     // otherwise insertion is right to left
     // we might need to insert into treeNode list in regular order but alternate times we read from it reverse way
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
-        if(root == null) return null;
+        List<List<Integer>> treeValues = new ArrayList<List<Integer>>();
+
+        if(root == null) return treeValues;
         
         List<List<Integer>> treeValues = new ArrayList<List<Integer>>();
         
@@ -204,4 +213,126 @@ public class TestGraphs {
         
         return rightValues;
     }
+    
+    //https://leetcode.com/problems/find-largest-value-in-each-tree-row/
+    public List<Integer> largestValues(TreeNode root) {
+        List<Integer> largeValues = new ArrayList<Integer>();
+
+        if(root == null) return largeValues;
+
+        List<List<Integer>> nodeValues = levelOrder(root);
+        
+        for(List<Integer> current : nodeValues)
+        {
+        	largeValues.add(Collections.max(current));        	
+        }
+        
+        return largeValues;
+    }
+    
+    //https://leetcode.com/problems/house-robber-iii/
+    //idea: level order traversal. 
+    // add the odd rows = sumOddRows
+    // add the even rows = sumEvenRows
+    // return Math.max(sumOddRows, sumEvenRows)
+    //TODO
+    public int rob(TreeNode root) {
+        
+    }
+    
+    //https://leetcode.com/problems/friend-circles/
+    public int findCircleNum(int[][] M) {
+        if(M == null || M.length == 0) return 0;
+        
+        int len = M.length;
+        int count = 0;
+        
+        for(int i = 0; i < len; i++)
+        {
+    			if(M[i][i] == 1)
+    			{
+    				this.dfsVisitFriend(M, i, len);
+    				count++;
+    			}
+        }
+        
+        return count;
+    }
+
+    private void dfsVisitFriend(int[][] grid, int r, int len)
+    {
+    		for(int c = 0; c < len; c++)
+    		{
+    			if(grid[r][c] == 1)
+    			{
+    				grid[r][c] = grid[c][r] = 0;
+    				this.dfsVisitFriend(grid, c, len);
+    			}
+    		}
+    	}
+    
+    //https://leetcode.com/problems/number-of-islands/
+    public int numIslands(char[][] grid) {
+        if(grid == null || grid.length == 0) return 0;
+        
+        int row = grid.length;
+        int col = grid[0].length;
+        int count = 0;
+        
+        for(int i = 0; i < row; i++)
+        {
+        		for(int j = 0; j < col; j++)
+        		{
+        			if(grid[i][j] == '1')
+        			{
+        				this.dfsVisitIsland(grid, i, j, row, col);
+        				count++;
+        			}
+        		}
+        }
+        
+        return count;
+    }
+    
+    private void dfsVisitIsland(char[][] grid, int r, int c, int row, int col)
+    {
+    		if(r < 0 || c < 0 || r >= row || c >= col || grid[r][c] != '1') return;
+
+    		grid[r][c] = '0';
+    		
+    		//island consists of only the up or down or left or right cell not the diagonal ones
+    		this.dfsVisitIsland(grid, r, c-1, row, col);
+    		this.dfsVisitIsland(grid, r, c+1, row, col);
+    		this.dfsVisitIsland(grid, r-1, c, row, col);
+    		this.dfsVisitIsland(grid, r+1, c, row, col);
+    }
+    
+    //https://leetcode.com/problems/course-schedule/
+	    public boolean canFinish(int numCourses, int[][] prerequisites) {
+	        Map<Integer,List<Integer>> edges = new HashMap<>();
+	        Set<Integer> visited = new HashSet<>();
+	        Set<Integer> completed = new HashSet<Integer>();
+	        for(int[] p : prerequisites) {
+	            edges.computeIfAbsent(p[0],k->new ArrayList<Integer>()).add(p[1]);
+	        }
+	        for(int course = 0; course<numCourses; course++) {
+	            dfs(course,edges,visited,completed);
+	            if(completed.size() >= numCourses) return true;
+	        }
+	        
+	        return false;
+	    }
+	    
+	    private boolean dfs(int course, Map<Integer,List<Integer>> edges,Set<Integer> visited, Set<Integer> completed) {
+	        if(completed.contains(course)) return true;
+	        if(visited.contains(course)) return false;
+	        if(edges.containsKey(course)) { // Has prerequisites
+	            visited.add(course);
+	            for(int prereq : edges.get(course)) {
+	                if(!dfs(prereq,edges,visited,completed)) return false; // Cycle, can't complete this course
+	            }
+	        }
+	        completed.add(course);
+	        return true;
+	    }
 }

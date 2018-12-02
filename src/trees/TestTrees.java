@@ -1,6 +1,7 @@
 package trees;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
@@ -411,5 +412,136 @@ public class TestTrees {
         parent.right = sortedListToBST(mid + 1, end);
         
         return parent;
+    }
+    
+    //notworking (stack overflow error)
+    // https://leetcode.com/problems/insert-into-a-binary-search-tree/description/
+    public TreeNode insertIntoBST(TreeNode root, int val) {
+    	if(root == null) return new TreeNode(val);
+    	
+    	if(val >= root.val && root.right == null)
+    	{
+    		root.right = new TreeNode(val);
+    	}
+    	
+    	if(val < root.val && root.left == null)
+    	{
+    		root.left = new TreeNode(val);
+    	}
+    	
+    	if(val >= root.val && root.right != null)
+    	{
+    		insertIntoBST(root.right, val);
+    	}
+
+    	if(val < root.val && root.left != null)
+    	{
+    		insertIntoBST(root.left, val);
+    	}
+
+    	return root;
+    }
+
+    //Cracking4.10
+    public boolean containsTree(TreeNode t1, TreeNode t2)
+    {
+    	// null tree is always a subTree
+    	if(t2 == null) return true;
+
+    	return subTree(t1, t2);
+    }
+
+    private boolean subTree(TreeNode t1, TreeNode t2)
+    {
+    	// the big tree is null and we still haven't found the match
+    	if(t1 == null) return false;
+    	
+    	else if(t1.val == t2.val && matchTree(t1, t2))
+		{
+			return true;
+		}
+
+    	// otherwise continue the search on big tree's left and right
+    	return subTree(t1.left, t2) || subTree(t1.right, t2);
+    }
+    
+    private boolean matchTree(TreeNode t1, TreeNode t2)
+    {
+    	if(t1 == null && t2 == null) return true;
+    	else if(t1 == null || t2 == null) return false;
+    	else if(t1.val != t2.val) return false;
+    	else return matchTree(t1.left, t2.left) && matchTree(t1.right, t2.right);
+    }
+    
+    //Cracking4.12 pathswithsum
+    public int countPathsWithSum(TreeNode node, int targetSum)
+    {
+    	if(node == null) return 0;
+    	
+    	int pathsFromRoot = countPathsWithSumFromNode(node, targetSum, 0);
+    	
+    	int pathsFromLeft = countPathsWithSum(node.left, targetSum);
+    	int pathsFromRight = countPathsWithSum(node.left, targetSum);
+    	
+    	return pathsFromRoot + pathsFromLeft + pathsFromRight;
+    }
+    
+    private int countPathsWithSumFromNode(TreeNode node, int targetSum, int currentSum)
+    {
+    	if(node == null) return 0;
+    	
+    	currentSum += node.val;
+    	
+    	int totalWays = 0;
+    	
+    	if(currentSum == targetSum) totalWays++;
+    	
+    	totalWays += countPathsWithSumFromNode(node.left, targetSum, currentSum);
+    	totalWays += countPathsWithSumFromNode(node.right, targetSum, currentSum);
+    	
+    	return totalWays;
+    }
+    
+    //https://leetcode.com/problems/kth-smallest-element-in-a-bst/
+    //TODO
+    public int kthSmallest(TreeNode root, int k) {
+        
+    }
+    
+    //https://leetcode.com/problems/find-duplicate-subtrees/submissions/
+    private HashMap<String, Integer> subtreeCount;
+    private List<TreeNode> answer;
+    
+    public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+    	subtreeCount = new HashMap<String, Integer>();
+    	answer = new ArrayList<TreeNode>();
+    	this.serializeToFindDuplicate(root);
+    	return answer;
+    }
+    
+    private String serializeToFindDuplicate(TreeNode node)
+    {
+    	if(node == null) return "#";
+    	
+    	String currentSerial = node.val + "," + serializeToFindDuplicate(node.left) + "," + serializeToFindDuplicate(node.right);
+
+    	subtreeCount.put(currentSerial, subtreeCount.getOrDefault(currentSerial, 0) + 1);
+    	
+    	if(subtreeCount.get(currentSerial) == 2)
+    	{
+    		answer.add(node);
+    	}
+    	
+    	return currentSerial;
+    }
+    
+    //https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        
+    }
+    
+    //https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/solution/
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        
     }
 }

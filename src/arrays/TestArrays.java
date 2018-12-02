@@ -1,5 +1,7 @@
 package arrays;
 
+import java.util.PriorityQueue;
+
 public class TestArrays {
 
 	public TestArrays()
@@ -127,7 +129,27 @@ public class TestArrays {
     
     // https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/
     public int removeDuplicates(int[] nums) {
-
+        if(rowPos < row - 1 && colPos < col - 1 && board[rowPos][colPos] == 0)
+        {
+	    		if((rowPos == 1 && board[rowPos-1][colPos] == 'O') 
+	    				||(rowPos == (row - 2) && board[row- 2 + 1][colPos] == 'O')
+	    				||(colPos == 1 && board[rowPos][colPos - 1] == 'O')
+	    				||(colPos == (col - 2) && board[rowPos][col- 2 + 1] == 'O'))
+	    			isBorderZero = true;        	
+	    		else
+	    		{
+	    			return checkBorderZero(rowPos - 1, colPos, board) 
+	    					|| checkBorderZero(rowPos + 1, colPos, board) 
+	    					|| checkBorderZero(rowPos, colPos - 1, board) 
+	    					|| checkBorderZero(rowPos, colPos + 1, board);
+	    		}
+        }
+		
+		return isBorderZero;
+    }
+    
+    // https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/
+    public int removeDuplicates(int[] nums) {
         if(nums == null || nums.length == 0) return 0;
         
     	int currentPos = 0;
@@ -137,7 +159,7 @@ public class TestArrays {
     	{
     		// for array like this [1,1,1,2,2,2,2,3,3,3,3,4] this line 
     		// at first copies a[0] = 1 and after the while loop it also copies the last same number a[2] = 1
-    		// which will give the resul [1,1,2,2,3,3,4]
+    		// which will give the result [1,1,2,2,3,3,4]
     		// removing the line i-- after while will make sure the result is [1,2,3,4]
     		nums[currentPos] = nums[i];
 
@@ -156,7 +178,57 @@ public class TestArrays {
     	
     	return currentPos + 1;
     }    
+
+    //https://leetcode.com/problems/maximum-subarray/
+    public int maxSubArray(int[] A) {
+        int maxSum = Integer.MIN_VALUE;
+        int sum = 0;
+        
+        if(A==null || A.length==0) 
+            return maxSum;
+        
+        for(int i = 0; i < A.length; i++){
+            sum += A[i];
+            
+            if(sum > maxSum){
+                maxSum = sum;
+            }
+            
+            if(sum < 0) sum = 0;
+        }
+
+         return maxSum;
+   }
     
+    //https://leetcode.com/problems/minimum-path-sum/
+    public int minPathSum(int[][] grid) {
+        
+        if(grid==null||grid.length==0) return 0;
+        
+        int[][] minPath = new int[grid.length][grid[0].length];
+
+        //for the leftmost corner it is the same
+        minPath[0][0] = grid[0][0];
+        
+        for(int i = 0; i < grid.length; i++){
+            for(int j = 0; j < grid[0].length; j++){
+                //for row0
+                if(i==0 && j!=0){
+                    minPath[i][j] = minPath[i][j-1] + grid[i][j];
+                }
+                //for column0
+                if(i!=0 && j==0){
+                    minPath[i][j] = minPath[i-1][j] + grid[i][j];
+                }
+                if(i!=0 && j!=0){
+                    minPath[i][j] = Math.min(minPath[i-1][j], minPath[i][j-1]) + grid[i][j];
+                }
+            }
+        }
+        
+        return minPath[grid.length-1][grid[0].length-1];
+    }
+
     //notworking
     //https://leetcode.com/problems/partition-array-into-disjoint-intervals/
     //           5, 0, 3, 8, 6
@@ -194,5 +266,98 @@ public class TestArrays {
     	}
     	
     	return partition;
+    }
+    
+    //https://leetcode.com/problems/max-area-of-island/
+    //TODO
+    public int maxAreaOfIsland(int[][] grid) {
+        
+    }
+    
+    //https://leetcode.com/problems/unique-paths/
+    //TODO
+    /*
+     A robot is located at the top-left corner of a m x n grid (marked 'Start' in the diagram below).
+
+	The robot can only move either down or right at any point in time. 
+	The robot is trying to reach the bottom-right corner of the grid (marked 'Finish' in the diagram below).
+     * */
+    public int uniquePaths(int m, int n) {
+        
+    }
+    
+    //https://leetcode.com/problems/rotate-image/
+    public void rotate(int[][] matrix) {
+        
+    }
+    
+    //https://leetcode.com/problems/kth-largest-element-in-an-array/
+    public int findKthLargest(int[] nums, int k) {
+    	//pq keeps the largest elements
+    	final PriorityQueue<Integer> pq = new PriorityQueue<>();
+    	
+    	for(int val : nums)
+    	{
+    		// inserts the element
+    		pq.offer(val);
+    		
+    		//if pq size is larger than k then removes the smallest element
+    		if(pq.size() > k)
+    		{
+    			pq.poll();
+    		}
+    	}
+    	
+    	//pq now only contains element kth largest and larger than that element
+    	return pq.peek();
+    }
+    
+    //https://leetcode.com/problems/subarray-sum-equals-k/solution/
+    // O(n2) runtime, O(1) space
+    public int subarraySum(int[] nums, int k) {
+     if(nums == null || nums.length == 0) return 0;
+     
+     int sumCount = 0;
+     
+     for(int i = 0; i < nums.length; i++)
+     {
+    	 int sum = nums[i];
+    	 
+         if(sum == k)
+         {
+             sumCount++;
+         }
+
+    	 for(int j = i + 1; j < nums.length; j++)
+    	 {
+    		 sum += nums[j];
+             
+    		 if(sum == k)
+    		 {
+    			 sumCount++;
+    		 }
+    	 }
+     }
+
+     return sumCount;
+    }
+    
+    //https://leetcode.com/problems/search-a-2d-matrix-ii/
+    //runtime O(m+n) 
+    public boolean searchMatrix(int[][] matrix, int target) {
+        if(matrix == null || matrix.length == 0) return false;
+        
+        int row = 0;
+        int col = matrix[row].length - 1;
+        
+        while(col >= 0 && row <= (matrix.length - 1))
+        {
+       	 	if(matrix[row][col] == target) return true;
+       	 	
+       	 	if(target > matrix[row][col]) row++;
+       	 	else col--;
+        }
+        
+        return false;
     }
 }
