@@ -8,10 +8,6 @@ public class TestArrays {
 	{
 		
 	}
-	
-	public void test()
-	{
-	}
 
 	// https://leetcode.com/problems/reshape-the-matrix/description/
     public int[][] matrixReshape(int[][] nums, int r, int c) {
@@ -80,82 +76,13 @@ public class TestArrays {
     		return perimeter;
     }
     
-    // notworking
-    // Works for most cases. For some cases like where there is a full row/column of zero
-    // https://leetcode.com/problems/surrounded-regions/description/
-    public void solve(char[][] board) {
-        if(board == null) return;
-        
-        int row = board.length;
-        int col = board[0].length;
-        
-        for(int i = 1; i< row - 1; i++ )
-        {
-        		for(int j = 1; j < col - 1 ; j++)
-        		{
-        			if(board[i][j] == 'O' && checkBorderZero(i, j, board))
-        			{        				
-        				board[i][j] = 'X';
-        			}
-        		}
-        }
-    }
-    
-    //checks if the specific 0 is actually a border zero
-    private boolean checkBorderZero(int rowPos, int colPos, char[][] board)
-    {
-    		boolean isBorderZero = false;
-        int row = board.length;
-        int col = board[0].length;
-
-        if(rowPos < row - 1 && colPos < col - 1 && board[rowPos][colPos] == 0)
-        {
-	    		if((rowPos == 1 && board[rowPos-1][colPos] == 'O') 
-	    				||(rowPos == (row - 2) && board[row- 2 + 1][colPos] == 'O')
-	    				||(colPos == 1 && board[rowPos][colPos - 1] == 'O')
-	    				||(colPos == (col - 2) && board[rowPos][col- 2 + 1] == 'O'))
-	    			isBorderZero = true;        	
-	    		else
-	    		{
-	    			return checkBorderZero(rowPos - 1, colPos, board) 
-	    					|| checkBorderZero(rowPos + 1, colPos, board) 
-	    					|| checkBorderZero(rowPos, colPos - 1, board) 
-	    					|| checkBorderZero(rowPos, colPos + 1, board);
-	    		}
-        }
-		
-		return isBorderZero;
-    }
-    
-    // https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/
-    public int removeDuplicates(int[] nums) {
-        if(rowPos < row - 1 && colPos < col - 1 && board[rowPos][colPos] == 0)
-        {
-	    		if((rowPos == 1 && board[rowPos-1][colPos] == 'O') 
-	    				||(rowPos == (row - 2) && board[row- 2 + 1][colPos] == 'O')
-	    				||(colPos == 1 && board[rowPos][colPos - 1] == 'O')
-	    				||(colPos == (col - 2) && board[rowPos][col- 2 + 1] == 'O'))
-	    			isBorderZero = true;        	
-	    		else
-	    		{
-	    			return checkBorderZero(rowPos - 1, colPos, board) 
-	    					|| checkBorderZero(rowPos + 1, colPos, board) 
-	    					|| checkBorderZero(rowPos, colPos - 1, board) 
-	    					|| checkBorderZero(rowPos, colPos + 1, board);
-	    		}
-        }
-		
-		return isBorderZero;
-    }
-    
     // https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/
     public int removeDuplicates(int[] nums) {
         if(nums == null || nums.length == 0) return 0;
         
     	int currentPos = 0;
-    	int i = 0;
     	
-    	for(; i < nums.length - 1; i++, currentPos++)
+    	for(int i = 0; i < nums.length - 1; i++, currentPos++)
     	{
     		// for array like this [1,1,1,2,2,2,2,3,3,3,3,4] this line 
     		// at first copies a[0] = 1 and after the while loop it also copies the last same number a[2] = 1
@@ -228,73 +155,11 @@ public class TestArrays {
         
         return minPath[grid.length-1][grid[0].length-1];
     }
-
-    //notworking
-    //https://leetcode.com/problems/partition-array-into-disjoint-intervals/
-    //           5, 0, 3, 8, 6
-    // this should work. works for the sample
-    public int partitionDisjoint(int[] A)
-    {
-    	if(A == null || A.length == 0) return -1;
-    	
-    	int i = 0, j = A.length - 1;
-    	
-    	int leftMax = A[i], rightMin = A[j];
-    	
-    	int partition = i;
-    	
-    	while(i <= j && A[i] < rightMin)
-    	{
-    		if(A[i] > leftMax)
-    		{
-    			leftMax = A[i];
-    		}
-    		
-    		if(A[j] < rightMin)
-    		{
-    			rightMin = A[j];
-    		}
-    		
-    		if(leftMax >= rightMin)
-    		{
-    			partition = i;
-    			break;    			
-    		}
-    		
-    		i++;
-    		j--;
-    	}
-    	
-    	return partition;
-    }
-    
-    //https://leetcode.com/problems/max-area-of-island/
-    //TODO
-    public int maxAreaOfIsland(int[][] grid) {
-        
-    }
-    
-    //https://leetcode.com/problems/unique-paths/
-    //TODO
-    /*
-     A robot is located at the top-left corner of a m x n grid (marked 'Start' in the diagram below).
-
-	The robot can only move either down or right at any point in time. 
-	The robot is trying to reach the bottom-right corner of the grid (marked 'Finish' in the diagram below).
-     * */
-    public int uniquePaths(int m, int n) {
-        
-    }
-    
-    //https://leetcode.com/problems/rotate-image/
-    public void rotate(int[][] matrix) {
-        
-    }
     
     //https://leetcode.com/problems/kth-largest-element-in-an-array/
     public int findKthLargest(int[] nums, int k) {
     	//pq keeps the largest elements
-    	final PriorityQueue<Integer> pq = new PriorityQueue<>();
+    	final PriorityQueue<Integer> pq = new PriorityQueue<Integer>();
     	
     	for(int val : nums)
     	{
@@ -360,4 +225,115 @@ public class TestArrays {
         
         return false;
     }
+    
+    //https://leetcode.com/problems/max-area-of-island/
+    //TODO
+//    public int maxAreaOfIsland(int[][] grid) {
+//        
+//    }
+    
+    //https://leetcode.com/problems/unique-paths/
+    /*
+     A robot is located at the top-left corner of a m x n grid (marked 'Start' in the diagram below).
+
+	The robot can only move either down or right at any point in time. 
+	The robot is trying to reach the bottom-right corner of the grid (marked 'Finish' in the diagram below).
+     * */
+    //TODO
+//    public int uniquePaths(int m, int n) {
+//        
+//    }
+    
+    //https://leetcode.com/problems/rotate-image/
+    //TODO
+    public void rotate(int[][] matrix) {
+        
+    }
+    
+    // notworking
+    // Works for most cases. For some cases like where there is a full row/column of zero
+    // https://leetcode.com/problems/surrounded-regions/description/
+    public void solve(char[][] board) {
+        if(board == null) return;
+        
+        int row = board.length;
+        int col = board[0].length;
+        
+        for(int i = 1; i< row - 1; i++ )
+        {
+        		for(int j = 1; j < col - 1 ; j++)
+        		{
+        			if(board[i][j] == 'O' && checkBorderZero(i, j, board))
+        			{        				
+        				board[i][j] = 'X';
+        			}
+        		}
+        }
+    }    
+    
+    //checks if the specific 0 is actually a border zero
+    private boolean checkBorderZero(int rowPos, int colPos, char[][] board)
+    {
+    	boolean isBorderZero = false;
+        int row = board.length;
+        int col = board[0].length;
+
+        if(rowPos < row - 1 && colPos < col - 1 && board[rowPos][colPos] == 0)
+        {
+	    		if((rowPos == 1 && board[rowPos-1][colPos] == 'O') 
+	    				||(rowPos == (row - 2) && board[row- 2 + 1][colPos] == 'O')
+	    				||(colPos == 1 && board[rowPos][colPos - 1] == 'O')
+	    				||(colPos == (col - 2) && board[rowPos][col- 2 + 1] == 'O'))
+	    			isBorderZero = true;        	
+	    		else
+	    		{
+	    			return checkBorderZero(rowPos - 1, colPos, board) 
+	    					|| checkBorderZero(rowPos + 1, colPos, board) 
+	    					|| checkBorderZero(rowPos, colPos - 1, board) 
+	    					|| checkBorderZero(rowPos, colPos + 1, board);
+	    		}
+        }
+		
+		return isBorderZero;
+    }
+    
+
+    //notworking
+    //https://leetcode.com/problems/partition-array-into-disjoint-intervals/
+    //           5, 0, 3, 8, 6
+    // this should work. works for the sample
+    public int partitionDisjoint(int[] A)
+    {
+    	if(A == null || A.length == 0) return -1;
+    	
+    	int i = 0, j = A.length - 1;
+    	
+    	int leftMax = A[i], rightMin = A[j];
+    	
+    	int partition = i;
+    	
+    	while(i <= j && A[i] < rightMin)
+    	{
+    		if(A[i] > leftMax)
+    		{
+    			leftMax = A[i];
+    		}
+    		
+    		if(A[j] < rightMin)
+    		{
+    			rightMin = A[j];
+    		}
+    		
+    		if(leftMax >= rightMin)
+    		{
+    			partition = i;
+    			break;    			
+    		}
+    		
+    		i++;
+    		j--;
+    	}
+    	
+    	return partition;
+    }    
 }

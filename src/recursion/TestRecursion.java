@@ -4,10 +4,6 @@ import java.util.Arrays;
 
 public class TestRecursion {
 
-
-/**
- * The class that contains all the Recursion relate codes.
- */
 public TestRecursion()
 {
 }
@@ -22,12 +18,7 @@ public void test()
 	printAllWordsRepeat(chars,"",chars.length);
 }
 
-
-/**
- * Generate Fibonacci Number Recursively
- * @param n - for which Fib need to created
- * @return Fib number
- */
+// worst case implementation. should be at least iterative or memoized
 public int Fibonacci(int n)
 {
 	if (n == 2) return 1;
@@ -35,13 +26,15 @@ public int Fibonacci(int n)
 	else return (Fibonacci(n - 1) + Fibonacci(n - 2));	
 }
 
+// goes to common backtracking
 public void stringPermutation(String str,String printStr)
 {
-	if(str.length()==1)
+	if(str.length() == 1)
 	{
-		System.out.println(printStr+str);
+		System.out.println(printStr + str);
 		return;
 	}
+	
 	for(int i = 0; i < str.length(); i++)
 	{
 		String single = str.substring(i, i+1);
@@ -74,19 +67,6 @@ public void printAllWordsRepeat(char[] chars,String str,int len)
 	}
 }
 
-//this doesn't work now
-public void findMinimalSquare(int number)
-{
-	int nearest=(int) Math.sqrt((1.0)*number);
-	int remainder = number-nearest*nearest;
-	if(remainder==0)
-	{
-		System.out.println(nearest);
-		return;
-	}
-	findMinimalSquare(remainder);
-}
-
 //recursive solutions are beautiful but a waste of time and space
 //time complexity for this is O(str2.length()^(str1.length()-1))
 //O(k^(n-1))
@@ -102,8 +82,5 @@ public void insertCharsInString(String str1,String str2,String printable)
 	{
 		insertCharsInString(str1.substring(1,str1.length()),str2,printable+str1.substring(0,1)+str2.charAt(j));
 	}
-		
 }
-
-
 }

@@ -1,5 +1,5 @@
 package bst;
-
+//TODO move this to trees package
 import trees.TreeNode;
 
 public class BinarySearchTree
@@ -8,7 +8,7 @@ public class BinarySearchTree
 	
 	public BinarySearchTree(TreeNode r)
 	{
-		root=r;
+		root = r;
 	}
 	
 	public void addNode(TreeNode parent, TreeNode child)
@@ -61,19 +61,6 @@ public class BinarySearchTree
 		return 1 + Math.max(lH, rH);
 	}
 	
-	//incomplete or does not work
-	public int findMinSum(TreeNode node)
-	{
-		if(node.getLeft()==null && node.getRight()==null)
-			return node.getValue();
-		else if(node.getLeft()==null)
-			return node.getValue()+ findMinSum(node.getRight());
-		else if(node.getRight()==null)
-			return node.getValue()+ findMinSum(node.getLeft());
-		else
-			return node.getValue()+ Math.min(findMinSum(node.getRight()),findMinSum(node.getRight()));		
-	}
-	
 	public boolean lookup(TreeNode node,int value)
 	{
 		if(node==null) return false;
@@ -110,7 +97,8 @@ public class BinarySearchTree
 		if((sum-node.getValue())==0 && node.getLeft()==null && node.getRight()==null) 
 			return true;
 		
-		boolean left=false,right = false;
+		boolean left = false, right = false;
+		
 		if(node.getLeft()!=null)
 			left = hasPathSum(node.getLeft(),sum-node.getValue());
 		if(node.getRight()!=null)
@@ -195,4 +183,18 @@ public class BinarySearchTree
 	     && valid(p.left, low, p.val)          
 	     && valid(p.right, p.val, high); 
 	} 
+	
+	//notworking
+	public int findMinSum(TreeNode node)
+	{
+		if(node.getLeft()==null && node.getRight()==null)
+			return node.getValue();
+		else if(node.getLeft()==null)
+			return node.getValue()+ findMinSum(node.getRight());
+		else if(node.getRight()==null)
+			return node.getValue()+ findMinSum(node.getLeft());
+		else
+			return node.getValue()+ Math.min(findMinSum(node.getRight()),findMinSum(node.getRight()));		
+	}
+
 }

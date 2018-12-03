@@ -70,7 +70,6 @@ public class TestBST
 	{
 		TreeNode root=new TreeNode(elements[0]);
 		BinarySearchTree bst=new BinarySearchTree(root);
-		
 
 		findPlace(root,root.getValue(),elements,1,elements.length);
 		

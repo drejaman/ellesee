@@ -1,6 +1,7 @@
 package trees;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
@@ -68,7 +69,8 @@ public class TestTrees {
 	}
 
 	// https://leetcode.com/problems/merge-two-binary-trees/description/
-	// Runtime O(n + m) = O(n) considering n > m. Best possible time as we have to traverse all the nodes of each tree
+	// Runtime O(n + m) = O(n) considering n > m. Best possible time as we have to traverse 
+	// all the nodes of each tree
 	// Variation: If we have a list of trees that needs merging? Take 2 trees at a time and merge them 
 	// and take the next tree with the merged tree 
     public TreeNode mergeTrees(TreeNode t1, TreeNode t2) {
@@ -187,76 +189,6 @@ public class TestTrees {
     	return maxPosition;
     }
     
-
-    // notworking according to the specifications
-    //https://leetcode.com/problems/binary-tree-pruning/description/
-    public TreeNode pruneTree(TreeNode root) {
-    	
-    	if(root == null) return null;
-    	
-    	if(root.left != null)
-    	{
-    		if(HasZeroInTree(root.left)) root.left = null;
-    		else pruneTree(root.left);
-    	}
-    	
-    	if(root.right != null)
-    	{
-    		if(HasZeroInTree(root.right)) root.right = null;
-    		else pruneTree(root.right);
-    	}
-
-    	return root;  
-    }
-    
-    private boolean HasZeroInTree(TreeNode root)
-    {
-    	if(root == null) return true;
-    	
-    	if(root.val == 0) return true;
-    	
-    	if((root.left != null && root.left.val == 0) || (root.right != null && root.right.val == 0)) return true;
-    	
-    	return HasZeroInTree(root.left) && HasZeroInTree(root.right);
-    }
-    
-    // notworking - Says memory limit reached
-    // https://leetcode.com/problems/n-ary-tree-level-order-traversal/description/
-    public List<List<Integer>> levelOrder(Node root) {
-        List<List<Node>> levelNodes = new ArrayList<List<Node>>();
-        List<List<Integer>> levelNumbers = new ArrayList<List<Integer>>();
-        
-        ArrayList<Node> firstNodeList = new ArrayList<Node>(); 
-        firstNodeList.add(root);
-        levelNodes.add(firstNodeList);
-        ArrayList<Integer> firstNumberList = new ArrayList<Integer>(); 
-        firstNumberList.add(root.val);
-        levelNumbers.add(firstNumberList);
-        
-        for(int i = 0; i < levelNodes.size(); i++)
-        {
-        	List<Node> currentLevel = levelNodes.get(i);
-        	List<Node> nextLevel = new ArrayList<Node>();
-        	List<Integer> nextNumbers = new ArrayList<Integer>();
-        	
-        	for(int j = 0; j < currentLevel.size(); j++)
-        	{
-        		Node currentNode = currentLevel.get(j);
-        		
-        		for(Node nextNode : currentNode.children)
-        		{
-        			nextLevel.add(nextNode);
-        			nextNumbers.add(nextNode.val);
-        		}
-        	}
-        	
-        	levelNodes.add(nextLevel);
-        	levelNumbers.add(nextNumbers);
-        }
-        
-        return levelNumbers;
-    }
-    
     // https://leetcode.com/problems/flatten-binary-tree-to-linked-list/description/
     // this solution works perfectly fine except for huge input the memory limit exceeds
     // runtime O(N) - number of nodes in the tree
@@ -323,7 +255,6 @@ public class TestTrees {
     // for root = 2 - 0 = 2, for internal node = 2 - 1
     // so for every non-leaf node we visit we add 2 to count and reduce 1 for the incoming one
     // at the end if the count is zero then the serialization is right
-    
     public static boolean isValidSerialization(String preorder) {
         String[] nodes = preorder.split(",");
         int edgeCount = 1;
@@ -332,34 +263,6 @@ public class TestTrees {
             if (!node.equals("#")) edgeCount += 2;
         }
         return edgeCount == 0;
-    }
-    
-    //notworking (stack overflow error)
-    // https://leetcode.com/problems/insert-into-a-binary-search-tree/description/
-    public TreeNode insertIntoBST(TreeNode root, int val) {
-    	if(root == null) return new TreeNode(val);
-    	
-    	if(val >= root.val && root.right == null)
-    	{
-    		root.right = new TreeNode(val);
-    	}
-    	
-    	if(val < root.val && root.left == null)
-    	{
-    		root.left = new TreeNode(val);
-    	}
-    	
-    	if(val >= root.val && root.right != null)
-    	{
-    		insertIntoBST(root.right, val);
-    	}
-
-    	if(val < root.val && root.left != null)
-    	{
-    		insertIntoBST(root.left, val);
-    	}
-
-    	return root;
     }
     
     //https://leetcode.com/problems/balanced-binary-tree/
@@ -387,13 +290,14 @@ public class TestTrees {
     	ListNode p = head;
         int n = 0;
         
+        // determine the length of the list
         while( p != null)
         {
         	p = p.next;
         	n++;
         }
         
-        // set the head to begin with
+        // set the head to begin with. this is KEY
         list = head;
         
         return sortedListToBST(0, n-1);
@@ -412,34 +316,6 @@ public class TestTrees {
         parent.right = sortedListToBST(mid + 1, end);
         
         return parent;
-    }
-    
-    //notworking (stack overflow error)
-    // https://leetcode.com/problems/insert-into-a-binary-search-tree/description/
-    public TreeNode insertIntoBST(TreeNode root, int val) {
-    	if(root == null) return new TreeNode(val);
-    	
-    	if(val >= root.val && root.right == null)
-    	{
-    		root.right = new TreeNode(val);
-    	}
-    	
-    	if(val < root.val && root.left == null)
-    	{
-    		root.left = new TreeNode(val);
-    	}
-    	
-    	if(val >= root.val && root.right != null)
-    	{
-    		insertIntoBST(root.right, val);
-    	}
-
-    	if(val < root.val && root.left != null)
-    	{
-    		insertIntoBST(root.left, val);
-    	}
-
-    	return root;
     }
 
     //Cracking4.10
@@ -502,11 +378,6 @@ public class TestTrees {
     	return totalWays;
     }
     
-    //https://leetcode.com/problems/kth-smallest-element-in-a-bst/
-    //TODO
-    public int kthSmallest(TreeNode root, int k) {
-        
-    }
     
     //https://leetcode.com/problems/find-duplicate-subtrees/submissions/
     private HashMap<String, Integer> subtreeCount;
@@ -535,13 +406,221 @@ public class TestTrees {
     	return currentSerial;
     }
     
-    //https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
-    public TreeNode buildTree(int[] preorder, int[] inorder) {
+    //https://leetcode.com/problems/binary-tree-level-order-traversal/
+    //Given binary tree [3,9,20,null,null,15,7],
+    //[
+    //[3],
+    //[9,20],
+    //[15,7]
+    //]
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> treeValues = new ArrayList<List<Integer>>();
+        if(root == null) return treeValues;
         
+        List<TreeNode> previous = new ArrayList<TreeNode>();
+        previous.add(root);
+        
+        while(!previous.isEmpty())
+        {
+        	List<TreeNode> current = new ArrayList<TreeNode>();
+        	List<Integer> valueList = new ArrayList<Integer>();
+        	
+        	for(TreeNode node : previous)
+        	{
+        		if(node.left != null)
+        		{
+        			current.add(node.left);
+        		}
+        		
+        		if(node.right != null)
+        		{
+        			current.add(node.right);
+        		}
+
+        		valueList.add(node.val);
+        	}
+        	
+        	treeValues.add(valueList);
+        	previous = current;
+        }
+        
+        return treeValues;
     }
     
-    //https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/solution/
-    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+    //https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/
+    //Given binary tree [3,9,20,null,null,15,7],
+    //[
+    // [3],
+    // [20,9],
+    // [15,7]
+    //]
+    //idea: this will be a variation of levelOrder traversal
+    //implementation clue: 
+    // get the size of list of list 
+    // if the (size + 1) % 2 == 0 then the current list insertion is left to right
+    // otherwise insertion is right to left
+    // we might need to insert into treeNode list in regular order but alternate times we read from it reverse way
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        List<List<Integer>> treeValues = new ArrayList<List<Integer>>();
+
+        if(root == null) return treeValues;
         
+        List<TreeNode> previous = new ArrayList<TreeNode>();
+        previous.add(root);
+        
+        while(!previous.isEmpty())
+        {
+        	List<TreeNode> current = new ArrayList<TreeNode>();
+        	List<Integer> valueList = new ArrayList<Integer>();
+        	
+        	for(TreeNode node : previous)
+        	{
+        		if((treeValues.size() + 1) % 2 == 0)
+        		{
+            		if(node.left != null)
+            		{
+            			current.add(node.left);
+            		}
+
+            		if(node.right != null)
+            		{
+            			current.add(node.right);
+            		}
+        		}
+        		else
+        		{
+            		if(node.right != null)
+            		{
+            			current.add(node.right);
+            		}
+
+            		if(node.left != null)
+            		{
+            			current.add(node.left);
+            		}
+        		}
+        		
+        		valueList.add(node.val);
+        	}
+        	
+        	treeValues.add(valueList);
+        	previous = current;
+        }
+        
+        return treeValues;
     }
+
+    //https://leetcode.com/problems/binary-tree-right-side-view/
+    //Input: [1,2,3,null,5,null,4]
+    //Output: [1, 3, 4]
+    //idea: do level order traversal and get the last node of east level
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> rightValues = new ArrayList<Integer>();
+
+        if(root == null) return rightValues;
+
+        List<List<Integer>> nodeValues = levelOrder(root);
+        
+        for(List<Integer> current : nodeValues)
+        {
+        	rightValues.add(current.get(current.size() - 1));
+        }
+        
+        return rightValues;
+    }
+    
+    //https://leetcode.com/problems/find-largest-value-in-each-tree-row/
+    public List<Integer> largestValues(TreeNode root) {
+        List<Integer> largeValues = new ArrayList<Integer>();
+
+        if(root == null) return largeValues;
+
+        List<List<Integer>> nodeValues = levelOrder(root);
+        
+        for(List<Integer> current : nodeValues)
+        {
+        	largeValues.add(Collections.max(current));        	
+        }
+        
+        return largeValues;
+    }    
+    
+    //https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
+    //TODO
+//    public TreeNode buildTree(int[] preorder, int[] inorder) {
+//        
+//    }
+    
+    //https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/solution/
+    //TODO
+//    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+//        
+//    }
+    
+    //https://leetcode.com/problems/kth-smallest-element-in-a-bst/
+    //TODO
+//    public int kthSmallest(TreeNode root, int k) {
+//        
+//    }
+    
+    // notworking according to the specifications
+    //https://leetcode.com/problems/binary-tree-pruning/description/
+    public TreeNode pruneTree(TreeNode root) {
+    	
+    	if(root == null) return null;
+    	
+    	if(root.left != null)
+    	{
+    		if(HasZeroInTree(root.left)) root.left = null;
+    		else pruneTree(root.left);
+    	}
+    	
+    	if(root.right != null)
+    	{
+    		if(HasZeroInTree(root.right)) root.right = null;
+    		else pruneTree(root.right);
+    	}
+
+    	return root;  
+    }
+    
+    private boolean HasZeroInTree(TreeNode root)
+    {
+    	if(root == null) return true;
+    	
+    	if(root.val == 0) return true;
+    	
+    	if((root.left != null && root.left.val == 0) || (root.right != null && root.right.val == 0)) return true;
+    	
+    	return HasZeroInTree(root.left) && HasZeroInTree(root.right);
+    }
+        
+    //notworking (stack overflow error)
+    // https://leetcode.com/problems/insert-into-a-binary-search-tree/description/
+    public TreeNode insertIntoBST(TreeNode root, int val) {
+    	if(root == null) return new TreeNode(val);
+    	
+    	if(val >= root.val && root.right == null)
+    	{
+    		root.right = new TreeNode(val);
+    	}
+    	
+    	if(val < root.val && root.left == null)
+    	{
+    		root.left = new TreeNode(val);
+    	}
+    	
+    	if(val >= root.val && root.right != null)
+    	{
+    		insertIntoBST(root.right, val);
+    	}
+
+    	if(val < root.val && root.left != null)
+    	{
+    		insertIntoBST(root.left, val);
+    	}
+
+    	return root;
+    }
+    
 }

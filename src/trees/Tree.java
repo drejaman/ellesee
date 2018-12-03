@@ -42,7 +42,6 @@ public void addNode(MyTreeNode parentNode,MyTreeNode childNode)
 				break;
 			}			
 		}
-		
 }
 
 public void preOrderPrint(MyTreeNode node)

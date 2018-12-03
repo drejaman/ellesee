@@ -11,7 +11,7 @@ public PrintParenthesis()
 {
 }
 
-void printParenthese(int n)
+void printParentheses(int n)
 {
 	char[] output = new char[2*n];
 	doPrint(output, 0, n, n);
@@ -38,6 +38,7 @@ void doPrint(char[] output, int i, int left, int right)
 }
 
 //https://leetcode.com/problems/generate-parentheses/
+//Falls into common backtracking
 public List<String> generateParenthesis(int n) {
     List<String> result = new ArrayList<String>();
 
@@ -61,7 +62,7 @@ private void generateParenthesis(List<String> result, int left, int right, Strin
 		return;
 	}
 	
-	if(left < right)
+	if(right > left)
 	{
 		generateParenthesis(result, left, right - 1, currentList + ")");
 	}
@@ -90,26 +91,25 @@ the stack becomes empty, we push the current element's index onto the stack.
  * */
 public int longestValidParentheses(String s) {
     int maxans = 0;
+    Stack<Integer> stack = new Stack<Integer>();
     
-    Stack<Integer> stack = new Stack<>();
-    
-    // this is key as when we will encounter a ')' then ')' index - (-1) will represent the length
     stack.push(-1);
     
     for (int i = 0; i < s.length(); i++) {
         if (s.charAt(i) == '(') {
             stack.push(i);
         } else {
-        	//this in general should pop the '(' before
+        	// this line is KEY
             stack.pop();
             if (stack.empty()) {
                 stack.push(i);
             } else {
-            	// index of ')' - (-1)
+            	// this line is KEY            	
                 maxans = Math.max(maxans, i - stack.peek());
             }
         }
     }
+    
     return maxans;
 }
 }

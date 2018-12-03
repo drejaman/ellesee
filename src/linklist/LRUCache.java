@@ -2,89 +2,90 @@ package linklist;
 
 import java.util.HashMap;
 
-class LRUCache {
+class DoubleNode{
+	int key;
+	int value;
+	DoubleNode prev;
+	DoubleNode next;
+ 
+	public DoubleNode(int key, int value){
+		this.key = key;
+		this.value = value;
+	}
+}
 
-	int lruCapacity;
-	HashMap<Integer, DoubleListNode> keyMapper = new HashMap<Integer, DoubleListNode>();
-	// most recently used ones are at the front of the list
-	// deletion occurs from tail
-	DoubleListNode front, tail;
-	
-    public LRUCache(int capacity) {
-    	lruCapacity = capacity;
-    }
-    
-    public int get(int key) {
-    	
-    	int value = -1;
-    	
-    	if(keyMapper.containsKey(key))
-    	{
-    		DoubleListNode currentNode = keyMapper.get(key); 
-            value = currentNode.val;
-            
-            // put the node to front to make sure it gets prioritized
-            if(currentNode != front)
-            {
-                 moveNodeToFront(currentNode);            	
-            }
-    	}
-    	
-    	return value;
-    }
-    
-    public void put(int key, int value) {
-        if(keyMapper.containsKey(key)) return;
-        
-        DoubleListNode node = new DoubleListNode(value);
-        keyMapper.put(key, node);
-        
-        if(front == null || tail == null)
-        {
-        	front = node;
-        	tail = node;
-        	return;
-        }
-        
-        if(keyMapper.size() >= lruCapacity)
-        {
-        	keyMapper.remove(key);
-        	// now we need to delete tail as it is the least recently used among all existing nodes
-        	deleteTailEnd();
-        }                
-        
-        node.next = front;
-        front = node;
-    }
-    
-    private void moveNodeToFront(DoubleListNode node)
-    {
-    	// holds true even for tail
-		node.prev.next = node.next;
-
-		// we already checked that node is not front
-    	if(node != tail)
-    	{
-    		node.next.prev = node.prev;
-    	}
-    	else
-    	{
-    		// updating tail
-    		tail = tail.prev;
-    	}
-
-    	// now updating node's pointers and taking that at front
+public class LRUCache {
+	int capacity;
+	HashMap<Integer, DoubleNode> map = new HashMap<Integer, DoubleNode>();
+	DoubleNode head = null;
+	DoubleNode end = null;
+ 
+	public LRUCache(int capacity) {
+		this.capacity = capacity;
+	}
+ 
+	public int get(int key) {
+		if(map.containsKey(key)){
+			DoubleNode n = map.get(key);
+			delete(n);
+			setHead(n);
+			return n.value;
+		}
+ 
+		return -1;
+	}
+ 
+	/*This method will delete node*/
+	public void delete(DoubleNode node){
+		if(node.prev!=null){
+			node.prev.next = node.next;
+		}else{
+			head = node.next;
+		}
+ 
+		if(node.next!=null){
+			node.next.prev = node.prev;
+		}else{
+			end = node.prev;
+		}
+ 
+	}
+ 
+	/*This method will make passed node as head*/
+	public void setHead(DoubleNode node){
+		node.next = head;
 		node.prev = null;
-		node.next = front;
-		front = node;
-    }
-    
-    private void deleteTailEnd()
-    {
-    	if(tail == null) return;
-    	
-    	// update prev nodes back pointer not to point to this tail anymore
-    	tail.prev.next = null;
-    	tail = tail.prev;
-    }
+ 
+		if(head!=null)
+			head.prev = node;
+ 
+		head = node;
+ 
+		if(end ==null)
+			end = head;
+	}
+ 
+	public void put(int key, int value) {
+		if(map.containsKey(key)){
+			// update the old value
+			DoubleNode old = map.get(key);
+			old.value = value;
+			delete(old);
+			setHead(old);
+		}else{
+			DoubleNode newNode = new DoubleNode(key, value);
+			if(map.size()>=capacity){
+				
+				map.remove(end.key);
+				// remove last node
+				delete(end);
+				setHead(newNode);
+ 
+			}else{
+				setHead(newNode);
+			}    
+ 
+			map.put(key, newNode);
+		}
+	}
 }

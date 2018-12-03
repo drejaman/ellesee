@@ -6,14 +6,14 @@ import java.util.List;
 public class TestHashMap {
 	
 	//https://leetcode.com/problems/top-k-frequent-elements/
-	//TODO
 	/*
 	 * Input: nums = [1,1,1,2,2,3], k = 2
 	   Output: [1,2]
 	 * */
-    public List<Integer> topKFrequent(int[] nums, int k) {
-        
-    }
+	//TODO
+//    public List<Integer> topKFrequent(int[] nums, int k) {
+//        
+//    }
     
     //https://leetcode.com/problems/find-the-duplicate-number/
     public int findDuplicate(int[] nums) {

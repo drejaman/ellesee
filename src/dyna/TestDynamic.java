@@ -4,9 +4,10 @@ public class TestDynamic {
     public int uniquePathsWithObstacles(int[][] obstacleGrid) {
      if(obstacleGrid == null || obstacleGrid.length == 0) return 0;
      
+     //won't be able to start
      if(obstacleGrid[0][0] == 1) return 0;
 
-    	 int row = obstacleGrid.length;
+     int row = obstacleGrid.length;
      int col = obstacleGrid[0].length;
     	
      obstacleGrid[0][0] = 1;

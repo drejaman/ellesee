@@ -34,24 +34,24 @@ public class BinarySearch {
     public int findMin(int[] nums) {
         if(nums == null || nums.length == 0) return -1;
         
-        int L = 0, R = nums.length - 1;
+        int left = 0, right = nums.length - 1;
         
-        while(L < R && nums[L] >= nums[R])
+        while(left < right && nums[left] >= nums[right])
         {
-        	int M = (L + R) / 2;
+        	int mid = (left + right) / 2;
         	
-        	if(nums[M] > nums[R])
+        	if(nums[mid] > nums[right])
         	{
-        		L = M + 1; 
+        		left = mid + 1; 
         	}
         	else
         	{
-        		// R = M is important instead of R = M - 1 to make sure it doesn't skip the mid number
-        		R = M;
+        		// right = mid is important instead of right = mid - 1 to make sure it doesn't skip the mid number
+        		right = mid;
         	}
         }
         
-        return nums[L];
+        return nums[left];
     }
 
     
@@ -159,8 +159,10 @@ public class BinarySearch {
 		   midRight++;
 	   }
 	   
+	   // compareTo returns negative if this string is less than the argument string
 	   if(strings[mid].compareTo(needle) < 0)
 	   {
+		   // so for compareTo negative result it searches the lower half
 		   return searchSparse(strings, left, mid, needle);
 	   }
 	   
@@ -257,17 +259,16 @@ public class BinarySearch {
    
    //https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/
    //TODO
-   public int kthSmallest(int[][] matrix, int k) {
-       
-   }
+//   public int kthSmallest(int[][] matrix, int k) {
+//       
+//   }
 
    //https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/
    //TODO
-   public int[] searchRange(int[] nums, int target) {
-       
-   }
+//   public int[] searchRange(int[] nums, int target) {
+//       
+//   }
 
-
-    //Cracking 10.10 rankStreams TODO
+   //Cracking 10.10 rankStreams TODO
     //Cracking 10.11 peaksValleys TODO
 }

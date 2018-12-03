@@ -89,7 +89,7 @@ public class TestLinkList {
     		current = current.next;
     	}
     	
-    	// this step is crucial to ensure we don'e fall into a loop
+    	// this step is crucial to ensure we don't fall into a loop
     	if(afterXcurrent != null) afterXcurrent.next = null;
     	
     	if(beforeX == null) return afterX;
@@ -161,6 +161,7 @@ public class TestLinkList {
     {
     	if(head == null) return null;
     	
+    	//p2 will eventually point to k-th from last Node
     	ListNode p1 = head, p2 = head;
     	
     	for(int i = 0; i < k; i++)
@@ -200,11 +201,10 @@ public class TestLinkList {
     		fast = fast.next.next;
     	}
     	
-    	// that means list has odd elements and skip that one
+    	// that means list has odd elements and skip that one middle element
     	if(fast != null) slow = slow.next;
     	
-    	// now the validation part
-    	
+    	// now the validation part    	
     	while(slow != null)
     	{
     		if(slow.val != listStack.pop().intValue())
@@ -221,7 +221,6 @@ public class TestLinkList {
     //Cracking2.7 TODO
     //Cracking2.8 TODO
 
-    //TODO
     //https://leetcode.com/problems/reverse-nodes-in-k-group/
     /*
      * Example:
@@ -230,12 +229,14 @@ public class TestLinkList {
 		For k = 3, you should return: 3->2->1->4->5
      * 
      * */
-    public ListNode reverseKGroup(ListNode head, int k) {
-        if(head == null || head.next == null) return head; 
-    }
+    //TODO
+//    public ListNode reverseKGroup(ListNode head, int k) {
+//        if(head == null || head.next == null) return head; 
+//    }
 
     //https://leetcode.com/problems/rotate-list/
-    public ListNode rotateRight(ListNode head, int k) {
-        if(head == null || head.next == null) return head;         
-    }
+    //TODO
+//    public ListNode rotateRight(ListNode head, int k) {
+//        if(head == null || head.next == null) return head;         
+//    }
 }
