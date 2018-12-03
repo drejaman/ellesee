@@ -38,7 +38,6 @@ public class TestSorting {
         }
         
         // now sort the Test String, T
-        
         return T;
     }
 }

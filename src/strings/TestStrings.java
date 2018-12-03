@@ -11,12 +11,12 @@ import java.util.Map.Entry;
 import java.util.Random;
 
 public class TestStrings {
+
 public TestStrings()
 {
 
 	complexNumberMultiply("1+1i","1+1i");
 }
-
 
 public void test()
 {
@@ -30,9 +30,7 @@ public void test()
 //	subdomainVisits(new String[] {"9001 discuss.leetcode.com"});
 //	String tinyUrl = encode("https://leetcode.com/problems/design-tinyurl");
 //	decodeAtIndex("leet2code3", 10);
-	
 }
-
 
 public boolean checkAnagram(String str1,String str2)
 {
@@ -50,7 +48,6 @@ public boolean checkAnagram(String str1,String str2)
 	else return false;
 }
 
-
 public boolean checkPalinDrome(String str)
 {
 	char[] chars=str.toCharArray();
@@ -66,7 +63,6 @@ public boolean checkPalinDrome(String str)
 	}
 	return true;	
 }
-
 
 // https://leetcode.com/problems/reverse-words-in-a-string-iii/description/
 public String reverseWords(String s) {
@@ -309,11 +305,11 @@ public List<String> subdomainVisits(String[] cpdomains) {
 	
 	ArrayList <String> output = new ArrayList<String>();
 	
-	Iterator it = subDomainCount.entrySet().iterator();
+	Iterator<Entry<String, Integer>> it = subDomainCount.entrySet().iterator();
 	
 	while(it.hasNext())
 	{
-		Map.Entry entry = (Map.Entry) it.next();
+		Entry<String, Integer> entry = it.next();
 		output.add(entry.getValue() + " " + entry.getKey());
 		it.remove();
 	}
@@ -330,7 +326,7 @@ public String encode(String longUrl) {
 	// when the url is already mapped
 	if(urlMapper.containsValue(longUrl))
 	{
-		Iterator it = urlMapper.entrySet().iterator();
+		Iterator<?> it = urlMapper.entrySet().iterator();
 		
 		while(it.hasNext())
 		{
@@ -376,224 +372,6 @@ private String GenerateRandomString(int len){
 	}
 	
 	return randomString.toString();
-}
-
-//notworking
-// https://leetcode.com/problems/decoded-string-at-index/description/
-// Works for regular cases but for complicated case memory limit exceeds
-// Sample non working example - "y959q969u3hb22odq595", 222280369
-public String decodeAtIndex(String S, int K) {
-    StringBuilder builder = new StringBuilder();
-    String searchCharacter = "";
-        
-    char[] chars = S.toCharArray();
-    
-    for(char ch : chars)
-    {
-    		boolean isNumeric = (ch - '0' >= 0 && ch -'0' <= 9);
-    			
-    		if(!isNumeric)
-    		{
-    			builder.append(ch);
-    		}
-    		else
-    		{
-    			String currentString = builder.toString();
-        		int repeat = ch - '0';    			
-    			
-        		for(int i = 1; i < repeat ; i++)
-    			{
-        			builder.append(currentString);
-    			}
-    		}
-
-    		if(builder.length() >= K)
-    		{
-    			searchCharacter = builder.charAt(K - 1) + "";
-    			break;
-    		}
-    }
-    
-    return searchCharacter;
-}
-
-//notworking
-// https://leetcode.com/problems/complex-number-multiplication/description/
-public String complexNumberMultiply(String a, String b) {
-    int[] complexNumberA = extractComplexNumbers(a);
-    int[] complexNumberB = extractComplexNumbers(b);
-    
-    int resultNumber = complexNumberA[0] * complexNumberB[0] + (-1) * complexNumberA[1] * complexNumberB[1];
-    int resultComplex  = complexNumberA[0] * complexNumberB[1] + complexNumberA[1] * complexNumberB[0];
-    
-    return resultNumber + "+" +  resultComplex + "i"; 
-}
-
-// the format of complex number here is a + bi. so we can split the String representation in 2 parts using '+' split
-private int[] extractComplexNumbers(String complexNumber)
-{
-	if(complexNumber == null || complexNumber.isEmpty()) return null;
-	
-	int[] complexPortions = new int[2];
-	
-	// need to handle dangling meta character
-	// https://stackoverflow.com/questions/40246231/java-util-regex-patternsyntaxexception-dangling-meta-character-near-index-0
-	String[] stringRepresentations = complexNumber.split("\\+");
-	
-	complexPortions[0] = Integer.parseInt(stringRepresentations[0]);
-	//complexPortions[1] = Integer.parseInt(stringRepresentations[1]);
-	complexPortions[1] = Integer.parseInt(stringRepresentations[1].substring(0, stringRepresentations[1].indexOf('i')).trim());
-	
-	return complexPortions;
-}
-
-//notworking
-// this will not give the right result for cases like 23:51, 23:58, 00:01
-// with this implementation the answer will be 7 where it should be 3
-public int findMinDifference(List<String> timePoints)
-{
-	int[] timeArray = new int[timePoints.size()];
-	
-	for(int i = 0; i < timePoints.size(); i++)
-	{
-		timeArray[i] = timeStringToInt(timePoints.get(i));
-	}
-	
-	Arrays.sort(timeArray);
-	
-	int minTime = Integer.MAX_VALUE;
-
-	for(int i = 0; i < timeArray.length; i++)
-	{
-		if(Math.abs(timeArray[i] - timeArray[i + 1]) < minTime)
-		{
-			minTime = Math.abs(timeArray[i] - timeArray[i + 1]);
-		}
-	}
-	
-	return minTime;
-}
-
-private int timeStringToInt(String timeString)
-{
-	
-	String[] timeParts = timeString.split(":");
-	
-	return Integer.parseInt(timeParts[0]) * 60 + Integer.parseInt(timeParts[1]);
-}
-
-public List<String> printParenthesis(int n)
-{
-	List<String> parenthesisList = new ArrayList<String>();
-	printParenthesis(parenthesisList, new StringBuilder(), n, n);
-	
-	return parenthesisList;
-}
-
-private void printParenthesis(List<String> parenthesisList, StringBuilder parenBuilder, int left, int right)
-{
-	if(right == 0)
-	{
-		parenthesisList.add(parenBuilder.toString());
-		return;
-	}
-	
-	if(left >= right)
-	{
-		printParenthesis(parenthesisList, parenBuilder.append('('), left - 1, right);
-	}
-	else
-	{
-		printParenthesis(parenthesisList, parenBuilder.append(')'), left, right - 1);		
-	}
-}
-
-//notworking
-// https://leetcode.com/problems/ambiguous-coordinates/
-// "(123)" -> ["(1, 2.3)","(1, 23)","(1.2, 3)","(12, 3)"]
-public List<String> ambiguousCoordinates(String S) {
-	List<String> coordinates = new ArrayList<String>();
-
-	int coordLen = S.length();
-
-	coordinates.add("0." + S );
-
-	for(int i = 0; i < coordLen - 1; i++)
-	{
-		coordinates.add(S.substring(0, i) + "." + S.substring(i+1));
-	}
-
-	return coordinates;
-}
-
-//notworking (index out of range)
-//https://leetcode.com/problems/multiply-strings/
-//123 * 26 = 123 * 6 + 123 * 20
-public String multiply(String num1, String num2) {
-	double result = 0;
-	int multiplyLen = num2.length();
-	
-	for(int i = multiplyLen; i >= 0; i++)
-	{
-		result += multiplyByDigit(num1, (num2.charAt(i) - '0') * Math.pow(10, multiplyLen - i));
-	}
-	
-	return Double.toString(result);
-}
-
-private double multiplyByDigit(String number, double digit)
-{
-	return Integer.parseInt(number) * digit;
-}
-
-//https://leetcode.com/problems/integer-to-roman/
-public String intToRoman(int num) {
-	String []romanChars = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
-	int []values = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
-	
-	StringBuilder builder = new StringBuilder();
-	
-	int i = 0;
-	
-	while(num > 0)
-	{
-		int k = num / values[i];
-		num /= values[i];
-		
-		for(int j = 0; j < k ; j++)
-		{
-			builder.append(romanChars[i]);
-		}
-		i++;
-	}
-	
-	return builder.toString();
-}
-
-//https://leetcode.com/problems/roman-to-integer/
-public int romanToInt(String s) {
-	HashMap<Character, Integer> romanMap= new HashMap<Character, Integer>()
-	{{
-		put('M', 1000); 
-		put('D', 500);
-		put('C', 100);
-		put('L', 50);
-		put('X', 10);
-		put('V', 5);
-		put('I', 1);
-	}};
-	
-	int value = 0;
-	int prev = 0, current = 0;
-	
-	for(char ch : s.toCharArray())
-	{
-		current = romanMap.get(ch);
-		value += current > prev ? current - 2 * prev : current;
-		prev = current;
-	}
-	
-	return value;	
 }
 
 //https://leetcode.com/problems/find-and-replace-pattern/
@@ -1096,21 +874,20 @@ public int romanToInt(String s) {
      * For example, abbccc will be #1#2#3#0#0#0...#0 where there are 26 entries total. 
      * */
     //TODO
-    public List<List<String>> groupAnagrams(String[] strs) {
-        
-    }
+//    public List<List<String>> groupAnagrams(String[] strs) {
+//        
+//    }
     
     //https://leetcode.com/problems/decode-ways/
-    public int numDecodings(String s) {
-        
-    }
+    //TODO
+//    public int numDecodings(String s) {
+//        
+//    }
     
     //https://leetcode.com/problems/valid-parenthesis-string/
     //https://leetcode.com/problems/valid-parenthesis-string/discuss/107577/Short-Java-O(n)-time-O(1)-space-one-pass
     //TODO
-    public boolean checkValidString(String s) {
-        
-    }
-
-
+//    public boolean checkValidString(String s) {
+//        
+//    }
 }

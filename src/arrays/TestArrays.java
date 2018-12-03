@@ -130,7 +130,7 @@ public class TestArrays {
     //https://leetcode.com/problems/minimum-path-sum/
     public int minPathSum(int[][] grid) {
         
-        if(grid==null||grid.length==0) return 0;
+        if(grid == null || grid.length == 0) return 0;
         
         int[][] minPath = new int[grid.length][grid[0].length];
 
@@ -140,14 +140,16 @@ public class TestArrays {
         for(int i = 0; i < grid.length; i++){
             for(int j = 0; j < grid[0].length; j++){
                 //for row0
-                if(i==0 && j!=0){
+                if(i == 0 && j != 0){
                     minPath[i][j] = minPath[i][j-1] + grid[i][j];
                 }
+                
                 //for column0
-                if(i!=0 && j==0){
+                if(i != 0 && j == 0){
                     minPath[i][j] = minPath[i-1][j] + grid[i][j];
                 }
-                if(i!=0 && j!=0){
+                
+                if(i != 0 && j != 0){
                     minPath[i][j] = Math.min(minPath[i-1][j], minPath[i][j-1]) + grid[i][j];
                 }
             }
@@ -186,22 +188,23 @@ public class TestArrays {
      
      for(int i = 0; i < nums.length; i++)
      {
-    	 int sum = nums[i];
+    	 	int sum = nums[i];
     	 
-         if(sum == k)
-         {
-             sumCount++;
-         }
+    	 	// there could be case the the initialized number is already equal to sum
+		if(sum == k)
+		{
+	     sumCount++;
+		}
 
-    	 for(int j = i + 1; j < nums.length; j++)
-    	 {
-    		 sum += nums[j];
-             
-    		 if(sum == k)
-    		 {
-    			 sumCount++;
-    		 }
-    	 }
+	    	 for(int j = i + 1; j < nums.length; j++)
+	    	 {
+	    		 sum += nums[j];
+	             
+	    		 if(sum == k)
+	    		 {
+	    			 sumCount++;
+	    		 }
+	    	 }
      }
 
      return sumCount;

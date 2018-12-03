@@ -1,7 +1,6 @@
 package sorting;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
  class Interval {
@@ -14,19 +13,20 @@ import java.util.List;
 
 public class IntervalSort {
 	//https://leetcode.com/problems/merge-intervals/
-    public List<Interval> merge(List<Interval> intervals) {
-    	// sort the array based on their start value
-    	Collections.sort(intervals, (a, b) -> Integer.compare(a.start, b.start));        
-    }
+//    public List<Interval> merge(List<Interval> intervals) {
+//    	// sort the array based on their start value
+//    	Collections.sort(intervals, (a, b) -> Integer.compare(a.start, b.start));        
+//    }
 
     //https://leetcode.com/problems/insert-interval/
     /*
      * insert the new interval in the intervals
      * then call the merge method
      * */
-    public List<Interval> insert(List<Interval> intervals, Interval newInterval) {
-        
-    }
+	//TODO
+//    public List<Interval> insert(List<Interval> intervals, Interval newInterval) {
+//        
+//    }
     
     //https://leetcode.com/problems/summary-ranges/
     public List<String> SummaryRanges(int[] nums)
