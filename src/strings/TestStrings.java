@@ -268,8 +268,9 @@ public List<String> subdomainVisits(String[] cpdomains) {
 			
 			if(subDomainCount.containsKey(subDomain))
 			{
-				int currentCount = subDomainCount.remove(subDomain);
-				subDomainCount.put(subDomain, currentCount + count);
+//				int currentCount = subDomainCount.remove(subDomain);
+//				subDomainCount.put(subDomain, currentCount + count);
+				subDomainCount.put(subDomain, subDomainCount.getOrDefault(subDomain, 0) + count);
 			}
 			else
 			{

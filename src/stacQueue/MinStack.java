@@ -4,7 +4,6 @@ import java.util.Stack;
 
 //Cracking3.2
 class MinStack {
-
     private Stack<Integer> stack;
     private Stack<Integer> minStack;
 

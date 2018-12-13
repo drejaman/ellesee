@@ -12,34 +12,6 @@ public class CommonBacktracking {
         return permutedNumbers;
     }
     
-    // https://leetcode.com/problems/combination-sum-iii/
-    // this solution is very important as this will solve the backtracking recursive solutions
-    // recursive backtracking solutions are like this where you need to come up a list of possible solutions
-    public List<List<Integer>> combinationSum3(int k, int n) {
-        List<List<Integer>> combinations = new ArrayList<List<Integer>>();
-        
-        SingleCombination(k, n, 1, combinations, new ArrayList<Integer>());
-        return combinations;
-    }
-    
-    private void SingleCombination(int k, int remainderSum, int start, List<List<Integer>> combinations, List<Integer> combination)
-    {
-    	
-    	if(remainderSum == 0 && combination.size() == k)
-    	{
-        	List<Integer> comb = new ArrayList<Integer>(combination);
-    		combinations.add(comb);
-    		return;// return as one path has been added completely fulfilling the conditions
-    	}
-    	
-    	for(int i = start; i <= 9; i++)
-    	{
-			combination.add(i);
-			SingleCombination(k, remainderSum - i, i + 1, combinations, combination);
-    		combination.remove(combination.size() - 1);
-    	}
-    }
-    
     // https://leetcode.com/problems/subsets/
     public List<List<Integer>> subsets(int[] nums) {
         List<List<Integer>> sets = new ArrayList<List<Integer>>();
@@ -77,9 +49,7 @@ public class CommonBacktracking {
     	
     	if(target == 0)
     	{
-    		List<Integer> comb = new ArrayList<Integer>();
-    		comb.addAll(combination);
-    		combinations.add(comb);
+    		combinations.add(new ArrayList<Integer>(combination));
     		return;
     	}
     	
@@ -95,8 +65,10 @@ public class CommonBacktracking {
     }
     
     // https://leetcode.com/problems/combination-sum-ii/
+    // variation with i: each number can be used only once
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
         List<List<Integer>> lists = new ArrayList<List<Integer>>();
+        //the line below is different than sum-i
         Arrays.sort(candidates);
         singleCombination(lists, new ArrayList<Integer>(), candidates, target, 0);
         return lists;
@@ -125,6 +97,33 @@ public class CommonBacktracking {
     	}
     }
     
+    // https://leetcode.com/problems/combination-sum-iii/
+    // this solution is very important as this will solve the backtracking recursive solutions
+    // recursive backtracking solutions are like this where you need to come up a list of possible solutions
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        List<List<Integer>> combinations = new ArrayList<List<Integer>>();
+        
+        SingleCombination(k, n, 1, combinations, new ArrayList<Integer>());
+        return combinations;
+    }
+    
+    private void SingleCombination(int k, int remainderSum, int start, List<List<Integer>> combinations, List<Integer> combination)
+    {
+    	
+    	if(remainderSum == 0 && combination.size() == k)
+    	{
+    		combinations.add(new ArrayList<Integer>(combination));
+    		return;// return as one path has been added completely fulfilling the conditions
+    	}
+    	
+    	for(int i = start; i <= 9; i++)
+    	{
+			combination.add(i);
+			SingleCombination(k, remainderSum - i, i + 1, combinations, combination);
+    		combination.remove(combination.size() - 1);
+    	}
+    }
+
     //notworking
     // https://leetcode.com/problems/3sum/
     public List<List<Integer>> anySum(int[] nums) {
