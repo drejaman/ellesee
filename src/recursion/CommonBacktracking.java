@@ -6,16 +6,77 @@ import java.util.List;
 
 public class CommonBacktracking {
 	//https://leetcode.com/problems/permutations
-	//TODO
     public List<List<Integer>> permute(int[] nums) {
         List<List<Integer>> permutedNumbers = new ArrayList<List<Integer>>();
+        permuteArray(nums, permutedNumbers, new ArrayList<Integer>());
         return permutedNumbers;
     }
     
+    private void permuteArray(int[] nums, List<List<Integer>> lists, List<Integer> list)
+    {
+    		if(nums.length == list.size() && !lists.contains(list))
+    		{
+    			lists.add(new ArrayList<Integer>(list));
+    			return;
+    		}
+    		
+    		for(int i = 0; i < nums.length; i++)
+    		{
+    			if(list.contains(nums[i])) continue;
+    			
+    			list.add(nums[i]);
+    			permuteArray(nums, lists, list);
+    			list.remove(list.size() - 1);
+    		}
+    }
+
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        List<List<Integer>> permutedNumbers = new ArrayList<List<Integer>>();
+        
+        if(nums == null || nums.length == 0) return permutedNumbers;
+        
+        // the visit portion is different than the regular permute where all numbers are unique
+        // as there might be duplicate we won't know for sure which number is already used 
+        // so we need to keep track using visit array
+        // we also need to sort the array to keep track of position instead of number 
+        // as there are duplicate numbers 
+        Arrays.sort(nums);
+        permuteVisit(nums, permutedNumbers, new ArrayList<Integer>(), new boolean[nums.length]);
+        return permutedNumbers;
+    }
+    
+    private void permuteVisit(int[] nums, List<List<Integer>> lists, List<Integer> list, boolean[] visit)
+    {
+    		if(nums.length == list.size() && !list.contains(list))
+    		{
+    			lists.add(new ArrayList<Integer>(list));
+    			return;
+    		}
+    		
+    		for(int i = 0; i < nums.length; i++)
+    		{
+    			if(visit[i]) continue;
+    			// when a number has the same value with its previous, we can use this number only if previous is used
+    			if(i > 0 && nums[i-1] == nums[i] && !visit[i-1]) continue;
+    			
+    			list.add(nums[i]);
+    			visit[i] = true;
+     			
+    			permuteVisit(nums, lists, list, visit);
+    			
+    			//backtrack
+    			visit[i] = false;
+    			list.remove(list.size() - 1);
+    		}
+    }
+
     // https://leetcode.com/problems/subsets/
+    // https://leetcode.com/problems/subsets-ii/
     public List<List<Integer>> subsets(int[] nums) {
         List<List<Integer>> sets = new ArrayList<List<Integer>>();
         
+        //required only for subset-II
+        Arrays.sort(nums);
         miniSubset(sets, new ArrayList<Integer>(), nums, 0);
         return sets;
     }
@@ -23,7 +84,11 @@ public class CommonBacktracking {
     private void miniSubset(List<List<Integer>> sets, List<Integer> set, int []nums, int startIndex)
     {
     	// in the subset case we always add the new set that came in
-    	sets.add(new ArrayList<Integer>(set));
+    //if check is required only for subset-II
+//    	if(!sets.contains(set))
+//    	{
+        	sets.add(new ArrayList<Integer>(set));    		
+//    	}
     	
     	for(int i = startIndex; i < nums.length; i++)
     	{
@@ -123,6 +188,63 @@ public class CommonBacktracking {
     		combination.remove(combination.size() - 1);
     	}
     }
+    
+    //https://leetcode.com/problems/combinations/
+    public List<List<Integer>> combine(int n, int k) {
+        List<List<Integer>> combinations= new ArrayList<List<Integer>>();
+        combine(combinations, new ArrayList<Integer>(), 1, n, k);
+        return combinations;
+    }
+    
+    private void combine(List<List<Integer>> lists, List<Integer> list, int start, int n, int k) {
+		if(k == 0) {
+			lists.add(new ArrayList<Integer>(list));
+			return;
+		}
+		
+		// here it spans like trees. it goes on a look and calls combine i times
+		// so for i = 1, it spans n combine calls. for i = 2 it calls n-1 combine
+		// so the total call is n!
+		for(int i = start; i <= n; i++) {
+			list.add(i);
+			combine(lists, list, i+1, n, k-1);
+			list.remove(list.size()-1);
+		}
+	}
+    
+    //https://leetcode.com/problems/letter-combinations-of-a-phone-number/
+    //not exactly backtracking more like recursive
+    private String[] map = 
+    		new String[] {" ", "*", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+    
+    public List<String> letterCombinations(String digits) {
+    		
+    		List<String> words = new ArrayList<String>();
+        if(digits == null || digits.isEmpty() || digits.length() == 0)
+        {
+        		return words;
+        }
+        
+        letterCombinations(digits, 0, words, "");
+        
+        return words;
+    }
+    
+    private void letterCombinations(String digits, int currentIndex, List<String> words, String word)
+    {
+    		if(currentIndex >= digits.length())
+    		{
+    			words.add(new String(word));
+    			return;
+    		}
+    		
+    		int currentDigit = digits.charAt(currentIndex) - '0';
+    		
+    		for(char ch : map[currentDigit].toCharArray())
+    		{
+        			letterCombinations(digits, currentIndex + 1, words, word + ch);    				
+    		}
+    }
 
     //notworking
     // https://leetcode.com/problems/3sum/
@@ -189,8 +311,7 @@ public class CommonBacktracking {
     		return;
     	}
     	
-    	if(maxLen == 0)
-    	for(int i = startIndex; i >= 0; i--)
+    	if(maxLen == 0)     	for(int i = startIndex; i >= 0; i--)
     	{
     		list.add(nums[i]);
     		singleSubArray(lists, list, nums, sum - nums[i], i - 1, maxLen, list.size());
@@ -200,6 +321,6 @@ public class CommonBacktracking {
     
     //https://leetcode.com/problems/palindrome-partitioning/
     //TODO
-//    public List<List<String>> partition(String s) {        
+//    public list<list<string>> partition(string s) {        
 //    }    
 }

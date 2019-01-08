@@ -11,6 +11,7 @@ public class TestArrays {
 
 	// https://leetcode.com/problems/reshape-the-matrix/description/
     public int[][] matrixReshape(int[][] nums, int r, int c) {
+    	
      if(nums == null || nums.length * nums[0].length != r * c) {
     	 	return nums;
      }
@@ -49,7 +50,8 @@ public class TestArrays {
     			{
     				if(grid[i][j] == 1)
     				{
-    					//scan the surrounding and based on that add perimeter value
+    					//TODO probably this logic could be simplified
+    					//scan the surrounding and based on that adds to perimeter value
 
     					// cell is the top or in the last row
     					if(i == 0) perimeter++;
@@ -111,7 +113,7 @@ public class TestArrays {
         int maxSum = Integer.MIN_VALUE;
         int sum = 0;
         
-        if(A==null || A.length==0) 
+        if(A == null || A.length == 0) 
             return maxSum;
         
         for(int i = 0; i < A.length; i++){
@@ -137,6 +139,7 @@ public class TestArrays {
         //for the leftmost corner it is the same
         minPath[0][0] = grid[0][0];
         
+        //logic: 3 cases
         for(int i = 0; i < grid.length; i++){
             for(int j = 0; j < grid[0].length; j++){
                 //for row0
@@ -149,6 +152,7 @@ public class TestArrays {
                     minPath[i][j] = minPath[i-1][j] + grid[i][j];
                 }
                 
+                // when not row or column 0
                 if(i != 0 && j != 0){
                     minPath[i][j] = Math.min(minPath[i-1][j], minPath[i][j-1]) + grid[i][j];
                 }
@@ -159,6 +163,7 @@ public class TestArrays {
     }
     
     //https://leetcode.com/problems/kth-largest-element-in-an-array/
+    // tips: PQ
     public int findKthLargest(int[] nums, int k) {
     	//pq keeps the largest elements
     	final PriorityQueue<Integer> pq = new PriorityQueue<Integer>();
@@ -168,14 +173,17 @@ public class TestArrays {
     		// inserts the element
     		pq.offer(val);
     		
-    		//if pq size is larger than k then removes the smallest element
+    		// make sure pq contains at most k elements
+    		// if pq size is larger than k then removes the smallest element
+    		// The head of priority queue is the least element with respect to the specified ordering.
+    		// Retrieves and removes the head of this queue (least element), or returns null if this queue is empty.
     		if(pq.size() > k)
     		{
     			pq.poll();
     		}
     	}
     	
-    	//pq now only contains element kth largest and larger than that element
+    	// pq now only contains element kth largest and larger than that element
     	return pq.peek();
     }
     
@@ -229,23 +237,36 @@ public class TestArrays {
         return false;
     }
     
-    //https://leetcode.com/problems/max-area-of-island/
-    //TODO
-//    public int maxAreaOfIsland(int[][] grid) {
-//        
-//    }
-    
-    //https://leetcode.com/problems/unique-paths/
-    /*
-     A robot is located at the top-left corner of a m x n grid (marked 'Start' in the diagram below).
-
-	The robot can only move either down or right at any point in time. 
-	The robot is trying to reach the bottom-right corner of the grid (marked 'Finish' in the diagram below).
-     * */
-    //TODO
-//    public int uniquePaths(int m, int n) {
-//        
-//    }
+    //https://leetcode.com/problems/move-zeroes/
+    public void moveZeroes(int[] nums) {
+        
+        //edge/error cases
+        if(nums == null || nums.length <= 1) return;
+        
+        int zeroIndex = 0;
+        
+        //this handles the case when we have no zero in the array
+        while(zeroIndex < nums.length && nums[zeroIndex] != 0)
+        {
+            zeroIndex++;
+        }
+        
+        for(int i = zeroIndex; zeroIndex > -1 && i < nums.length && zeroIndex < nums.length; i++)
+        {
+            if(nums[i] == 0 && i < zeroIndex) zeroIndex = i;
+            
+            if(nums[i] != 0 && i != zeroIndex)
+            {
+                nums[zeroIndex] = nums[i];
+                nums[i] = 0;
+                
+                // this is the key as after the swap we have to scan for zero right after from previous zeroIndex
+                int tempIndex = i;
+                i = zeroIndex;
+                zeroIndex = tempIndex;
+            }
+        }
+    }
     
     //https://leetcode.com/problems/rotate-image/
     //TODO
@@ -253,9 +274,10 @@ public class TestArrays {
         
     }
     
+    //TODO https://leetcode.com/problems/surrounded-regions/discuss/41633/Java-DFS-%2B-boundary-cell-turning-solution-simple-and-clean-code-commented.
     // notworking
     // Works for most cases. For some cases like where there is a full row/column of zero
-    // https://leetcode.com/problems/surrounded-regions/description/
+    // https://leetcode.com/problems/surrounded-regions/
     public void solve(char[][] board) {
         if(board == null) return;
         
@@ -301,6 +323,7 @@ public class TestArrays {
     }
     
 
+    //TODO https://leetcode.com/problems/partition-array-into-disjoint-intervals/solution/
     //notworking
     //https://leetcode.com/problems/partition-array-into-disjoint-intervals/
     //           5, 0, 3, 8, 6

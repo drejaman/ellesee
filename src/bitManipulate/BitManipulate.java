@@ -1,5 +1,7 @@
 package bitManipulate;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class BitManipulate {
@@ -88,5 +90,13 @@ public class BitManipulate {
 		}		
 		
 		return num%1001;
+	}
+	
+	//https://leetcode.com/problems/gray-code/
+	public List<Integer> grayCode(int n) {
+	    List<Integer> result = new ArrayList<>();
+        for (int i = 0; i < Math.pow(2,n); i++) 
+            result.add(i ^ i/2);
+        return result;
 	}
 }

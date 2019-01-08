@@ -40,4 +40,40 @@ public class TestDynamic {
      
      return obstacleGrid[row - 1][col - 1];
     }
+
+    //https://leetcode.com/problems/unique-paths/
+    /*
+     A robot is located at the top-left corner of a m x n grid (marked 'Start' in the diagram below).
+
+	The robot can only move either down or right at any point in time. 
+	The robot is trying to reach the bottom-right corner of the grid (marked 'Finish' in the diagram below).
+	
+	logic: 
+	for 0,0 position ways are 0
+	for the cells in top row (0th row) or 0th column ways are 1
+	for other cell (i, j) the ways(i, j) = sum(ways(i-1, j) + ways(i, j-1)) 
+     * */
+    //tips: memoization is a must to avoid time limit exceed problem
+    //interestingly here n represents rows and m columns
+    public int uniquePaths(int m, int n) {
+        if(m == 1 && n == 1) return 1;
+        
+        int row = n, col = m;
+        // we could do it recursively exhausting all the stacks and exceeding time limit 
+        int[][] memo = new int[row][col];
+        
+        //initialization of memo book
+        for(int i = 0; i < row; i++) memo[i][0] = 1;
+        for(int j = 0; j < col; j++) memo[0][j] = 1;
+        
+        for(int i = 1; i < row; i++)
+        {
+        		for(int j = 1; j < col; j++)
+        		{
+        			memo[i][j] = memo[i-1][j] + memo[i][j-1];
+        		}
+        }
+        
+        return memo[row-1][col-1];
+    }
 }

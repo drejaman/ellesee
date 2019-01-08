@@ -835,38 +835,64 @@ public int romanToInt(String s) {
     	return true;
     }
     
+    //https://leetcode.com/problems/split-array-into-fibonacci-sequence/
     public List<Integer> splitIntoFibonacci(String S) {
+    	
+    		List<Integer> result = new ArrayList<Integer>();
         
+    		if(S == null || S.isEmpty() || S.length() < 3)
+    			return result;
+    			
         int strLen = S.length();
         
         for(int i = 1; i < strLen / 3; i++)
         {
-        	List<Integer> currentResult = new ArrayList<Integer>();
-        	
-        	int beginIndex = 0;
-        	int k = 1;
-        	int first = Integer.parseInt(S.substring(beginIndex, beginIndex + k * i));
-        	int second = Integer.parseInt(S.substring(beginIndex + k * i, beginIndex + (k + 1) * i));
-        	k++;
-        	int third = Integer.parseInt(S.substring(beginIndex + k * i, beginIndex + (k + 1) * i));        
-        	k++;
-        	
-        	while(first + second == third)
-        	{
-        		currentResult.add(first);
-        		currentResult.add(second);
-        		currentResult.add(third);
-        		
-        		first = second;
-        		second = third;
-        		third = Integer.parseInt(S.substring(beginIndex + k * i, beginIndex + (k + 1) * i));
-        		k++;
-        	}
-        	
-        	if(beginIndex + (k + 1) * i == S.length()) return currentResult;
+	        	result.clear();
+	        	int beginIndex = 0, first = 0, second = 0, third = 0;
+	        	
+	        	if(beginIndex + i < strLen)
+	        	first = Integer.parseInt(S.substring(beginIndex, beginIndex + i));
+	        	
+	        	beginIndex = beginIndex + i;
+	        	if(beginIndex + i < strLen)
+	        	second = Integer.parseInt(S.substring(beginIndex, beginIndex + i));
+	        	
+	        	beginIndex = beginIndex + i;
+	        	if(beginIndex + i < strLen)
+	        	third = Integer.parseInt(S.substring(beginIndex, beginIndex + i));        
+	        	
+	        	if(first + second == third && third != 0)
+	        	{
+	        		result.add(first);
+	        		result.add(second);
+
+	        		while(first + second == third)
+		        	{
+		        		result.add(third);
+		        		
+		        		first = second;
+		        		second = third;
+			        	beginIndex = beginIndex + i;
+			        	
+			        	if(beginIndex + i < strLen)
+			        	{
+			        		third = Integer.parseInt(S.substring(beginIndex, beginIndex  + i));			        		
+				        	
+			        		if(third < second)
+			        		{
+			        			i++;
+				        		third = Integer.parseInt(S.substring(beginIndex, beginIndex  + i));			        		
+			        		}
+			        	}		
+			        	
+		        	}
+	        	}
+	        	
+	        	
+	        	if(beginIndex +  i == S.length()) return result;
         }
         
-        return null;
+        return result;
     }
 
     //

@@ -1,5 +1,7 @@
 package binsearch;
 
+import java.util.PriorityQueue;
+
 public class BinarySearch {
 	//https://leetcode.com/problems/search-insert-position/submissions/
     public int searchInsert(int[] nums, int target) {
@@ -168,6 +170,7 @@ public class BinarySearch {
 	   
 	   return searchSparse(strings, mid, right, needle);
    }
+   
     //Cracking 10.8 findDuplicates TODO
    // You have an array with all the numbers from 1toN, where N is at most 32,000.
    // The array may have duplicate entries and you do not know what N is. With only 4 kilobytes of memory available, how would you print all duplicate elements in the array?
@@ -258,17 +261,43 @@ public class BinarySearch {
 	    }
    
    //https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/
-   //TODO
-//   public int kthSmallest(int[][] matrix, int k) {
-//       
-//   }
+   // runtime = O(n2)
+   public int kthSmallest(int[][] matrix, int k) {
+	   if(matrix == null || matrix.length == 0 || matrix.length != matrix[0].length) return 0;
+	   
+	   // by default PQ contains only the largest elements
+	   PriorityQueue<Integer> pq = new PriorityQueue<Integer>();
+	   
+	   // since we need to find k-th smallest element will be ks-th largest element
+	   // for a 3*3 matrix 4th smallest element is 3 * 3 - 4 + 1 = 6th largest element 
+	   int ks = matrix.length * matrix[0].length  - k + 1;
+
+	   for(int i = 0; i < matrix.length; i++)
+		   for(int j = 0; j < matrix[0].length; j++)
+		   {
+			   pq.offer(matrix[i][j]);
+			   
+			   // if the pq size becomes more than ks then remove one element to keep only ks-th largest element
+			   if(pq.size() > ks) pq.poll();
+		   }
+	   
+	   // return ks-th largest/ k-th smallest element
+	   return pq.poll();        
+   }
 
    //https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/
+   //https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/solution/
+   //Approach 2: Binary Search
+   // logic: 
+   // use a variant of binary search 
+   // to find the leftMost index we keep on searching in the left half as long as A[mid] == target 
+   // we return lo (mid + 1) when the binary search no longer matches and we need the leftMost index   
+   // finding the rightmost index is like regular binary search except that we do nothing for A[mid] == target
    //TODO
 //   public int[] searchRange(int[] nums, int target) {
 //       
 //   }
 
    //Cracking 10.10 rankStreams TODO
-    //Cracking 10.11 peaksValleys TODO
+   //Cracking 10.11 peaksValleys TODO
 }

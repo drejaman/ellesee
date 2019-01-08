@@ -1,15 +1,12 @@
 package graph;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import trees.TreeNode;
-
+import java.util.Stack;
 import trees.TreeNode;
 
 public class TestGraphs {
@@ -117,7 +114,110 @@ public class TestGraphs {
     		this.dfsVisitIsland(grid, r-1, c, row, col);
     		this.dfsVisitIsland(grid, r+1, c, row, col);
     }
+    
+    //https://leetcode.com/problems/word-search/
+    public boolean exist(char[][] board, String word) {
+        if(word == null || word.isEmpty() || word.length() == 0) return true;
+        
+        for(int i = 0; i < board.length; i++)
+        {
+        		for(int j = 0; j < board[0].length; j++)
+        		{
+        			if(board[i][j] == word.charAt(0))
+        			{
+        				if(wordExist(board, i, j, word, 0, new boolean[board.length][board[0].length]))
+        					return true;
+        			}
+        		}
+        }
+        
+        return false;
+    }
+    
+    private boolean wordExist(char[][] board, int r, int c, String word, int wi, boolean[][] visit)
+    {
+    		if(wi == word.length()) return true;
+    		
+    		if(r < 0 || c < 0 || r >= board.length || c >= board[0].length || board[r][c] != word.charAt(wi) || visit[r][c])
+    			return false;
+    		
+    		visit[r][c] = true;
 
+    		if(wordExist(board, r - 1, c, word, wi + 1, visit) ||
+    			wordExist(board, r, c - 1, word, wi + 1, visit) ||
+    			wordExist(board, r + 1, c, word, wi + 1, visit) ||
+    			wordExist(board, r, c + 1, word, wi + 1, visit))
+    			return true;
+ 
+    		// this is the key as this is backtracking to setting the character's visit to false 
+    		// that was likely can later be used for another pass
+    		visit[r][c] = false;
+        
+    		return false;
+    }
+
+    //https://leetcode.com/problems/keys-and-rooms/
+    public boolean canVisitAllRooms(List<List<Integer>> rooms) {
+    		if(rooms == null) return true;
+    		
+    		boolean[] visit = new boolean[rooms.size()];
+    		
+    		Stack<Integer> traverse = new Stack<Integer>();
+    		visit[0] = true;
+    		traverse.push(0);
+    		
+    		while(!traverse.isEmpty())
+    		{
+    			int current = traverse.pop();
+    			
+    			for(int key : rooms.get(current))
+    			{
+    				if(!visit[key])
+    				{
+    					visit[key] = true;
+    					traverse.push(key);
+    				}
+    			}
+    		}
+    		
+    		for(boolean visited : visit)
+    			if(!visited) return false;
+    		
+    		return true;
+    }
+
+    //https://leetcode.com/problems/max-area-of-island/
+    public int maxAreaOfIsland(int[][] grid) {
+    		int maxArea = 0;
+ 
+    		if(grid == null || grid.length == 0) return maxArea;
+    		
+    		for(int i = 0; i < grid.length; i++)
+    		{
+    			for(int j = 0; j < grid[0].length; j++)
+    			{
+    				if(grid[i][j] == 1)
+    				{
+    					maxArea = Math.max(maxArea, maxAreaVisit(grid, i, j, new boolean[grid.length][grid[0].length]));
+    				}
+    			}
+    		}
+    		
+    		return maxArea;
+    }
+    
+    private int maxAreaVisit(int[][] grid, int r, int c, boolean[][] visit)
+    {
+    		//we need to check the indices at first otherwise it could be array index out of founds exception
+    		if(r < 0 || c < 0 || r >= grid.length || c >= grid[0].length || grid[r][c] == 0 || visit[r][c])
+    			return 0;
+    		
+    			visit[r][c] = true;
+    			return 1 + maxAreaVisit(grid, r - 1, c, visit) + maxAreaVisit(grid, r + 1, c, visit)
+    					+ maxAreaVisit(grid, r, c - 1, visit) + maxAreaVisit(grid, r, c + 1, visit);
+    }
+
+    
     //https://leetcode.com/problems/house-robber-iii/
     //idea: level order traversal. 
     // add the odd rows = sumOddRows
@@ -130,68 +230,63 @@ public class TestGraphs {
     
     //https://leetcode.com/problems/course-schedule/
     //TODO
-//	    public boolean canFinish(int numCourses, int[][] prerequisites) {
-//	        Map<Integer,List<Integer>> edges = new HashMap<>();
-//	        Set<Integer> visited = new HashSet<>();
-//	        Set<Integer> completed = new HashSet<Integer>();
-//	        for(int[] p : prerequisites) {
-//	            edges.computeIfAbsent(p[0],k->new ArrayList<Integer>()).add(p[1]);
-//	        }
-//	        for(int course = 0; course<numCourses; course++) {
-//	            dfs(course,edges,visited,completed);
-//	            if(completed.size() >= numCourses) return true;
-//	        }
-//	        
-//	        return false;
-//	    }
-//	    
-//	    private boolean dfs(int course, Map<Integer,List<Integer>> edges,Set<Integer> visited, Set<Integer> completed) {
-//	        if(completed.contains(course)) return true;
-//	        if(visited.contains(course)) return false;
-//	        if(edges.containsKey(course)) { // Has prerequisites
-//	            visited.add(course);
-//	            for(int prereq : edges.get(course)) {
-//	                if(!dfs(prereq,edges,visited,completed)) return false; // Cycle, can't complete this course
-//	            }
-//	        }
-//	        completed.add(course);
-//	        return true;
-//	    }
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        Map<Integer,List<Integer>> edges = new HashMap<>();
+        Set<Integer> visited = new HashSet<>();
+        Set<Integer> completed = new HashSet<Integer>();
+        for(int[] p : prerequisites) {
+            edges.computeIfAbsent(p[0],k->new ArrayList<Integer>()).add(p[1]);
+        }
+        for(int course = 0; course<numCourses; course++) {
+            dfs(course,edges,visited,completed);
+            if(completed.size() >= numCourses) return true;
+        }
+        
+        return false;
+    }
+    
+    private boolean dfs(int course, Map<Integer,List<Integer>> edges,Set<Integer> visited, Set<Integer> completed) {
+        if(completed.contains(course)) return true;
+        if(visited.contains(course)) return false;
+        if(edges.containsKey(course)) { // Has prerequisites
+            visited.add(course);
+            for(int prereq : edges.get(course)) {
+                if(!dfs(prereq,edges,visited,completed)) return false; // Cycle, can't complete this course
+            }
+        }
+        completed.add(course);
+        return true;
+    }
 	    
-	    //notworking    
-	    //https://leetcode.com/problems/find-bottom-left-tree-value/
-	    //idea: BFS. when you reach a left leaf update minimum. at the end of graph traversal return graph left minimum
-	    int minLeftValue = Integer.MAX_VALUE;
-	    int maxHeight = Integer.MIN_VALUE;
+    //https://leetcode.com/problems/find-bottom-left-tree-value/
+    //idea: BFS. when you reach a left leaf update minimum. at the end of graph traversal return graph left minimum
+    int minLeftValue = Integer.MAX_VALUE;
+    int maxHeight = Integer.MIN_VALUE;
 
-	    public int findBottomLeftValue(TreeNode root) {
+    public int findBottomLeftValue(TreeNode root) {
 	    	if(root == null) return -1;
 	    	
 	    	findBottomLeftHeight(root, 1);
 	    	
 	    	return minLeftValue;
-	    }
-	    
-	    private void findBottomLeftHeight(TreeNode root, int currentHeight)
-	    {
+    }
+    
+    private void findBottomLeftHeight(TreeNode root, int currentHeight)
+    {
 	    	if( root == null) return;
+
+	    	//for each node check if the currentHeight is greater than max at that time
+	    	//and if that is the case update the value and max height
+    		if(currentHeight > maxHeight)
+    		{
+    			minLeftValue = root.val;
+    			maxHeight = currentHeight;
+    		}
+    		
+    		//it will at first call the left child recursively 
+    		//that will make sure we get the bottomost left child's value 
+	    	if(root.left != null) findBottomLeftHeight(root.left, 1 + currentHeight);
 	    	
-	    	if(root.left != null)
-	    	{
-	    		int leftHeight = currentHeight + 1;
-	    		
-	    		if(leftHeight > maxHeight)
-	    		{
-	    			minLeftValue = root.left.val;
-	    			maxHeight = leftHeight;
-	    		}
-	    		
-	    		findBottomLeftHeight(root.left, leftHeight);
-	    	}
-	    	
-	    	if(root.right != null)
-	    	{
-	    		findBottomLeftHeight(root.right, 1 + currentHeight);
-	    	}
-	    }	    
+	    	if(root.right != null) findBottomLeftHeight(root.right, 1 + currentHeight);
+    }	    
 }

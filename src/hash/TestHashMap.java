@@ -1,7 +1,6 @@
 package hash;
 
 import java.util.HashSet;
-import java.util.List;
 
 public class TestHashMap {
 	
@@ -11,6 +10,7 @@ public class TestHashMap {
 	   Output: [1,2]
 	 * */
 	//TODO
+	//logic: can be solved using priority queue/heap. need to find better way
 //    public List<Integer> topKFrequent(int[] nums, int k) {
 //        
 //    }

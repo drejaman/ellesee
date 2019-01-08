@@ -2,6 +2,7 @@ package algorithm;
 
 import java.util.Arrays;
 
+//TODO needs refactoring and rearranging
 public class TestAlgorithm {
 public TestAlgorithm()
 {
@@ -92,5 +93,4 @@ public int[] findTwoSumInArray(int[] Arr, int numbToFindIndex)
 	
 	return result;
 }
-
 }
