@@ -76,4 +76,51 @@ public class TestDynamic {
         
         return memo[row-1][col-1];
     }
+    
+    //https://leetcode.com/problems/palindromic-substrings/
+    int count = 0;
+    
+    public int countSubstrings(String s) {
+        if(s == null || s.isEmpty()) return 0;
+        
+        for(int i = 0; i < s.length(); i++)
+        {
+        		countSubstring(s, i, i);//odd length
+        		countSubstring(s, i, i+ 1);//even length
+        }
+        
+        return count;
+    }
+    
+    private void countSubstring(String s, int left, int right)
+    {
+    		while(left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right))
+    		{
+    			left--;
+    			right++;
+    			count++;
+    		}
+    }
+    
+    //https://leetcode.com/problems/arithmetic-slices/
+    public int numberOfArithmeticSlices(int[] A) {
+    		int sum = 0;
+    		
+    		int[] dp = new int[A.length];
+    		
+    		for(int i = 2; i < A.length; i++)
+    		{
+    			// this check true means we have got an arithmetic slice
+    			if(A[i] - A[i - 1] == A[i - 1] - A[i - 2])
+    			{
+    				dp[i] = dp[i - 1] + 1;
+    			}
+    			
+    			sum += dp[i];
+    		}
+    		
+    		return sum;
+    }
+
+
 }
