@@ -895,6 +895,36 @@ public int romanToInt(String s) {
         return result;
     }
 
+    //https://leetcode.com/problems/group-anagrams/
+    public List<List<String>> groupAnagrams(String[] strs) {
+        List<List<String>> wordList = new ArrayList<List<String>>();
+        
+    	if(strs == null || strs.length == 0) return wordList;
+    	
+    	HashMap<String, List<String>> hashList = new HashMap<String, List<String>>();
+    	
+    	for(String str : strs)
+    	{
+    		char[] strChars = str.toCharArray();
+    		Arrays.sort(strChars);
+    		String sorted = new String(strChars);
+    		
+    		if(!hashList.containsKey(sorted))
+    		{
+    			List<String> list = hashList.getOrDefault(sorted, new ArrayList<String>());
+    			list.add(str);
+    			hashList.put(sorted, list);
+    		}
+    	}
+    	
+        for (String key: hashList.keySet()) {
+        	wordList.add(hashList.get(key));
+        }
+        
+        return wordList;
+    }
+
+
     //
     /*
      * The hashtable representation of our count will be a string delimited with '#' characters. 

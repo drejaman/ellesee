@@ -6,7 +6,8 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class HashCounter {
-HashMap<Integer,Integer> map=new HashMap<Integer,Integer>();
+	
+Map<Integer,Integer> map=new HashMap<Integer,Integer>();
 
 public HashCounter()
 {

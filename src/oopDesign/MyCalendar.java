@@ -1,7 +1,6 @@
 package oopDesign;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 //https://leetcode.com/problems/my-calendar-i/
@@ -11,7 +10,7 @@ import java.util.Map;
 public class MyCalendar {
 
 	// startDate, endDate
-	private HashMap<Integer, Integer> bookingMap;
+	private Map<Integer, Integer> bookingMap;
 	
     public MyCalendar() {
     	bookingMap = new HashMap<Integer, Integer>();
@@ -25,15 +24,11 @@ public class MyCalendar {
     // - if the startDate is less than existing startDate then endDate has to be less than existing startDate
     public boolean book(int start, int end) {
     	boolean validBookingDate = true;
-    	
-        Iterator it = bookingMap.entrySet().iterator();
         
-        while(it.hasNext())
+        for (Map.Entry<Integer,Integer> entry : bookingMap.entrySet())
         {
-        	Map.Entry map = (Map.Entry) it.next();
-
-        	int existingStartDate = (int) map.getKey();
-        	int existingEndDate = (int) map.getValue();
+        	int existingStartDate = entry.getKey();
+        	int existingEndDate = entry.getValue();
 
         	//the key is >= and <= to be in the right places
         	if((start > existingStartDate && start >= existingEndDate && end >= existingEndDate)
