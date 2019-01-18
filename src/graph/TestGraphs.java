@@ -10,7 +10,6 @@ import java.util.Stack;
 import trees.TreeNode;
 
 public class TestGraphs {
-
 	public TestGraphs()
 	{
 		
@@ -230,20 +229,20 @@ public class TestGraphs {
     
     //https://leetcode.com/problems/course-schedule/
     //TODO
-    public boolean canFinish(int numCourses, int[][] prerequisites) {
-        Map<Integer,List<Integer>> edges = new HashMap<>();
-        Set<Integer> visited = new HashSet<>();
-        Set<Integer> completed = new HashSet<Integer>();
-        for(int[] p : prerequisites) {
-            edges.computeIfAbsent(p[0],k->new ArrayList<Integer>()).add(p[1]);
-        }
-        for(int course = 0; course<numCourses; course++) {
-            dfs(course,edges,visited,completed);
-            if(completed.size() >= numCourses) return true;
-        }
-        
-        return false;
-    }
+//    public boolean canFinish(int numCourses, int[][] prerequisites) {
+//        Map<Integer,List<Integer>> edges = new HashMap<>();
+//        Set<Integer> visited = new HashSet<>();
+//        Set<Integer> completed = new HashSet<Integer>();
+//        for(int[] p : prerequisites) {
+//            edges.computeIfAbsent(p[0],k->new ArrayList<Integer>()).add(p[1]);
+//        }
+//        for(int course = 0; course<numCourses; course++) {
+//            dfs(course,edges,visited,completed);
+//            if(completed.size() >= numCourses) return true;
+//        }
+//        
+//        return false;
+//    }
     
     private boolean dfs(int course, Map<Integer,List<Integer>> edges,Set<Integer> visited, Set<Integer> completed) {
         if(completed.contains(course)) return true;

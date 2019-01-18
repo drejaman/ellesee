@@ -121,6 +121,4 @@ public class TestDynamic {
     		
     		return sum;
     }
-
-
 }

@@ -651,7 +651,7 @@ public String intToRoman(int num) {
 
 //https://leetcode.com/problems/roman-to-integer/
 public int romanToInt(String s) {
-	HashMap<Character, Integer> romanMap= new HashMap<Character, Integer>()
+	Map<Character, Integer> romanMap= new HashMap<Character, Integer>()
 	{{
 		put('M', 1000); 
 		put('D', 500);
@@ -674,7 +674,6 @@ public int romanToInt(String s) {
 	
 	return value;	
 }
-
 
 	//https://leetcode.com/problems/reverse-words-in-a-string/
     public String reverseWords1(String s) {
@@ -704,7 +703,6 @@ public int romanToInt(String s) {
         
         return builder.toString();
     }
-
 
     //https://leetcode.com/problems/string-to-integer-atoi/
     public int myAtoi(String str) { 
@@ -909,12 +907,9 @@ public int romanToInt(String s) {
     		Arrays.sort(strChars);
     		String sorted = new String(strChars);
     		
-    		if(!hashList.containsKey(sorted))
-    		{
-    			List<String> list = hashList.getOrDefault(sorted, new ArrayList<String>());
-    			list.add(str);
-    			hashList.put(sorted, list);
-    		}
+            List<String> list = hashList.getOrDefault(sorted, new ArrayList<String>());
+            list.add(str);
+            hashList.put(sorted, list);
     	}
     	
         for (String key: hashList.keySet()) {
@@ -924,16 +919,37 @@ public int romanToInt(String s) {
         return wordList;
     }
 
+    //https://leetcode.com/problems/word-subsets/
+    //logic: Reduce B to a single word bmax as described above, 
+    // then compare the counts of letters between words a in A, and bmax.
+   //Time Complexity: O(A+B), where A and B is the total amount of information in A and B respectively.
+   //Space Complexity: O(A.length+B.length). 
+    public List<String> wordSubsets(String[] A, String[] B) {
+        int[] bmax = count("");
+        for (String b: B) {
+            int[] bCount = count(b);
+            for (int i = 0; i < 26; ++i)
+                bmax[i] = Math.max(bmax[i], bCount[i]);
+        }
 
-    //
-    /*
-     * The hashtable representation of our count will be a string delimited with '#' characters. 
-     * For example, abbccc will be #1#2#3#0#0#0...#0 where there are 26 entries total. 
-     * */
-    //TODO
-//    public List<List<String>> groupAnagrams(String[] strs) {
-//        
-//    }
+        List<String> ans = new ArrayList<String>();
+        search: for (String a: A) {
+            int[] aCount = count(a);
+            for (int i = 0; i < 26; ++i)
+                if (aCount[i] < bmax[i])
+                    continue search;
+            ans.add(a);
+        }
+
+        return ans;
+    }
+
+    private int[] count(String S) {
+        int[] ans = new int[26];
+        for (char c: S.toCharArray())
+            ans[c - 'a']++;
+        return ans;
+    }
     
     //https://leetcode.com/problems/decode-ways/
     //TODO

@@ -70,7 +70,6 @@ public void hashedSumFinder(int sum)
 				map.put(i, sum-i);
 				map.remove(sum-i);
 			}
-			
 	}
 	
 	Iterator iter=map.entrySet().iterator();
@@ -96,8 +95,5 @@ public void testHashCounter()
 	HashCounter hashCounter=new HashCounter();
 	hashCounter.initializeHashTable(array);
 	hashCounter.printArray(hashCounter.removeNby2(20));
-	
 }
-
-
 }
