@@ -69,7 +69,7 @@ public class TestBST
 	public BinarySearchTree createTreeFromPreOrderTraversal(int[] elements)
 	{
 		TreeNode root=new TreeNode(elements[0]);
-		BinarySearchTree bst=new BinarySearchTree(root);
+		BinarySearchTree bst = new BinarySearchTree(root);
 
 		findPlace(root,root.getValue(),elements,1,elements.length);
 		

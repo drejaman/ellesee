@@ -94,9 +94,33 @@ public class BitManipulate {
 	
 	//https://leetcode.com/problems/gray-code/
 	public List<Integer> grayCode(int n) {
-	    List<Integer> result = new ArrayList<>();
+	    List<Integer> result = new ArrayList<Integer>();
         for (int i = 0; i < Math.pow(2,n); i++) 
             result.add(i ^ i/2);
         return result;
 	}
+	
+	//https://leetcode.com/problems/divide-two-integers/
+	//10 / 3 , dividend = 10, divisor = 3
+	//notworking for Int.Min -2147483648
+    public int divide(int dividend, int divisor) {
+        int result = 0;
+        
+        if(divisor == 0) return -1;
+        
+        if (dividend == 1 << 31 && divisor == -1) return (1 << 31) - 1;
+        
+        int sign = ((divisor > 0 && dividend > 0) || (divisor < 0 && dividend < 0)) ? 1 : -1;
+        
+        dividend = Math.abs(dividend);
+        divisor = Math.abs(divisor);
+        
+        while(dividend >= divisor)
+        {
+        	dividend -= divisor;
+        	result++;
+        }
+        
+        return sign * result;
+    }
 }

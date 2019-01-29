@@ -13,17 +13,17 @@ public class BinarySearchTree
 	
 	public void addNode(TreeNode parent, TreeNode child)
 	{
-		if(child.getValue()<=parent.getValue())	//less than or equal
+		if(child.getValue() <= parent.getValue())	//less than or equal
 		//if(child.getValue()>parent.getValue())	//just uncomment this line to test function isBST 
 			{
-				if(parent.getLeft()==null)
+				if(parent.getLeft() == null)
 					parent.setLeft(child);
 				else
 					addNode(parent.getLeft(),child);
 			}
 		else 
 			{
-				if(parent.getRight()==null)
+				if(parent.getRight() == null)
 					parent.setRight(child);
 				else
 					addNode(parent.getRight(),child);
@@ -33,9 +33,9 @@ public class BinarySearchTree
 	public void printTree(TreeNode printer)
 	{
 		System.out.println(printer.getValue());
-		if(printer.getLeft()!=null)
+		if(printer.getLeft() != null)
 			printTree(printer.getLeft());
-		if(printer.getRight()!=null)
+		if(printer.getRight() != null)
 			printTree(printer.getRight());
 		//System.out.println("Printing finished");
 	}
@@ -63,7 +63,7 @@ public class BinarySearchTree
 	
 	public boolean lookup(TreeNode node,int value)
 	{
-		if(node==null) return false;
+		if(node == null) return false;
 
 		if(node.getValue() == value)
 			return true;
@@ -77,7 +77,7 @@ public class BinarySearchTree
 	
 	public int minValue(TreeNode node)
 	{
-		if(node.getLeft()==null)
+		if(node.getLeft() == null)
 			return node.getValue();
 		else return minValue(node.getLeft());
 	}
@@ -92,9 +92,9 @@ public class BinarySearchTree
 	public boolean hasPathSum(TreeNode node, int sum)
 	{
 		//if(node!=null)
-		System.out.println("Current Sum is:"+sum);
+		System.out.println("Current Sum is:" + sum);
 		//checks here if it reached the leaf of the tree and the sum reaches zero
-		if((sum-node.getValue())==0 && node.getLeft()==null && node.getRight()==null) 
+		if((sum - node.getValue()) == 0 && node.getLeft() == null && node.getRight() == null) 
 			return true;
 		
 		boolean left = false, right = false;
@@ -109,15 +109,17 @@ public class BinarySearchTree
 	//this one changes the tree to its mirror
 	public void mirror(TreeNode node)
 	{
-		if(node!=null)
+		if(node != null)
 		{
-			TreeNode temp=node.getLeft();
+			TreeNode temp = node.getLeft();
 			node.setLeft(node.getRight());
 			node.setRight(temp);
 		}
-		if(node.getLeft()!=null)
+		
+		if(node.getLeft() != null)
 			mirror(node.getLeft());
-		if(node.getRight()!=null)
+		
+		if(node.getRight() != null)
 			mirror(node.getRight());
 	}
 	
@@ -125,6 +127,7 @@ public class BinarySearchTree
 	public TreeNode mirrorTree(TreeNode oldRoot)
 	{
 		TreeNode newRoot = new TreeNode(oldRoot);
+		
 		if(oldRoot.getLeft()!=null)
 		{
 			newRoot.setRight(mirrorTree(oldRoot.getLeft()));			
@@ -196,5 +199,4 @@ public class BinarySearchTree
 		else
 			return node.getValue()+ Math.min(findMinSum(node.getRight()),findMinSum(node.getRight()));		
 	}
-
 }

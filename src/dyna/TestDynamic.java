@@ -101,6 +101,37 @@ public class TestDynamic {
     			count++;
     		}
     }
+
+    // a variation of the previous problem
+    //https://leetcode.com/problems/longest-palindromic-substring/
+    int palinLength = 0;
+    String palinString = "";
+    public String longestPalindrome(String s) {
+        if(s == null || s.isEmpty()) return palinString;
+        
+        for(int i = 0; i < s.length(); i++)
+        {
+        	countSubstringLength(s, i, i);//odd length
+        	countSubstringLength(s, i, i+ 1);//even length
+        }
+    	
+        return palinString;
+    }
+
+    private void countSubstringLength(String s, int left, int right)
+    {
+    		while(left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right))
+    		{
+    			if((right - left) >= palinLength)
+    			{
+        			palinString = s.substring(left, right + 1);
+        			palinLength = right - left;
+    			}
+
+                left--;
+    			right++;    			
+    		}
+    }
     
     //https://leetcode.com/problems/arithmetic-slices/
     public int numberOfArithmeticSlices(int[] A) {

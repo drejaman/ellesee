@@ -104,8 +104,8 @@ public class TestNumbers {
     // corner case -2147483648, -1 as -2147483648 is the INT_MIN but 2147483648 is not INT_MAX (2147483647)
     public int divide(int dividend, int divisor) {
     	
-    		// handles division by zero
-    		if(divisor == 0) return -1;
+		// handles division by zero
+		if(divisor == 0) return -1;
     		
     		// checks the sign that will be later used by quotient
         boolean sign = (dividend > 0 && divisor > 0) || (dividend < 0 && divisor < 0);
@@ -207,27 +207,76 @@ public class TestNumbers {
         return true;
     }
 
-    //notworking
 	//https://leetcode.com/problems/find-peak-element/
     public int findPeakElement(int[] nums) {
+        if(nums == null || nums.length == 0) return -1;
+
     	int len = nums.length;
         int maxIndex = 0;
-        int diff1 =  (len > 1)? ((nums[0] > nums [1])? nums[0] : nums[1]) : nums[0];
-        int diff2 = diff1;        
-        int max = Integer.MIN_VALUE;
+        int maxPeak = 0;
         
+        if(len == 1) return 0;
         
-        for(int i = 1; i < nums.length - 1; i++)
+        if(nums[0] > nums[1]) 
         {
-        	diff1 = nums[i] - nums[i-1];
-        	diff2 = ((i + 1) < nums.length) ? (nums[i] - nums[i+1]) : diff1;
-        	
-        	if((diff1 + diff2)/2 >= max) maxIndex = i;
+        	maxIndex = 0;
+        	maxPeak = nums[0];
         }
         
+        for(int i = 1; i < len - 1; i++)
+        {
+        	if(nums[i] > nums[i-1] && nums[i] > nums[i+1] && nums[i] > maxPeak)
+        	{
+            	maxIndex = i;
+            	maxPeak = nums[i];        		
+        	}
+        }
+
+        if(nums[len - 1] > nums[len - 2]) 
+        {
+        	maxIndex = len - 1;
+        	maxPeak = nums[len - 1];
+        }
+
         return maxIndex;
     }
-    
+
+    //https://leetcode.com/problems/peak-index-in-a-mountain-array/
+    public int peakIndexInMountainArray(int[] A) {
+        if(A == null || A.length == 0) return -1;
+        
+        if(A.length == 1) return 0;
+        
+        // for mountain pattern A[i] > A[i-1] has to hold first
+        boolean increasing = true;
+        int peakIndex = - 1;
+        
+        for(int i = 1; i < A.length; i++)
+        {
+        	if(increasing)
+        	{
+        		if(A[i] > A[i-1]) continue;
+        		else//we already arrived at peak and now should decreasing
+        		{
+        			increasing = false;
+        			//so the previous index was peak
+        			peakIndex = i - 1;
+        		}   
+        	}
+        	//or it is going downhill and A[i] has to be less thans A[i-1]
+        	else if(!increasing && A[i] < A[i-1]) continue;
+        	//there could multiple peaks so find the next one
+        	//going uphill again
+        	else increasing = true;
+        }
+        
+        // the following logic handles the case like 0, 1, 2, 3, 4, 5
+        if(increasing && peakIndex == -1) peakIndex = A.length - 1;
+        
+        return peakIndex;
+    }
+
+
     //notworking
     // https://leetcode.com/problems/maximum-swap/
     // find the max digit and min digit before max and swap them

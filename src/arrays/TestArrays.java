@@ -268,6 +268,33 @@ public class TestArrays {
         }
     }
     
+    //https://leetcode.com/problems/container-with-most-water/
+    public int maxArea(int[] height) {
+        if(height == null || height.length == 0) return 0;
+        
+        int maxArea = 0;
+        
+        for(int i = 0, j = height.length - 1; i < j; )
+        {
+        	int left = height[i];
+        	int right = height[j];
+        	int width = j - i;
+        	int minHeight = left > right ? right : left;
+        	int area = minHeight * width;
+        	
+        	if(area > maxArea)
+        	{
+        		maxArea = area;
+        	}
+        	
+        	if(left <= right) i++;
+        	else j--;
+        }
+        
+        return maxArea;
+    }
+
+    
     //TODO https://leetcode.com/problems/surrounded-regions/discuss/41633/Java-DFS-%2B-boundary-cell-turning-solution-simple-and-clean-code-commented.
     // notworking
     // Works for most cases. For some cases like where there is a full row/column of zero
