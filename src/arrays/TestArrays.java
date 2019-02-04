@@ -1,7 +1,5 @@
 package arrays;
 
-import java.util.PriorityQueue;
-
 public class TestArrays {
 
 	public TestArrays()
@@ -9,7 +7,13 @@ public class TestArrays {
 		
 	}
 
-	// https://leetcode.com/problems/reshape-the-matrix/description/
+	//https://leetcode.com/problems/reshape-the-matrix/description/
+	//easy
+	//logic: 
+	// counters for originalRow and originalColumn
+	// keep incrementing oj after each assignment
+	// if( oj % originalColumn == 0) oi++
+	// in general reshapedMatrix[i][j] = nums[oi][oj % originalColumn]
     public int[][] matrixReshape(int[][] nums, int r, int c) {
     	
      if(nums == null || nums.length * nums[0].length != r * c) {
@@ -38,6 +42,11 @@ public class TestArrays {
     }
     
     //https://leetcode.com/problems/island-perimeter/
+    //trick:
+    //inspect each cell
+    //there are two cases a cell with 1 will be added to perimeter
+    //case - 1: the cell is already in perimeter (edge)
+    //case - 2: the cell is not on edge but is surrounded by water
     public int islandPerimeter(int[][] grid) {
     		if(grid == null) return 0;
     		
@@ -50,17 +59,13 @@ public class TestArrays {
     			{
     				if(grid[i][j] == 1)
     				{
-    					//TODO probably this logic could be simplified
     					//scan the surrounding and based on that adds to perimeter value
 
-    					// cell is the top or in the last row
-    					if(i == 0) perimeter++;
-    					if(i == (row - 1)) perimeter++;
-
-    					// cell is the first or in the last column
-    					if(j == 0) perimeter++;
-    					if(j == (col - 1)) perimeter++;
+    					//case - 1: the cell is already in perimeter (edge)
+    					// cell is the top or in the last row or cell is the first or in the last column
+    					if(i == 0 || i == (row - 1) || j == 0 || j == (col - 1)) perimeter++;
     					
+    					//case - 2: the cell is not on edge but is surrounded by water
     					// not the top row. check the immediate top cell
     					if(i != 0 && grid[i-1][j] == 0) perimeter++;
     					
@@ -78,7 +83,7 @@ public class TestArrays {
     		return perimeter;
     }
     
-    // https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/
+    //https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/
     public int removeDuplicates(int[] nums) {
         if(nums == null || nums.length == 0) return 0;
         
@@ -98,7 +103,7 @@ public class TestArrays {
     			{
     				i++;
     			}
-    			// remove only the line below if you want to make sure the result array will only contain
+    			// remove only the line below if you want to make sure the result array will only contain non-dups
     			i--;
     		}
     	}
@@ -107,8 +112,40 @@ public class TestArrays {
     	
     	return currentPos + 1;
     }    
+    
+    //https://leetcode.com/problems/remove-duplicates-from-sorted-array/submissions/
+    //runtime O(n)
+    //trick: we need two pointers
+    //i points to the running index in the array
+    //uniqueNumbers points to the unique number in the array
+    public int removeDuplicatesI(int[] A) {
+        if(A==null || A.length==0) return 0;
+        
+        int currentNumber = A[0];
+
+        int uniqueNumbers = 1;
+        
+        //?At this step we mark all duplicate numbers as -1
+        for( int i=1; i < A.length;)
+        {
+        	// as long as it is the same number we keep increasing i
+            while(i < A.length && A[i] == currentNumber)
+            {
+                i++;
+            }
+            
+            if(i < A.length){
+                currentNumber = A[i++];    
+                A[uniqueNumbers] = currentNumber;
+                uniqueNumbers++;
+            }
+        }
+        
+        return uniqueNumbers;
+    }
 
     //https://leetcode.com/problems/maximum-subarray/
+    //a variation is the size of MaxSubarray: keep a counter and reset it if(sum < 0)
     public int maxSubArray(int[] A) {
         int maxSum = Integer.MIN_VALUE;
         int sum = 0;
@@ -162,33 +199,11 @@ public class TestArrays {
         return minPath[grid.length-1][grid[0].length-1];
     }
     
-    //https://leetcode.com/problems/kth-largest-element-in-an-array/
-    // tips: PQ
-    public int findKthLargest(int[] nums, int k) {
-    	//pq keeps the largest elements
-    	final PriorityQueue<Integer> pq = new PriorityQueue<Integer>();
-    	
-    	for(int val : nums)
-    	{
-    		// inserts the element
-    		pq.offer(val);
-    		
-    		// make sure pq contains at most k elements
-    		// if pq size is larger than k then removes the smallest element
-    		// The head of priority queue is the least element with respect to the specified ordering.
-    		// Retrieves and removes the head of this queue (least element), or returns null if this queue is empty.
-    		if(pq.size() > k)
-    		{
-    			pq.poll();
-    		}
-    	}
-    	
-    	// pq now only contains element kth largest and larger than that element
-    	return pq.peek();
-    }
-    
     //https://leetcode.com/problems/subarray-sum-equals-k/solution/
     // O(n2) runtime, O(1) space
+    // trick: 2 loops
+    // for each i we start summing it up with another loop. if the sum == k we break
+    // else for another i run another loop
     public int subarraySum(int[] nums, int k) {
      if(nums == null || nums.length == 0) return 0;
      
@@ -196,29 +211,32 @@ public class TestArrays {
      
      for(int i = 0; i < nums.length; i++)
      {
-    	 	int sum = nums[i];
+	 	int sum = nums[i];
     	 
-    	 	// there could be case the the initialized number is already equal to sum
+	 	// there could be case the initialized number is already equal to sum
 		if(sum == k)
 		{
 	     sumCount++;
 		}
 
-	    	 for(int j = i + 1; j < nums.length; j++)
-	    	 {
-	    		 sum += nums[j];
-	             
-	    		 if(sum == k)
-	    		 {
-	    			 sumCount++;
-	    		 }
-	    	 }
+    	 for(int j = i + 1; j < nums.length; j++)
+    	 {
+    		 sum += nums[j];
+             
+    		 if(sum == k)
+    		 {
+    			 sumCount++;
+    		 }
+    	 }
      }
 
      return sumCount;
     }
     
     //https://leetcode.com/problems/search-a-2d-matrix-ii/
+    // trick: start at row 0 and col n-1 
+    // if the target is greater than current no increase row
+    // or decrease column
     //runtime O(m+n) 
     public boolean searchMatrix(int[][] matrix, int target) {
         if(matrix == null || matrix.length == 0) return false;
@@ -253,14 +271,17 @@ public class TestArrays {
         
         for(int i = zeroIndex; zeroIndex > -1 && i < nums.length && zeroIndex < nums.length; i++)
         {
+        	// find a zeroIndex
             if(nums[i] == 0 && i < zeroIndex) zeroIndex = i;
             
+            //we have found an index that doesn't contain 0 and we haven't just set the zeroIndex
             if(nums[i] != 0 && i != zeroIndex)
             {
                 nums[zeroIndex] = nums[i];
                 nums[i] = 0;
                 
-                // this is the key as after the swap we have to scan for zero right after from previous zeroIndex
+                // this is the key as after the swap we have to scan for zero 
+                // right after from previous zeroIndex
                 int tempIndex = i;
                 i = zeroIndex;
                 zeroIndex = tempIndex;
@@ -269,6 +290,11 @@ public class TestArrays {
     }
     
     //https://leetcode.com/problems/container-with-most-water/
+    //trick:
+    //use two index for left (i) and right (j)
+    //at any point, width = j - i
+    //to calculate area use min (leftH, rightH) * (j - i)
+    //now if leftH is less then increase i or if rightH is less decrease j
     public int maxArea(int[] height) {
         if(height == null || height.length == 0) return 0;
         
@@ -293,94 +319,108 @@ public class TestArrays {
         
         return maxArea;
     }
-
     
-    //TODO https://leetcode.com/problems/surrounded-regions/discuss/41633/Java-DFS-%2B-boundary-cell-turning-solution-simple-and-clean-code-commented.
-    // notworking
     // Works for most cases. For some cases like where there is a full row/column of zero
     // https://leetcode.com/problems/surrounded-regions/
     public void solve(char[][] board) {
-        if(board == null) return;
+        if(board == null || board.length == 0 || board[0].length == 0) return;
         
-        int row = board.length;
-        int col = board[0].length;
+        int rows = board.length;
+        int cols = board[0].length;
         
-        for(int i = 1; i< row - 1; i++ )
+        for(int i = 0; i < rows ; i++)
         {
-        		for(int j = 1; j < col - 1 ; j++)
+        	//check column 0 of each row
+        	if(board[i][0] == 'O') expandBorderDfs(board, i, 0);
+
+        	//check last column 0 of each row
+        	if(board[i][cols - 1] == 'O') expandBorderDfs(board, i, cols - 1);
+        }
+        
+        for(int j = 0; j < cols ; j++)
+        {
+        	//check every column of row 0
+        	if(board[0][j] == 'O') expandBorderDfs(board, 0, j);
+
+        	//check every column of last row
+        	if(board[rows - 1][j] == 'O') expandBorderDfs(board, rows - 1, j);
+        }
+        
+        //now expand X
+        for(int i = 0; i < rows; i++ )
+        {
+        		for(int j = 0; j < cols ; j++)
         		{
-        			if(board[i][j] == 'O' && checkBorderZero(i, j, board))
+        			if(board[i][j] == 'O')
         			{        				
         				board[i][j] = 'X';
+        			}
+        			else if(board[i][j] == 'B')
+        			{
+        				board[i][j] = 'O';        				
         			}
         		}
         }
     }    
     
-    //checks if the specific 0 is actually a border zero
-    private boolean checkBorderZero(int rowPos, int colPos, char[][] board)
+    //expand the bordering 0s at first using DFS
+    //expand the map and mark them as B if they are somehow connected to Bordering 0
+    private void expandBorderDfs(char[][] board, int i, int j)
     {
-    	boolean isBorderZero = false;
-        int row = board.length;
-        int col = board[0].length;
+    	if(i < 0 || i > board.length - 1 || j < 0 || j > board[0].length - 1) return;
+    	
+    	if (board[i][j] == 'O')
+    		board[i][j] = 'B';
+    	
+    	//check the adjacent rows up and down
+    	if(i > 1 && board[i - 1][j] == 'O') expandBorderDfs(board, i - 1, j);
+    	if(i < board.length - 2 && board[i + 1][j] == 'O') expandBorderDfs(board, i + 1, j);
 
-        if(rowPos < row - 1 && colPos < col - 1 && board[rowPos][colPos] == 0)
-        {
-	    		if((rowPos == 1 && board[rowPos-1][colPos] == 'O') 
-	    				||(rowPos == (row - 2) && board[row- 2 + 1][colPos] == 'O')
-	    				||(colPos == 1 && board[rowPos][colPos - 1] == 'O')
-	    				||(colPos == (col - 2) && board[rowPos][col- 2 + 1] == 'O'))
-	    			isBorderZero = true;        	
-	    		else
-	    		{
-	    			return checkBorderZero(rowPos - 1, colPos, board) 
-	    					|| checkBorderZero(rowPos + 1, colPos, board) 
-	    					|| checkBorderZero(rowPos, colPos - 1, board) 
-	    					|| checkBorderZero(rowPos, colPos + 1, board);
-	    		}
-        }
-		
-		return isBorderZero;
+    	//check the adjacent columns left and right 
+    	if(j > 1 && board[i][j - 1] == 'O') expandBorderDfs(board, i, j - 1);
+    	if(j < board[i].length - 2 && board[i][j + 1] == 'O') expandBorderDfs(board, i, j + 1);
     }
-    
 
-    //TODO https://leetcode.com/problems/partition-array-into-disjoint-intervals/solution/
-    //notworking
     //https://leetcode.com/problems/partition-array-into-disjoint-intervals/
-    //           5, 0, 3, 8, 6
-    // this should work. works for the sample
+    //Input: [5,0,3,8,6]
+    //Output: 3
+    //Explanation: left = [5,0,3], right = [8,6]
+    //O(N) runtime and O(N) space. Need to check if it can be improved to run with constant space
     public int partitionDisjoint(int[] A)
     {
     	if(A == null || A.length == 0) return -1;
+    	int len = A.length;
+
+    	//hold max up to that index starting at 0
+    	int[] maxLeft = new int[len];
     	
-    	int i = 0, j = A.length - 1;
+    	//hold min up to that index starting at len - 1
+    	int[] minRight = new int[len];
     	
-    	int leftMax = A[i], rightMin = A[j];
+    	int max = A[0];
     	
-    	int partition = i;
-    	
-    	while(i <= j && A[i] < rightMin)
+    	for(int i = 0; i < len ; i++)
     	{
-    		if(A[i] > leftMax)
-    		{
-    			leftMax = A[i];
-    		}
-    		
-    		if(A[j] < rightMin)
-    		{
-    			rightMin = A[j];
-    		}
-    		
-    		if(leftMax >= rightMin)
-    		{
-    			partition = i;
-    			break;    			
-    		}
-    		
-    		i++;
-    		j--;
+    		//maxLeft[i] = Math.max(max, A[i]);	//this line doesn't work
+    		max = Math.max(max, A[i]);	
+    		maxLeft[i] = max;
+    	}
+
+    	int min = A[len - 1];
+    	
+    	for(int i = len - 1; i >= 0 ; i--)
+    	{
+    		//minRight[i] = Math.min(min, A[i]);// this doesn't work!
+    		min = Math.min(min, A[i]);	
+            minRight[i] = min;
     	}
     	
-    	return partition;
+    	//now find the index where it can be partitioned
+    	for(int i = 1; i < len; i++)
+    	{
+    		if(maxLeft[i - 1] <= minRight[i]) return i;
+    	}
+    	
+    	return -1;
     }    
 }

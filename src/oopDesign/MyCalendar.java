@@ -6,7 +6,7 @@ import java.util.Map;
 //https://leetcode.com/problems/my-calendar-i/
 //["MyCalendar","book","book","book","book","book","book","book","book","book","book"]
 //[[],[47,50],[33,41],[39,45],[33,42],[25,32],[26,35],[19,25],[3,8],[8,13],[18,27]]
-// not working for [19,25]
+// notworking for [19,25]
 public class MyCalendar {
 
 	// startDate, endDate

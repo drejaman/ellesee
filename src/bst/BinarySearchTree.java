@@ -1,7 +1,6 @@
 package bst;
-//TODO move this to trees package
-import trees.TreeNode;
 
+//No LC solutions here. Basic trivial Tree operations like print, mirror etc.
 public class BinarySearchTree
 {
 	TreeNode root;
@@ -159,33 +158,41 @@ public class BinarySearchTree
 		}		
 	}
 	
-	//https://leetcode.com/problems/same-tree/submissions/
-	public boolean sameTree(TreeNode p,TreeNode q)
+	public BinarySearchTree createTreeFromPreOrderTraversal(int[] elements)
 	{
-        if(p == null && q ==null) return true;
-        
-        if((p == null && q != null) || (p != null && q == null))
-            return false;
-        
-        if(p.val == q.val)
-        {
-            return sameTree(p.left, q.left)
-                && sameTree(p.right, q.right);
-        }
-        
-        return false;
+		TreeNode root=new TreeNode(elements[0]);
+		BinarySearchTree bst = new BinarySearchTree(root);
+
+		findPlace(root,root.getValue(),elements,1,elements.length);
+		
+		return bst;
 	}
 	
-	//https://leetcode.com/problems/validate-binary-search-tree/
-	public boolean valid(TreeNode p, Integer low, Integer high) 
-	{   
-		if (p == null) return true;    
-	 
-		return (low == null || p.val > low) 
-	     && (high == null || p.val < high)          
-	     && valid(p.left, low, p.val)          
-	     && valid(p.right, p.val, high); 
-	} 
+	public void findPlace(TreeNode node,int referenceValue,int[] elements,int index,int len)
+	{
+		if(index == len)
+			return;
+		//if(elements[index]>referenceValue && node.getValue()!=referenceValue)
+		//	return;
+		if(elements[index]>node.getValue())
+		{
+			if(elements[index]<referenceValue)
+			{
+				node.setRight(new TreeNode(elements[index]));
+				findPlace(node.getRight(),referenceValue,elements,index+1,len);
+			}
+			else //if(elements[index]>referenceValue && node.getValue()==referenceValue)
+			{
+					referenceValue=elements[index];
+					return;
+			}
+		}
+		else
+		{
+			node.setLeft(new TreeNode(elements[index]));
+			findPlace(node.getLeft(),referenceValue,elements,index+1,len);			
+		}
+	}	
 	
 	//notworking
 	public int findMinSum(TreeNode node)

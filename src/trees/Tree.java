@@ -74,4 +74,14 @@ public void postOrderPrint(MyTreeNode node)
 		}
 	System.out.println(printer.getValue());
 }
+
+//public void preOrderPrint(BinaryTreeNode node)
+//{
+//	if(node!=null)
+//		System.out.println(node.getValue());
+//	if(node.getLeft()!=null)
+//		preOrderPrint(node.getLeft());
+//	if(node.getRight()!=null)
+//		preOrderPrint(node.getRight());
+//}
 }

@@ -1,4 +1,5 @@
-package trees;
+package bst;
+
 public class TreeNode
 {
 	public TreeNode left,right;
@@ -50,5 +51,10 @@ public class TreeNode
 	public int getValue()
 	{
 		return val;
+	}
+	
+	public boolean IsLeaf(TreeNode node)
+	{
+		return node.left == null && node.right == null;
 	}
 }

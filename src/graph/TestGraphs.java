@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
-import trees.TreeNode;
+
+import bst.TreeNode;
 
 public class TestGraphs {
 	public TestGraphs()
