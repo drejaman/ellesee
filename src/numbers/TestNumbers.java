@@ -8,7 +8,6 @@ public class TestNumbers {
 
 	public void test()
 	{
-		//Test https://leetcode.com/problems/self-dividing-numbers/description/		
 		for(int i: selfDividingNumbers(151, 191))
 		{
 			System.out.println(i);
@@ -21,10 +20,10 @@ public class TestNumbers {
         
         for(int i = left ; i <= right; i++)
         {
-        		if(isSelfDividingNumber(i))
-        		{
-        			selfDividingNumbers.add(i);
-        		}
+    		if(isSelfDividingNumber(i))
+    		{
+    			selfDividingNumbers.add(i);
+    		}
         }
         
         return selfDividingNumbers;
@@ -32,45 +31,48 @@ public class TestNumbers {
     
     private boolean isSelfDividingNumber(int number)
     {
-    		boolean IsSelfDivided = true;
-    		int numberToTest = number;
-    		
-    		ArrayList<Integer> digits = new ArrayList<Integer>();
-    		
-    		while(numberToTest > 0)
-    		{
-    			int currentNumber = numberToTest % 10;
-    			
-    			// A self dividing number is not allowed to have 0
-    			if(currentNumber == 0) return false;
-    			
-    			if(!digits.contains(currentNumber))
-    			{
-    				digits.add(currentNumber);
-    			}
-    			
-    			numberToTest /= 10;
-    		}
-    		
-    		if(digits.size() > 0)
-    		{
-    			for(int i: digits)
-    			{
-    				if((number % i) != 0)
-    				{
-    					IsSelfDivided = false;
-    					break;
-    				}
-    			}
-    		}
-    		
-    		return IsSelfDivided;
+		boolean IsSelfDivided = true;
+		int numberToTest = number;
+		
+		ArrayList<Integer> digits = new ArrayList<Integer>();
+		
+		while(numberToTest > 0)
+		{
+			int currentDigit = numberToTest % 10;
+			
+			// A self dividing number is not allowed to have 0
+			// strip the digits of the number
+			// like for number 54232 add 2, 3, 4, 5
+			if(currentDigit == 0) return false;
+			
+			if(!digits.contains(currentDigit))
+			{
+				digits.add(currentDigit);
+			}
+			
+			numberToTest /= 10;
+		}
+		
+		if(digits.size() > 0)
+		{
+			for(int i: digits)
+			{
+				if((number % i) != 0)
+				{
+					IsSelfDivided = false;
+					break;
+				}
+			}
+		}
+		
+		return IsSelfDivided;
     }
     
     // https://leetcode.com/problems/judge-route-circle/description/
+    // removed
     public boolean judgeCircle(String moves) {
-    	 //initial position 0,0
-    	 int verticalSum = 0;
+	 //initial position 0,0
+	 int verticalSum = 0;
      int horizontalSum = 0;
      
      char[] moveSequence = moves.toUpperCase().toCharArray();
@@ -99,50 +101,14 @@ public class TestNumbers {
      return verticalSum == 0 && horizontalSum == 0;
     }
     
-    // notworking for special cases
-    // https://leetcode.com/problems/divide-two-integers/description/
-    // corner case -2147483648, -1 as -2147483648 is the INT_MIN but 2147483648 is not INT_MAX (2147483647)
-    public int divide(int dividend, int divisor) {
-    	
-		// handles division by zero
-		if(divisor == 0) return -1;
-    		
-    		// checks the sign that will be later used by quotient
-        boolean sign = (dividend > 0 && divisor > 0) || (dividend < 0 && divisor < 0);
-        
-        
-        int quotient = 0;
-        
-        if(divisor < dividend)
-        {
-          dividend = dividend > 0 ? dividend : -dividend;
-          divisor = divisor > 0 ? divisor : -divisor;
-            
-	        	while(divisor <= dividend)
-	            {
-	            		dividend -= divisor;
-	            		quotient++;
-	            }        	
-        }
-        else
-        {
-            while(divisor > dividend)
-            {
-            		dividend -= divisor;
-            		quotient++;
-            }        	        	
-        }
-	        
-        return sign == true? quotient: -quotient;
-    }
-    
     // https://leetcode.com/problems/find-all-duplicates-in-an-array/description/
-    // O(n) time but O(n) extra space. Fine tuning need to be done to solve using no extra space
+    // O(n) time but O(n) extra space.
+    // Fine tuning need to be done to solve using no extra space
     // Time Limit Exceeded
     // 25/28 test cases passed
     //TODO
     public List<Integer> findDuplicates(int[] nums) {
-    	// If the ArrayList comparison doesn't work then use hasmap or hashtable
+    	// If the ArrayList comparison doesn't work then use hashmap or hashtable
     	ArrayList<Integer> nonDuplicates = new ArrayList<Integer>();    	
     	ArrayList<Integer> duplicates = new ArrayList<Integer>();
     	
@@ -180,7 +146,6 @@ public class TestNumbers {
     
     // https://leetcode.com/problems/monotonic-array/
     public boolean isMonotonic(int[] A) {
-        
     	// the tricky part is to determine whether it is increasing or decreasing
     	// specially for the cases like [2,2,2,3] or [2,2,2,1]
         int i = 1;
@@ -276,7 +241,6 @@ public class TestNumbers {
         return peakIndex;
     }
 
-
     //notworking
     // https://leetcode.com/problems/maximum-swap/
     // find the max digit and min digit before max and swap them
@@ -317,7 +281,7 @@ public class TestNumbers {
        return Integer.parseInt(new String(numChars));
     }
     
-    //notworking at all
+    //notworking
     //https://leetcode.com/problems/perfect-squares/
     public int numSquares(int n) {
         int[] squares = {1, 4, 9, 16, 25, 36, 49, 64, 100};
@@ -345,8 +309,8 @@ public class TestNumbers {
     	}
     }
 
-    //https://leetcode.com/problems/powx-n
     //notworking for n = IntMax or n = IntMin
+    //https://leetcode.com/problems/powx-n
     public double myPow(double x, int n) {
     	long nl = n;
     	

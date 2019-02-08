@@ -1,4 +1,4 @@
-package trees;
+package bst;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,12 +50,12 @@ public class TestTrees {
 	// Variation: If we have a list of trees that needs merging? Take 2 trees at a time and merge them 
 	// and take the next tree with the merged tree 
     public TreeNode mergeTrees(TreeNode t1, TreeNode t2) {
-    		// Terminating condition
-	    	if(t1 == null && t2 == null) return null;
-	    	
-	    	TreeNode mergedRoot = new TreeNode((t1 != null ? t1.val : 0) + (t2 != null ? t2.val : 0));
-	    	mergedRoot.left = mergeTrees(t1 != null ? t1.left : null, t2 != null ? t2.left : null);
-	    	mergedRoot.right = mergeTrees(t1 != null ? t1.right : null, t2 != null ? t2.right : null);
+		// Terminating condition
+    	if(t1 == null && t2 == null) return null;
+    	
+    	TreeNode mergedRoot = new TreeNode((t1 != null ? t1.val : 0) + (t2 != null ? t2.val : 0));
+    	mergedRoot.left = mergeTrees(t1 != null ? t1.left : null, t2 != null ? t2.left : null);
+    	mergedRoot.right = mergeTrees(t1 != null ? t1.right : null, t2 != null ? t2.right : null);
 	     
 	    return mergedRoot;
     }
@@ -71,6 +71,7 @@ public class TestTrees {
         int min = Integer.MAX_VALUE;
         
         ArrayList<TreeNode> nodes = (ArrayList<TreeNode>) this.InOrderTraversal(root); 
+        
         for(int i = 0; i < nodes.size() - 1; i++)
         {
         	TreeNode current = nodes.get(i);
@@ -85,7 +86,7 @@ public class TestTrees {
         return min;
     }
     
-    // Inorder traversal and Store the nodes in a list
+    // In Order traversal and Store the nodes in a list
     private List<TreeNode> InOrderTraversal(TreeNode node)
     {
     	if(node == null) return null;
@@ -98,20 +99,7 @@ public class TestTrees {
 
     	return nodes;    	
     }
-    
-    public int findTilt(TreeNode root) {
-        if(root == null) return 0;
-        
-        return Math.abs(this.TreeSum(root.left) - this.TreeSum(root.right));
-    }
-    
-    public int TreeSum(TreeNode root)
-    {
-    	if(root == null) return 0;
-    	
-    	return root.val + this.TreeSum(root.left) + this.TreeSum(root.right);
-    }
-    
+ 
     //https://leetcode.com/problems/maximum-binary-tree/description/
     /*
      * Approach: 
@@ -145,7 +133,8 @@ public class TestTrees {
     
     /*
      * Finds the index of the Maximum number given an array and a range in the array
-     * */
+     * 
+     */
     private static int FindMaxIndex(int[] nums, int start, int end)
     {
     	if(nums == null || nums.length == 0) return -1;
@@ -168,9 +157,11 @@ public class TestTrees {
     // https://leetcode.com/problems/flatten-binary-tree-to-linked-list/description/
     // this solution works perfectly fine except for huge input the memory limit exceeds
     // runtime O(N) - number of nodes in the tree
+    // goal: all the nodes are in the right side. that means only the right children has value  
     // logic: 
     // if right child is empty then node.right = node.left
-    // if right child is not empty then push the right child in the stack, then node.right = node.left and then recursively call the method with node.left
+    // if right child is not empty then push the right child in the stack, 
+    // then node.right = node.left and then recursively call the method with node.left
     // once it get backs to the same node then the returningNode.right = flatten(pop())
     static Stack<TreeNode> treeStack = new Stack<TreeNode>();
     
@@ -182,12 +173,16 @@ public class TestTrees {
     	
     	if(root.left != null) 
     	{
+    		//root.right is already pushed to stack. so assign left to right
         	root.right = root.left;
         	root.left = null;
     	}
-
+    	
+    	//after reassignment root.right shouldn't be null if root is not leaf
     	if(root.right != null) flattenTree(root.right);
     	
+    	//after flattenTree is done on right then we pop the element from stack
+    	//and flatten the popped element
     	if(!treeStack.isEmpty())
     	{
     		root.right = flattenTree(treeStack.pop());        		
@@ -226,7 +221,7 @@ public class TestTrees {
     	if(node.right != null) InOrderPrint(node.right);
     }
 
-    //https://leetcode.com/problems/verify-preorder-serialization-of-a-binary-tree/description/
+    // https://leetcode.com/problems/verify-preorder-serialization-of-a-binary-tree/description/
     // diff = outer edges - inner edges
     // for root = 2 - 0 = 2, for internal node = 2 - 1
     // so for every non-leaf node we visit we add 2 to count and reduce 1 for the incoming one
@@ -245,6 +240,8 @@ public class TestTrees {
     public boolean isBalanced(TreeNode root) {
         if(root == null) return true;
         
+        // we need to check if it is balanced in the current level
+        // and other subsequent levels on left and right subtree
         return (Math.abs(maxDepth(root.left) - maxDepth(root.right)) <= 1)
         		&& isBalanced(root.left)
         		&& isBalanced(root.right);
@@ -279,6 +276,16 @@ public class TestTrees {
         return sortedListToBST(0, n-1);
     }
 
+    //1, 3, 5, 6, 7, 9
+    //list initially points to head which is 1
+    //sortedlist(1, 3, 5, 6, 7, 9) -> left = sortedlist(1, 3), root = 5, right = sortedList(6, 7, 9)
+    //sortedlist(1, 3) -> mid = 0, left = null, root = 1 (list), right = sortedlist (3) now list is pointing to 3
+    //sortedList(6, 7, 9) -> mid = index 4, left = sortedlist (6) list is pointing to 6, root = 7, right = sortedlist(9) 
+    //		 5
+    //	   /   \		
+    //    1	    7	
+    //	   \	/\
+    //	    3  6  8
     private TreeNode sortedListToBST(int start, int end)
     {
         if(start > end) return null;
@@ -286,12 +293,12 @@ public class TestTrees {
         int mid = (start + end) /2 ;
         
         TreeNode leftChild = sortedListToBST(start, mid - 1);
-        TreeNode parent = new TreeNode(list.val);
+        TreeNode root = new TreeNode(list.val);
         list = list.next;
-        parent.left = leftChild;
-        parent.right = sortedListToBST(mid + 1, end);
+        root.left = leftChild;
+        root.right = sortedListToBST(mid + 1, end);
         
-        return parent;
+        return root;
     }
 
     //Cracking4.10
@@ -308,6 +315,7 @@ public class TestTrees {
     	// the big tree is null and we still haven't found the match
     	if(t1 == null) return false;
     	
+    	//the values matched now try matching the whole tree
     	else if(t1.val == t2.val && matchTree(t1, t2))
 		{
 			return true;
@@ -319,13 +327,17 @@ public class TestTrees {
     
     private boolean matchTree(TreeNode t1, TreeNode t2)
     {
-    	if(t1 == null && t2 == null) return true;
-    	else if(t1 == null || t2 == null) return false;
-    	else if(t1.val != t2.val) return false;
+    	if(t1 == null && t2 == null) return true;//both are null so they match
+    	else if(t1 == null || t2 == null) return false;//one of then null so no match
+//    	else if(t1.val != t2.val) return false;//value doesn't match. don't need this check
     	else return matchTree(t1.left, t2.left) && matchTree(t1.right, t2.right);
     }
     
     //Cracking4.12 pathswithsum
+    //we need 2 methods:
+    //method - 1:continue tracking currentSum and from topDown and return totalWays when the targetSum found
+    //countPathsWithSumFromNode
+    //method - 2: at each node call method-1 for root, call method-2 for both left and right
     public int countPathsWithSum(TreeNode node, int targetSum)
     {
     	if(node == null) return 0;
@@ -346,14 +358,15 @@ public class TestTrees {
     	
     	int totalWays = 0;
     	
+    	//can't we return totalWays here?
     	if(currentSum == targetSum) totalWays++;
     	
+    	//check in both left and right subtree after adding current node's value to currentsum
     	totalWays += countPathsWithSumFromNode(node.left, targetSum, currentSum);
     	totalWays += countPathsWithSumFromNode(node.right, targetSum, currentSum);
     	
     	return totalWays;
     }
-    
     
     //https://leetcode.com/problems/find-duplicate-subtrees/submissions/
     private HashMap<String, Integer> subtreeCount;
@@ -366,14 +379,24 @@ public class TestTrees {
     	return answer;
     }
     
+    //		5
+    //	  /	  \
+    //	 4	   4
+    //  /  \  /  \
+    //	1  2 1	  2 
     private String serializeToFindDuplicate(TreeNode node)
     {
     	if(node == null) return "#";
     	
+    	//this contains the serialization of the subtree rooted at node 
     	String currentSerial = node.val + "," + serializeToFindDuplicate(node.left) + "," + serializeToFindDuplicate(node.right);
-
+    	
+    	//for the above example when it traverse left 4 it will create serialization like 4,1,#,#,2,#,#
+    	//and put it into subtreeCount hashmap
     	subtreeCount.put(currentSerial, subtreeCount.getOrDefault(currentSerial, 0) + 1);
     	
+    	//then later when it traverses right 4 it will create the same serialization 
+    	//then this will become true and the duplicate node will be added to answer
     	if(subtreeCount.get(currentSerial) == 2)
     	{
     		answer.add(node);
@@ -383,12 +406,19 @@ public class TestTrees {
     }
     
     //https://leetcode.com/problems/binary-tree-level-order-traversal/
+    //most important
     //Given binary tree [3,9,20,null,null,15,7],
     //[
     //[3],
     //[9,20],
     //[15,7]
     //]
+    //trick: 
+    //to traverse levels need to keep two lists. one for the previous and the other
+    //is current to put the children of each node of previous
+    //after all the children of previous is added to current list
+    //the current list is added to list of list that will be returned as result
+    //and then current becomes previous
     public List<List<Integer>> levelOrder(TreeNode root) {
         List<List<Integer>> treeValues = new ArrayList<List<Integer>>();
         if(root == null) return treeValues;
@@ -430,12 +460,13 @@ public class TestTrees {
     // [20,9],
     // [15,7]
     //]
-    //idea: this will be a variation of levelOrder traversal
-    //implementation clue: 
+    // idea: this will be a variation of levelOrder traversal
+    // trick: 
     // get the size of list of list 
     // if the (size + 1) % 2 == 0 then the current list insertion is left to right
     // otherwise insertion is right to left
-    // we might need to insert into treeNode list in regular order but alternate times we read from it reverse way
+    // we might need to insert into treeNode list in regular order but 
+    // alternate times we read from it reverse way
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
         List<List<Integer>> treeValues = new ArrayList<List<Integer>>();
 
@@ -515,6 +546,7 @@ public class TestTrees {
         
         for(List<Integer> current : nodeValues)
         {
+        	//careful about this Collections.max
         	largeValues.add(Collections.max(current));        	
         }
         
@@ -539,64 +571,72 @@ public class TestTrees {
 //        
 //    }
     
-    // notworking according to the specifications
     //https://leetcode.com/problems/binary-tree-pruning/description/
     public TreeNode pruneTree(TreeNode root) {
-    	
-    	if(root == null) return null;
-    	
-    	if(root.left != null)
-    	{
-    		if(HasZeroInTree(root.left)) root.left = null;
-    		else pruneTree(root.left);
-    	}
-    	
-    	if(root.right != null)
-    	{
-    		if(HasZeroInTree(root.right)) root.right = null;
-    		else pruneTree(root.right);
-    	}
-
-    	return root;  
+    	return HasOneInTree(root) ? root : null;
     }
     
-    private boolean HasZeroInTree(TreeNode root)
+    // HasOneInTree(root) does two things: 
+    // it tells us whether the subtree at this node contains a 1 
+    // it also prunes all subtrees not containing 1.
+    // If for example, node.left does not contain a one, then we should prune it via node.left = null.
+    private boolean HasOneInTree(TreeNode root)
     {
-    	if(root == null) return true;
+    	if(root == null) return false;
     	
-    	if(root.val == 0) return true;
+    	boolean leftOne = HasOneInTree(root.left);
+    	boolean rightOne = HasOneInTree(root.right);
     	
-    	if((root.left != null && root.left.val == 0) || (root.right != null && root.right.val == 0)) return true;
+    	if(!leftOne) root.left = null;
+    	if(!rightOne) root.right = null;
     	
-    	return HasZeroInTree(root.left) && HasZeroInTree(root.right);
+    	return root.val == 1 || leftOne || rightOne;
     }
         
-    //notworking (stack overflow error)
-    // https://leetcode.com/problems/insert-into-a-binary-search-tree/description/
+    // https://leetcode.com/problems/insert-into-a-binary-search-tree/
     public TreeNode insertIntoBST(TreeNode root, int val) {
-    	if(root == null) return new TreeNode(val);
-    	
-    	if(val >= root.val && root.right == null)
-    	{
-    		root.right = new TreeNode(val);
-    	}
-    	
-    	if(val < root.val && root.left == null)
-    	{
-    		root.left = new TreeNode(val);
-    	}
-    	
-    	if(val >= root.val && root.right != null)
-    	{
-    		insertIntoBST(root.right, val);
-    	}
+        if(root == null)
+            root = new TreeNode(val);
+        else if(val < root.val)
+            root.left = insertIntoBST(root.left, val);
+        else
+            root.right = insertIntoBST(root.right, val);
+        return root;
+    }
+     
+    // https://leetcode.com/problems/search-in-a-binary-search-tree/
+    public TreeNode searchBST(TreeNode root, int val) {
+        if(root == null) return null;
+        
+        if(val == root.val) return root;
+        else if(val > root.val) return searchBST(root.right, val);
+        
+        return searchBST(root.left, val);        
+    }
 
-    	if(val < root.val && root.left != null)
-    	{
-    		insertIntoBST(root.left, val);
-    	}
-
-    	return root;
+    //https://leetcode.com/problems/binary-tree-tilt/
+    private int tilt = 0;
+    
+    public int findTilt(TreeNode root) {
+        if(root == null) return 0;
+        
+        navigate(root);
+        
+        return tilt;
     }
     
+    private int navigate(TreeNode root)
+    {
+    	if(root == null) return 0;
+    	
+    	int left = navigate(root.left);
+    	int right = navigate(root.right);
+    	
+    	//on a node, tilt is the difference 
+    	//between left and right subtree
+    	tilt += Math.abs(left-right);
+    	
+    	//in a node the sum is node's value and left, right subtree
+    	return root.val + left + right;
+    }    
 }
