@@ -422,5 +422,39 @@ public class TestArrays {
     	}
     	
     	return -1;
-    }    
+    }
+    
+  	public static int[] stockProfit(int[] stockPrices)
+  	{
+  	  int maxProfit = 0;
+  	  int minIndex = 0, maxIndex = 0;
+  	  int min = stockPrices[0], max = stockPrices[0];
+
+  	  int[] dates = new int[2];
+
+  	  //O(N) runtime
+  	  for(int i = 1; i < stockPrices.length; i++)
+  	  {
+  	    if(stockPrices[i] >= max)
+  	    {
+  	      max = stockPrices[i];
+  	      maxIndex = i;
+  	    }
+
+  	    if(stockPrices[i] < min)
+  	    {
+  	      min = stockPrices[i];
+  	      minIndex = i;
+  	    }
+
+  	    if(maxIndex > minIndex && ((max - min) > maxProfit))
+  	    {
+  	      maxProfit = max - min;
+  	      dates[0] = minIndex;
+  	      dates[1] = maxIndex;
+  	    }
+  	  }
+
+  	  return dates;
+  	}
 }

@@ -1,5 +1,7 @@
 package dyna;
 
+import java.util.Arrays;
+
 public class TestDynamic {
     //https://leetcode.com/problems/unique-paths/
     /*
@@ -167,4 +169,36 @@ public class TestDynamic {
 		
 		return sum;
     }
+    
+    //https://leetcode.com/problems/perfect-squares/
+    public int numSquares(int n) {
+		int[] dp = new int[n + 1];
+		Arrays.fill(dp, Integer.MAX_VALUE);
+		
+		// stopping condition. for 0 there's only a way 
+		// to get to 0 with 0 squares
+		dp[0] = 0;
+		    		
+		for(int i = 1; i <= n; i++)
+		{
+			int j = 1;
+			
+			int min = Integer.MAX_VALUE;
+			
+			// we use j as j square which is 1 way
+			// and add dp[i - j*j] ways to it making
+			// total no of ways to get i using j 
+			// = dp[i - j * j] + 1
+			// then we get min comparing this against previous min
+			while(i - j* j >= 0)
+			{
+				min = Math.min(min, dp[i - j*j] + 1);
+                j++;
+			}
+			
+			dp[i] = min;
+		}
+		
+		return dp[n];
+    }    
 }

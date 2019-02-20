@@ -22,6 +22,7 @@ public class CommonBacktracking {
     		
     		for(int i = 0; i < nums.length; i++)
     		{
+    			//making sure we are not adding duplicates
     			if(list.contains(nums[i])) continue;
     			
     			list.add(nums[i]);
@@ -47,7 +48,7 @@ public class CommonBacktracking {
     
     private void permuteVisit(int[] nums, List<List<Integer>> lists, List<Integer> list, boolean[] visit)
     {
-    		if(nums.length == list.size() && !list.contains(list))
+    		if(nums.length == list.size() && !lists.contains(list))
     		{
     			lists.add(new ArrayList<Integer>(list));
     			return;
@@ -56,7 +57,8 @@ public class CommonBacktracking {
     		for(int i = 0; i < nums.length; i++)
     		{
     			if(visit[i]) continue;
-    			// when a number has the same value with its previous, we can use this number only if previous is used
+    			// key: when a number has the same value with its previous, 
+    			// we can use this number only if previous is used
     			if(i > 0 && nums[i-1] == nums[i] && !visit[i-1]) continue;
     			
     			list.add(nums[i]);
@@ -71,7 +73,7 @@ public class CommonBacktracking {
     }
 
     // https://leetcode.com/problems/subsets/
-    // https://leetcode.com/problems/subsets-ii/
+    // https://leetcode.com/problems/subsets-ii/ (input might contain duplicates but not the result)
     public List<List<Integer>> subsets(int[] nums) {
         List<List<Integer>> sets = new ArrayList<List<Integer>>();
         
@@ -84,20 +86,21 @@ public class CommonBacktracking {
     private void miniSubset(List<List<Integer>> sets, List<Integer> set, int []nums, int startIndex)
     {
     	// in the subset case we always add the new set that came in
-    //if check is required only for subset-II
+    // if check is required only for subset-II
+    	// (input might contain duplicates but not the result)
 //    	if(!sets.contains(set))
 //    	{
         	sets.add(new ArrayList<Integer>(set));    		
 //    	}
     	
-    	for(int i = startIndex; i < nums.length; i++)
-    	{
-    		set.add(nums[i]);
-    		//add the next possible number
-    		miniSubset(sets, set, nums, i + 1);
-    		//backtrack
-    		set.remove(set.size() - 1);
-    	}
+	    	for(int i = startIndex; i < nums.length; i++)
+	    	{
+	    		set.add(nums[i]);
+	    		//add the next possible number
+	    		miniSubset(sets, set, nums, i + 1);
+	    		//backtrack
+	    		set.remove(set.size() - 1);
+	    	}
     }
 
     // https://leetcode.com/problems/combination-sum/

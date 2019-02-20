@@ -102,29 +102,49 @@ public class TestNumbers {
     }
     
     // https://leetcode.com/problems/find-all-duplicates-in-an-array/description/
-    // O(n) time but O(n) extra space.
-    // Fine tuning need to be done to solve using no extra space
-    // Time Limit Exceeded
-    // 25/28 test cases passed
-    //TODO
+    
+    // trick: the key is 1 <= a[i] <= n (n = size of array) 
+    // The concept here is to negate the number at array[number - 1] 
+    // Once a value is negated, if it requires to be negated again then it is a duplicate
+    // because the number is duplicate and we are visiting the same index twice
+    // so add that number as duplicate
+    // O(N) time and O(1) space
+	//    Input
+	//    [4,3,2,7,8,2,1,3]
+	//    [0,1,2,3,4,5,6,7]
+	//
+	//    Output:
+	//    [2,3]
+	//
+	//    Simulation
+	//    4, nums[3] = -7
+	//    3, nums[2] = -2
+	//    2, nums[1] = -3
+	//    7, nums[6] = -1
+	//    8, nums[7] = -3
+	//    2, nums[1] = -3, 3
+	//    1, nums[0] = -4, 
+	//    3, nums[2] = -2, 2
     public List<Integer> findDuplicates(int[] nums) {
-    	// If the ArrayList comparison doesn't work then use hashmap or hashtable
-    	ArrayList<Integer> nonDuplicates = new ArrayList<Integer>();    	
-    	ArrayList<Integer> duplicates = new ArrayList<Integer>();
-    	
-    	for(int current: nums)
-    	{
-    		if(nonDuplicates.contains(current) && !duplicates.contains(current))
+    		List<Integer> result = new ArrayList<Integer>();
+    		
+    		if(nums == null || nums.length == 0) return result;
+    		
+    		for(int num : nums)
     		{
-    			duplicates.add(current);
+    			int index = Math.abs(num) - 1;
+    			
+    			if(nums[index] > 0) nums[index] = -nums[index];
+    			
+    			// otherwise it was already negated once
+    			// so num is duplicate and so index = num - 1 is visited twice
+    			else
+    			{
+    				result.add(Math.abs(num));
+    			}
     		}
-    		else
-    		{
-    			nonDuplicates.add(current);
-    		}
-    	}
-    	
-    	return duplicates;
+    		
+    		return result;
     }
     
     // https://leetcode.com/problems/array-partition-i/
@@ -241,92 +261,69 @@ public class TestNumbers {
         return peakIndex;
     }
 
-    //notworking
     // https://leetcode.com/problems/maximum-swap/
     // find the max digit and min digit before max and swap them
     // need to get this working for 98368
+    // input: 98368
+    // L[digit] last[9] = 0, last[8] = 4, last[6] = 3, last[3] = 2
+    // Last[digit] > i
+    // O(N) runtime actually O(kn) as k = 10 constant making it O(N), O(1) space
     public int maximumSwap(int num) {
-       char[] numChars = Integer.toString(num).toCharArray();
-       
-       int max = Integer.MIN_VALUE;
-       int maxIndex = -1;
-       int min = Integer.MAX_VALUE;
-       int minIndex = -1;
-       
-       for(int i = 0; i < numChars.length; i++)
-       {
-    	
-    	int numChar = numChars[i] - '0';
-    	   
-    	if(numChar >= max)
-    	{
-    		max = numChar;
-    		maxIndex = i;    		   
-    	}
-    	
-    	if(numChar < min && min < max)
-    	{
-    		min = numChar;
-    		minIndex = i;
-    	}    	
-       }
-       
-       if(minIndex < maxIndex)
-       {
-    	   char temp = numChars[minIndex];
-    	   numChars[minIndex] = numChars[maxIndex];
-    	   numChars[maxIndex] = temp;
-       }
-       
-       return Integer.parseInt(new String(numChars));
-    }
-    
-    //notworking
-    //https://leetcode.com/problems/perfect-squares/
-    public int numSquares(int n) {
-        int[] squares = {1, 4, 9, 16, 25, 36, 49, 64, 100};
-        
-        List<Integer> finalResult = new ArrayList<Integer>();
-        findWays(n, squares, 0, finalResult, new ArrayList<Integer>());
-        
-        return (finalResult.size() > 0) ? finalResult.size() : -1;
-    }
-    
-    private void findWays(int n, int[] squares, int index, List<Integer> finalResult, List<Integer> currentCombination)
-    {
-    	if(n == 0)
-    	{
-    		finalResult.addAll(currentCombination);
-    		return;
-    	}
-    	
-    	if(n > 0)
-    	{
-    		int currentNumber = squares[index];
-    		currentCombination.add(currentNumber);
-    		findWays(n - currentNumber, squares, index, finalResult, currentCombination);
-    		findWays(n - currentNumber, squares, index + 1, finalResult, currentCombination);
-    	}
-    }
+    		if(num == 0) return num;
+    		
+    		char[] numChars = Integer.toString(num).toCharArray();
+    		
+    		if(numChars.length == 1) return num;
+    		
+    		int[] last = new int[10];
+    		
+    		//find the last (lowest value for that digit) index of each digit (1 - 9)
+    		for(int i = 0; i < numChars.length; i++)
+    		{
+    			last[numChars[i] - '0'] = i;
+    		}
 
-    //notworking for n = IntMax or n = IntMin
+    		//start with left for the number
+    		//first lower value than higher value to be replaced
+    		for(int i = 0; i < numChars.length; i++)
+    		{
+        		//start with the highest digit 9
+    			//and go up to the current value at index i
+    			for(int digit = 9; digit > numChars[i] - '0'; digit--)
+    			{
+    				//found a digit higher than current digit but at lower value index
+    				//so make the swap bumping up the current number
+    				if(last[digit] > i)
+    				{
+    					char temp = numChars[last[digit]];
+    					numChars[last[digit]] = numChars[i];
+    					numChars[i] = temp;
+    					
+    					//we only need one swap so return
+    					return Integer.valueOf(new String(numChars));
+    				}
+    			}
+    		}
+    		
+    		return num;
+    }
+    
     //https://leetcode.com/problems/powx-n
     public double myPow(double x, int n) {
-    	long nl = n;
-    	
-    	return myPowD(x, nl);
-    }
-    
-    private double myPowD(double x, double n)
-    {
         if(n == 0) return 1.0;
         
+        //special case to handle overflow problem like 2.00000, -2147483648
+        if(n == Integer.MIN_VALUE){
+            return myPow(x*x, n/2);
+        }
+
+        //if the power (n) is negative then we need to change x into fraction
         if(n < 0)
         {
-        	n = -n;
-        	x = 1/x;
+	        	n = -n;
+	        	x = 1/x;
         }
         
-        return n % 2 == 0 ? myPowD(x * x, n/2) : x * myPowD(x * x, n/2);    	
+        return n % 2 == 0 ? myPow(x * x, n/2) : x * myPow(x * x, n/2);        
     }
 }

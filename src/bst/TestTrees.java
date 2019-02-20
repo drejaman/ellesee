@@ -546,12 +546,12 @@ public class TestTrees {
         
         for(List<Integer> current : nodeValues)
         {
-        	//careful about this Collections.max
-        	largeValues.add(Collections.max(current));        	
+	        	//careful about this Collections.max
+	        	largeValues.add(Collections.max(current));        	
         }
         
         return largeValues;
-    }    
+    }
     
     //https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
     //TODO
