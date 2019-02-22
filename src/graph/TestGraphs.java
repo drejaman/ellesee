@@ -176,6 +176,66 @@ public class TestGraphs {
     					+ maxAreaVisit(grid, r, c - 1, visit) + maxAreaVisit(grid, r, c + 1, visit);
     }
 
+    // https://leetcode.com/problems/surrounded-regions/
+    public void solve(char[][] board) {
+        if(board == null || board.length == 0 || board[0].length == 0) return;
+        
+        int rows = board.length;
+        int cols = board[0].length;
+        
+        for(int i = 0; i < rows ; i++)
+        {
+        	//check column 0 of each row
+        	if(board[i][0] == 'O') expandBorderDfs(board, i, 0);
+
+        	//check last column 0 of each row
+        	if(board[i][cols - 1] == 'O') expandBorderDfs(board, i, cols - 1);
+        }
+        
+        for(int j = 0; j < cols ; j++)
+        {
+        	//check every column of row 0
+        	if(board[0][j] == 'O') expandBorderDfs(board, 0, j);
+
+        	//check every column of last row
+        	if(board[rows - 1][j] == 'O') expandBorderDfs(board, rows - 1, j);
+        }
+        
+        //now expand X
+        for(int i = 0; i < rows; i++ )
+        {
+    		for(int j = 0; j < cols ; j++)
+    		{
+    			if(board[i][j] == 'O')
+    			{        				
+    				board[i][j] = 'X';
+    			}
+    			else if(board[i][j] == 'B')
+    			{
+    				board[i][j] = 'O';        				
+    			}
+    		}
+        }
+    }    
+    
+    //expand the bordering 0s at first using DFS
+    //expand the map and mark them as B if they are somehow connected to Bordering 0
+    private void expandBorderDfs(char[][] board, int i, int j)
+    {
+    	if(i < 0 || i > board.length - 1 || j < 0 || j > board[0].length - 1) return;
+    	
+    	if (board[i][j] == 'O')
+    		board[i][j] = 'B';
+    	
+    	//check the adjacent rows up and down
+    	if(i > 1 && board[i - 1][j] == 'O') expandBorderDfs(board, i - 1, j);
+    	if(i < board.length - 2 && board[i + 1][j] == 'O') expandBorderDfs(board, i + 1, j);
+
+    	//check the adjacent columns left and right 
+    	if(j > 1 && board[i][j - 1] == 'O') expandBorderDfs(board, i, j - 1);
+    	if(j < board[i].length - 2 && board[i][j + 1] == 'O') expandBorderDfs(board, i, j + 1);
+    }    
+
     //https://leetcode.com/problems/word-search/
     public boolean exist(char[][] board, String word) {
         if(word == null || word.isEmpty() || word.length() == 0) return true;
@@ -229,7 +289,7 @@ public class TestGraphs {
     //start from room0 and push it into stack
     //keep popping from stack the current room
     //check each room key for current room
-    //if the room is not already vistied then set visit to true
+    //if the room is not already visited then set visit to true
     //and push it into stack
     //at the end check visit
     //if all cell of the visit are set to true then return true
@@ -263,7 +323,8 @@ public class TestGraphs {
     }
     
     //https://leetcode.com/problems/find-bottom-left-tree-value/
-    //idea: BFS. when you reach a left leaf update minimum. at the end of graph traversal return graph left minimum
+    //idea: BFS. when you reach a left leaf update minimum. 
+    //at the end of graph traversal return graph left minimum
     int minLeftValue = Integer.MAX_VALUE;
     int maxHeight = Integer.MIN_VALUE;
 
@@ -294,6 +355,40 @@ public class TestGraphs {
 	    	if(root.right != null) findBottomLeftHeight(root.right, 1 + currentHeight);
     }	    
     
+    //https://leetcode.com/problems/house-robber-iii/
+    //idea: level order traversal won't work here
+    //do dfs. for each node the max could be 
+    //either adding that node [0] or not adding that node [1]
+    public int rob(TreeNode root) {
+	    if(root == null) return 0;
+	   
+	    int[] robVal = dfsRob(root);
+	    
+	    return Math.max(robVal[0], robVal[1]);
+    }
+    
+    //nodeRobVal[0] = so far robbed value adding this node's value
+    //nodeRobVal[1] = so far robbed value without adding this node's value
+    private int[] dfsRob(TreeNode node)
+    {
+    	if(node == null) return new int[2];
+	
+		int[] left = dfsRob(node.left);
+		int[] right = dfsRob(node.right);
+		
+		int[] nodeRobVal = new int[2];
+		
+		//max value adding this node's value
+		//as we are considering this node's value
+		nodeRobVal[0] = node.val + left[1] + right[1];
+		
+		//as we haven't added this node's value we can add the max of each child's 
+		//either including the child's value [0] or without adding child's value [1]
+		nodeRobVal[1] = Math.max(left[0], left[1]) + Math.max(right[0], right[1]);
+		
+		return nodeRobVal;
+    }
+    
     //https://leetcode.com/problems/course-schedule/
     //TODO Don't understand the reasoning clearly
     public boolean canFinish(int numCourses, int[][] prerequisites) {
@@ -323,41 +418,4 @@ public class TestGraphs {
         completed.add(course);
         return true;
     }
-    
-    
-    //https://leetcode.com/problems/house-robber-iii/
-    //idea: level order traversal won't work here
-    //do dfs. for each node the max could be 
-    //either adding that node [0] or not adding that node [1]
-    public int rob(TreeNode root) {
-	    if(root == null) return 0;
-	   
-	    int[] robVal = dfsRob(root);
-	    
-	    return Math.max(robVal[0], robVal[1]);
-    }
-    
-    //nodeRobVal[0] = so far robbed value adding this node's value
-    //nodeRobVal[1] = so far robbed value without adding this node's value
-    private int[] dfsRob(TreeNode node)
-    {
-    		if(node == null) return new int[2];
-    		
-    		int[] left = dfsRob(node.left);
-    		int[] right = dfsRob(node.right);
-    		
-    		int[] nodeRobVal = new int[2];
-    		
-    		//max value adding this node's value
-    		//as we are considering this node's value
-    		nodeRobVal[0] = node.val + left[1] + right[1];
-    		
-    		//as we haven't added this node's value we can add the max of each child's 
-    		//either including the child's value [0] or without adding child's value [1]
-    		nodeRobVal[1] = Math.max(left[0], left[1]) + Math.max(right[0], right[1]);
-    		
-    		return nodeRobVal;
-    }
-    
-    
 }

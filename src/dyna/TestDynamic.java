@@ -69,22 +69,22 @@ public class TestDynamic {
      // now for other cells other than row0 or col0
      for(int i = 1; i < row; i++)
      {
-    	 	for(int j = 1; j < col; j++)
-    	 	{
-    	 		//current cell 0 means we have no obstacle and a way to move
-    	 		if(obstacleGrid[i][j] == 0)
-    	 		{
-    	 			//update the no of ways we can get to cell i,j
-    	 			//which is the sum of left and upper cell
-    	 			obstacleGrid[i][j] = obstacleGrid[i-1][j] + obstacleGrid[i][j-1];
-    	 		}
-    	 		else
-    	 		{
-    	 			//if the current cell i,j has already value 1 then 
-    	 			//there is no way to move through this cell
-    	 			obstacleGrid[i][j] = 0;
-    	 		}
-    	 	}
+	 	for(int j = 1; j < col; j++)
+	 	{
+	 		//current cell 0 means we have no obstacle and a way to move
+	 		if(obstacleGrid[i][j] == 0)
+	 		{
+	 			//update the no of ways we can get to cell i,j
+	 			//which is the sum of left and upper cell
+	 			obstacleGrid[i][j] = obstacleGrid[i-1][j] + obstacleGrid[i][j-1];
+	 		}
+	 		else
+	 		{
+	 			//if the current cell i,j has already value 1 then 
+	 			//there is no way to move through this cell
+	 			obstacleGrid[i][j] = 0;
+	 		}
+	 	}
      }
      
      return obstacleGrid[row - 1][col - 1];

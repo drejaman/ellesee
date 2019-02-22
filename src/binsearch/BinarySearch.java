@@ -4,10 +4,13 @@ public class BinarySearch {
 	//https://leetcode.com/problems/search-insert-position/submissions/
     public int searchInsert(int[] nums, int target) {
         if(nums == null || nums.length == 0) return -1;
+        
         //already bigger than the biggest element
         if(target > nums[nums.length - 1]) return nums.length - 1;
+        
         //already smaller than the smallest element
         if(target < nums[0]) return 0;
+        
         return binarySearchIndex(nums, target, 0, nums.length - 1);
     }
     
@@ -47,14 +50,16 @@ public class BinarySearch {
         {
         	int mid = (left + right) / 2;//index = 3, 5
         	
-        	// if nums[mid] is greater than nums[right] that means the whole left side can't contain min
+        	// if nums[mid] is greater than nums[right] that 
+        	// means the whole left side can't contain min
         	if(nums[mid] > nums[right])
         	{
         		left = mid + 1; //4
         	}
         	else
         	{
-        		// right = mid is important instead of right = mid - 1 to make sure it doesn't skip the mid number
+        		// right = mid is important instead of right = mid - 1 to make sure 
+        		// it doesn't skip the mid number
         		right = mid;//5
         	}
         }
@@ -149,7 +154,7 @@ public class BinarySearch {
 	   
 	   if(strings[mid].equals(needle)) return mid;
 	   
-	   //this is required to skip throught the empty string ("")
+	   //this is required to skip through the empty string ("")
 	   int midLeft = mid - 1;
 	   int midRight = mid + 1;
 	   
@@ -230,44 +235,44 @@ public class BinarySearch {
 	     // find the right column
 	     while(colLeft < colRight)
 	     {
-	    	 	int colMid = (colLeft + colRight)/2;
-	    	 	
-	    	 	// found the number
-	    	 	if(target == matrix[0][colMid]) return true;
-	    	 	
-	    	 	// found the right column
-	    	 	if(target > matrix[0][colMid] && target < matrix[0][colRight])
-	    	 	{
-	    	 		targetCol = colMid;
-	    	 		break;
-	    	 	}
-	    	 	
-	    	 	if(target < matrix[0][colMid])
-	    	 	{
-	    	 		colRight = colMid;
-	    	 	}
-	    	 	else
-	    	 	{
-	    	 		colLeft = colMid;
-	    	 	}
+    	 	int colMid = (colLeft + colRight)/2;
+    	 	
+    	 	// found the number
+    	 	if(target == matrix[0][colMid]) return true;
+    	 	
+    	 	// found the right column
+    	 	if(target > matrix[0][colMid] && target < matrix[0][colRight])
+    	 	{
+    	 		targetCol = colMid;
+    	 		break;
+    	 	}
+    	 	
+    	 	if(target < matrix[0][colMid])
+    	 	{
+    	 		colRight = colMid;
+    	 	}
+    	 	else
+    	 	{
+    	 		colLeft = colMid;
+    	 	}
 	     }
 	     
 	     int rowStart = 0, rowEnd = matrix.length;
 	     
 	     while(rowStart < rowEnd)
 	     {
-	    	 	int rowMid = (rowStart + rowEnd)/2;
-	    	 	
-	    	 	if(matrix[rowMid][targetCol] == target) return true;
-	    	 	
-	    	 	if(target < matrix[rowMid][targetCol])
-	    	 	{
-	    	 		rowEnd = rowMid - 1;
-	    	 	}
-	    	 	else
-	    	 	{
-	    	 		rowStart = rowMid + 1;
-	    	 	}
+    	 	int rowMid = (rowStart + rowEnd)/2;
+    	 	
+    	 	if(matrix[rowMid][targetCol] == target) return true;
+    	 	
+    	 	if(target < matrix[rowMid][targetCol])
+    	 	{
+    	 		rowEnd = rowMid - 1;
+    	 	}
+    	 	else
+    	 	{
+    	 		rowStart = rowMid + 1;
+    	 	}
 	     }
 	     
 	     return true;
