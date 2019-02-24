@@ -2,6 +2,10 @@ package recursion;
 
 import java.util.Arrays;
 
+/**
+ * @author afzaman
+ *
+ */
 public class TestRecursion {
 
 public TestRecursion()
@@ -19,6 +23,10 @@ public void test()
 }
 
 // worst case implementation. should be at least iterative or memoized
+/**
+ * @param n calculate n-th fibo number
+ * @return calculated fibonacci number
+ */
 public int Fibonacci(int n)
 {
 	if (n == 2) return 1;
@@ -27,25 +35,33 @@ public int Fibonacci(int n)
 }
 
 // goes to common backtracking
-public void stringPermutation(String str,String printStr)
+public void stringPermutation(String strLeftToPerm, String permutedString)
 {
-	if(str.length() == 1)
+	//stopping condition when the permutation is done
+	if(strLeftToPerm.length() == 1)
 	{
-		System.out.println(printStr + str);
+		System.out.println(permutedString + strLeftToPerm);
 		return;
 	}
 	
-	for(int i = 0; i < str.length(); i++)
+	//we take out one character from 
+	//different positions of strLeftToPerm
+	//add that taken character to already permutedString
+	//recursively call the permute method with the rest of
+	//the characters from permutedString
+	for(int i = 0; i < strLeftToPerm.length(); i++)
 	{
-		String single = str.substring(i, i+1);
+		String single = strLeftToPerm.substring(i, i+1);
 		
 		StringBuilder stb = new StringBuilder();
-		stb.append(str.substring(0, i));
-		stb.append(str.substring(i+1, str.length()));
-		stringPermutation(stb.toString(),printStr+single);
+		stb.append(strLeftToPerm.substring(0, i));
+		stb.append(strLeftToPerm.substring(i+1, strLeftToPerm.length()));
+		stringPermutation(stb.toString(),permutedString+single);
 	}	
 }
 
+// Same as above(stringPermutation). we just call stringPermutation
+// after sorting the input string
 public void stringPermutationLex(String str)
 {
 	char[] chars=str.toCharArray();
@@ -61,9 +77,10 @@ public void printAllWordsRepeat(char[] chars,String str,int len)
 		System.out.println(str);
 		return;
 	}
-	for(int i=0;i<len;i++)
+	
+	for(int i = 0; i < len; i++)
 	{
-		printAllWordsRepeat(chars,str+chars[i],len);
+		printAllWordsRepeat(chars, str + chars[i], len);
 	}
 }
 

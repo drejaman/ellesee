@@ -202,6 +202,7 @@ public class TestNumbers {
         
         if(len == 1) return 0;
         
+        //check the first if this is the peak
         if(nums[0] > nums[1]) 
         {
         	maxIndex = 0;
@@ -217,6 +218,7 @@ public class TestNumbers {
         	}
         }
 
+        //check the last if the last is peak
         if(nums[len - 1] > nums[len - 2]) 
         {
         	maxIndex = len - 1;

@@ -14,21 +14,21 @@ public class CommonBacktracking {
     
     private void permuteArray(int[] nums, List<List<Integer>> lists, List<Integer> list)
     {
-    		if(nums.length == list.size() && !lists.contains(list))
-    		{
-    			lists.add(new ArrayList<Integer>(list));
-    			return;
-    		}
-    		
-    		for(int i = 0; i < nums.length; i++)
-    		{
-    			//making sure we are not adding duplicates
-    			if(list.contains(nums[i])) continue;
-    			
-    			list.add(nums[i]);
-    			permuteArray(nums, lists, list);
-    			list.remove(list.size() - 1);
-    		}
+		if(nums.length == list.size() && !lists.contains(list))
+		{
+			lists.add(new ArrayList<Integer>(list));
+			return;
+		}
+		
+		for(int i = 0; i < nums.length; i++)
+		{
+			//making sure we are not adding duplicates
+			if(list.contains(nums[i])) continue;
+			
+			list.add(nums[i]);
+			permuteArray(nums, lists, list);
+			list.remove(list.size() - 1);
+		}
     }
 
     public List<List<Integer>> permuteUnique(int[] nums) {
@@ -48,28 +48,28 @@ public class CommonBacktracking {
     
     private void permuteVisit(int[] nums, List<List<Integer>> lists, List<Integer> list, boolean[] visit)
     {
-    		if(nums.length == list.size() && !lists.contains(list))
-    		{
-    			lists.add(new ArrayList<Integer>(list));
-    			return;
-    		}
-    		
-    		for(int i = 0; i < nums.length; i++)
-    		{
-    			if(visit[i]) continue;
-    			// key: when a number has the same value with its previous, 
-    			// we can use this number only if previous is used
-    			if(i > 0 && nums[i-1] == nums[i] && !visit[i-1]) continue;
-    			
-    			list.add(nums[i]);
-    			visit[i] = true;
-     			
-    			permuteVisit(nums, lists, list, visit);
-    			
-    			//backtrack
-    			visit[i] = false;
-    			list.remove(list.size() - 1);
-    		}
+		if(nums.length == list.size() && !lists.contains(list))
+		{
+			lists.add(new ArrayList<Integer>(list));
+			return;
+		}
+		
+		for(int i = 0; i < nums.length; i++)
+		{
+			if(visit[i]) continue;
+			// key: when a number has the same value with its previous, 
+			// we can use this number only if previous is used
+			if(i > 0 && nums[i-1] == nums[i] && !visit[i-1]) continue;
+			
+			list.add(nums[i]);
+			visit[i] = true;
+ 			
+			permuteVisit(nums, lists, list, visit);
+			
+			//backtrack
+			visit[i] = false;
+			list.remove(list.size() - 1);
+		}
     }
 
     // https://leetcode.com/problems/subsets/
@@ -111,7 +111,8 @@ public class CommonBacktracking {
     	return combinations;
     }
     
-    private void SingleCombination(List<List<Integer>> combinations, List<Integer> combination, int[] candidates, int target, int start)
+    private void SingleCombination(List<List<Integer>> combinations, List<Integer> combination, 
+    		int[] candidates, int target, int start)
     {
     	if(target < 0) return;
     	
@@ -142,7 +143,8 @@ public class CommonBacktracking {
         return lists;
     }
 
-    public void singleCombination(List<List<Integer>> combinations, List<Integer> combination, int[] candidates, int target, int startIndex)
+    private void singleCombination(List<List<Integer>> combinations, List<Integer> combination, 
+    		int[] candidates, int target, int startIndex)
     {
     	if(target == 0)
     	{
@@ -155,7 +157,8 @@ public class CommonBacktracking {
     		// this line is crucial to make sure the same combination does not get added to the lists 
     		// even though there are same duplicate number
     		// Input: [10,1,2,7,6,1,5], 8
-    		// Output without the line below: [[1,1,6],[1,2,5],[1,7],[1,2,5],[1,7],[2,6]] so there are some repeats
+    		// Output without the line below: [[1,1,6],[1,2,5],[1,7],[1,2,5],[1,7],[2,6]] 
+    		// so there are some repeats
     		// Output with the line below: [[1,1,6],[1,2,5],[1,7],[2,6]]
             if (i > startIndex && candidates[i] == candidates[i-1]) continue;
 
@@ -222,7 +225,7 @@ public class CommonBacktracking {
     
     public List<String> letterCombinations(String digits) {
     		
-    		List<String> words = new ArrayList<String>();
+		List<String> words = new ArrayList<String>();
         if(digits == null || digits.isEmpty() || digits.length() == 0)
         {
         		return words;

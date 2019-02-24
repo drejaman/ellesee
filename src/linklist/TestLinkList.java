@@ -159,28 +159,28 @@ public class TestLinkList {
     //Cracking 2.2
     public ListNode nthToLast(ListNode head, int k)
     {
-	    	if(head == null) return null;
-	    	
-	    	//p2 will eventually point to k-th from last Node
-	    	ListNode p1 = head, p2 = head;
-	    	
-	    	for(int i = 0; i < k; i++)
-	    	{
-	    		p1 = p1.next;
-	    		
-	        	// we even don't have k nodes
-	    		if(p1 == null) return null;
-	    	}
-	
-	    	// as p1 is already advanced k places p2 will have k more items left 
-	    	// when p1 will reach at the end of the list
-	    	while(p1 != null)
-	    	{
-	    		p1 = p1.next;
-	    		p2 = p2.next;
-	    	}
-	    	
-	    	return p2;
+    	if(head == null) return null;
+    	
+    	//p2 will eventually point to k-th from last Node
+    	ListNode p1 = head, p2 = head;
+    	
+    	for(int i = 0; i < k; i++)
+    	{
+    		p1 = p1.next;
+    		
+        	// we even don't have k nodes
+    		if(p1 == null) return null;
+    	}
+
+    	// as p1 is already advanced k places p2 will have k more items left 
+    	// when p1 will reach at the end of the list
+    	while(p1 != null)
+    	{
+    		p1 = p1.next;
+    		p2 = p2.next;
+    	}
+    	
+    	return p2;
     }
     
     //Cracking2.6

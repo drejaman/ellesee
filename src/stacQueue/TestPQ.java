@@ -38,7 +38,7 @@ public class TestPQ {
  	   
  	   // since we need to find k-th smallest element will be ks-th largest element
  	   // for a 3*3 matrix 4th smallest element is 3 * 3 - 4 + 1 = 6th largest element 
- 	   int ks = matrix.length * matrix[0].length  - k + 1;
+ 	   int nminuskLargest = matrix.length * matrix[0].length  - k + 1;
 
  	   for(int i = 0; i < matrix.length; i++)
  		   for(int j = 0; j < matrix[0].length; j++)
@@ -46,7 +46,7 @@ public class TestPQ {
  			   pq.offer(matrix[i][j]);
  			   
  			   // if the pq size becomes more than ks then remove one element to keep only ks-th largest element
- 			   if(pq.size() > ks) pq.poll();
+ 			   if(pq.size() > nminuskLargest) pq.poll();
  		   }
  	   
  	   // return ks-th largest/ k-th smallest element

@@ -25,15 +25,20 @@ void doPrint(char[] output, int i, int left, int right)
 		return;
 	}
 	
-	if (left < right)//sanity check - if '(' are more than ')' only then we can place one ')'
+	//sanity check - if '(' are more than ')' only then we can place one ')'
+	if (left < right)
 	{
 		output[i] = ')';
-		doPrint(output, i+1, left, right-1);//reduce right as one ')' is placed
+		//reduce right as one ')' is placed
+		doPrint(output, i+1, left, right-1);
 	}
-	if (left > 0)//checks if still any '(' are yet to be placed
+	
+	//checks if still any '(' are yet to be placed
+	if (left > 0)
 	{
 		output[i] = '(';
-		doPrint(output, i+1, left-1, right);//left is decreased as one '(' is placed
+		//left is decreased as one '(' is placed
+		doPrint(output, i+1, left-1, right);
 	}
 }
 
@@ -76,16 +81,14 @@ private void generateParenthesis(List<String> result, int left, int right, Strin
 //https://leetcode.com/problems/longest-valid-parentheses/
 // O(n) time and O(n) space
 /*
- * we start by pushing −1 onto the stack.
+ * we start by pushing a -1 onto the stack.
 
 For every 
-‘(’
-‘(’ encountered, we push its index onto the stack.
+'(' encountered, we push its index onto the stack.
 
-For every 
-‘)’
-‘)’ encountered, we pop the topmost element and subtract the current element's index from the top element of the stack, 
-which gives the length of the currently encountered valid string of parentheses. If while popping the element, 
+')' encountered, we pop the topmost element and subtract the current element's index from the top element 
+of the stack, which gives the length of the currently encountered valid string of parentheses. 
+If while popping the element, 
 the stack becomes empty, we push the current element's index onto the stack. 
  * 
  * */
