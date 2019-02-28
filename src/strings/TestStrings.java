@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
+import java.util.Stack;
 
 public class TestStrings {
 
@@ -529,6 +530,118 @@ public int strStr(String haystack, String needle) {
 	
 	return -1;
 }
+
+	//https://leetcode.com/problems/length-of-last-word/
+	public int LengthOfLastWord(String s) {
+	    char[] sentenceArray = s.trim().toCharArray();
+	
+	    StringBuilder builder = new StringBuilder();
+	    String currentString = "";
+	
+		for(int i = 0; i <= sentenceArray.length; i++)
+		{
+		    // condition check order is important 
+		    // otherwise it will throw null pointer exception based on this implementation
+		    if (i == sentenceArray.length || sentenceArray[i] == ' ' )
+	        {
+	            currentString = builder.toString();
+	            builder.setLength(0);
+	        }
+	        else
+	        {
+	            builder.append(sentenceArray[i]);
+	        }
+	    }
+	
+	    return currentString.length();
+	}
+	
+	//https://leetcode.com/problems/longest-common-prefix/
+    public String LongestCommonPrefix(String[] strs)
+    {
+    	String prefix = "";
+
+        if (strs == null || strs.length == 0) return prefix;
+
+        if (strs.length == 1) return strs[0];
+
+        prefix = this.FindFirstPrefix(strs[0], strs[1]);
+
+        if (strs.length == 2) return prefix;
+
+        for (int i = 2; i < strs.length; i++)
+        {
+            char[] prefixChars = prefix.toCharArray();
+            char[] currentString = strs[i].toCharArray();
+            
+            int j = 0;
+            StringBuilder prefixBuilder = new StringBuilder();
+
+            while (j < prefixChars.length && j < strs[i].length() && prefixChars[j] == currentString[j])
+            {
+                prefixBuilder.append(prefixChars[j++]);
+            }
+
+            prefix = prefixBuilder.toString();
+        }
+
+        return prefix;
+    }
+
+    private String FindFirstPrefix(String s1, String s2)
+    {
+        char[] s1chars = s1.toCharArray();
+        char[] s2chars = s2.toCharArray();
+
+        int i = 0;
+        StringBuilder prefix = new StringBuilder();
+
+        while (i < s1.length() && i < s2.length() && s1chars[i] == s2chars[i])
+        {
+            prefix.append(s1chars[i++]);
+        }
+
+        return prefix.toString();
+    }
+
+    //https://leetcode.com/problems/word-pattern/
+    public boolean WordPattern(String pattern, String str) {
+        if (pattern.isEmpty() || str.isEmpty()) return false;
+        
+        HashMap<Character, String> tracker = new HashMap<Character, String>();
+
+        char[] patternChars = pattern.toCharArray();
+        String[] stringList = str.split(" ");
+        
+        if(patternChars.length != stringList.length) return false;
+
+        for (int i = 0; i < patternChars.length; i++)
+        {
+            if (!tracker.containsKey(patternChars[i]))
+            {
+                // handle cases like "abba" "dog dog dog dog"
+                if (tracker.containsValue(stringList[i]))
+                {
+                    return false;
+                }
+
+                tracker.put(patternChars[i], stringList[i]);
+            }
+            else
+            { 
+                if (tracker.containsKey(patternChars[i]))
+                {
+                    String value = tracker.get(patternChars[i]);
+                    if (!value.equals(stringList[i]))
+                        return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+
 	//https://leetcode.com/problems/roman-to-integer/
 	//Input: "MCMXCIV"
 	//Output: 1994
@@ -601,33 +714,33 @@ public int strStr(String haystack, String needle) {
   	//	      number = number * 10 + digit;
   	// the rest is handling the corner cases
     public int myAtoi(String str) { 
-	    	// need to return 0 as required by Leetcode
-	    	if(str == null || str.isEmpty()) return 0;
-	    	
-	    	// required to handle overflow
-	    	int maxDiv10 = Integer.MAX_VALUE / 10;
-	    	
-	    	int i = 0;
-	    	int len = str.length();
-	    	
-	    	while(i < len && Character.isWhitespace(str.charAt(i))) i++;
-	    	
-	    	int number = 0;
-	    	int sign = 1;
-	
-	    	if(i < len && str.charAt(i) == '-')
+    	// need to return 0 as required by Leetcode
+    	if(str == null || str.isEmpty()) return 0;
+    	
+    	// required to handle overflow
+    	int maxDiv10 = Integer.MAX_VALUE / 10;
+    	
+    	int i = 0;
+    	int len = str.length();
+    	
+    	while(i < len && Character.isWhitespace(str.charAt(i))) i++;
+    	
+    	int number = 0;
+    	int sign = 1;
+
+    	if(i < len && str.charAt(i) == '-')
 		{
 			sign = -1;
 			i++;
 		}
-	    	else if(i < len && str.charAt(i) == '+')
+    	else if(i < len && str.charAt(i) == '+')
 		{
 			i++;
 		}
 
 	    	// as required by Leetcode any non alphanumeric character will result into 0
-	    	while(i < len && Character.isDigit(str.charAt(i)))
-	    	{
+    	while(i < len && Character.isDigit(str.charAt(i)))
+    	{
 	      int digit = Character.getNumericValue(str.charAt(i));       
 	      
 	      // required to handle overflow		      
@@ -638,28 +751,28 @@ public int strStr(String haystack, String needle) {
 		
 	      number = number * 10 + digit;
 		  i++;
-	    	}
+    	}
 
-	    	/* alternate implementation
-	    	 * case like "why this is 987" will return 987
-	    	while(i < len)
-	    	{	
-	    		if(Character.isDigit(str.charAt(i)))
-	    		{	
-		      int digit = Character.getNumericValue(str.charAt(i));       
-		      
-		      // required to handle overflow		      
-		      if (number > maxDiv10 || number == maxDiv10 && digit >= 8) 
-		      {          
-		    	  return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;       
-		      }
-				number = number * 10 + digit;
-			}
-	    		i++;
-	    	}
-	    	*/
+    	/* alternate implementation
+    	 * case like "why this is 987" will return 987
+    	while(i < len)
+    	{	
+    		if(Character.isDigit(str.charAt(i)))
+    		{	
+	      int digit = Character.getNumericValue(str.charAt(i));       
+	      
+	      // required to handle overflow		      
+	      if (number > maxDiv10 || number == maxDiv10 && digit >= 8) 
+	      {          
+	    	  return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;       
+	      }
+			number = number * 10 + digit;
+		}
+    		i++;
+    	}
+    	*/
 
-	    	return sign * number;
+    	return sign * number;
     }
     
     //cracking1.5
@@ -800,6 +913,40 @@ public int strStr(String haystack, String needle) {
         
         return wordList;
     }
+    
+    //https://leetcode.com/problems/valid-parentheses/
+    public boolean IsValid(String s) {
+        
+        //best part of Length check is we don't need to go to rest of it
+        if (s.isEmpty() || s.length() % 2 != 0) return false;
+
+        char[] parens = s.toCharArray();
+
+        Stack<Character> tracker = new Stack<Character>();
+
+        for (char ch : parens)
+        {
+            if (ch == '(' || ch == '{' || ch == '[')
+            {
+                tracker.push(ch);
+            }
+            else 
+            {
+                if (tracker.size() <= 0) return false;
+
+                char currentChar = tracker.pop();
+
+                if (!(currentChar == '(' && ch == ')'
+                    || currentChar == '{' && ch == '}'
+                    || currentChar == '[' && ch == ']'))
+                {
+                    return false;
+                }
+            }
+        }
+
+        return tracker.size() == 0;
+    }    
 
     //https://leetcode.com/problems/word-subsets/
     //logic: Reduce B to a single word bmax as described above, 
@@ -833,7 +980,7 @@ public int strStr(String haystack, String needle) {
         return ans;
     }
     
-    //https://leetcode.com/problems/longest-substring-without-repeating-characters/submissions/
+    //https://leetcode.com/problems/longest-substring-without-repeating-characters/
     public int lengthOfLongestSubstring(String s) {
     	boolean exists[] = new boolean[256];
     	
@@ -861,6 +1008,29 @@ public int strStr(String haystack, String needle) {
     	
     	return maxLen;
     }    
+    
+    //https://leetcode.com/problems/valid-palindrome/
+    public boolean isPalindrome(String s) {
+        if(s == null || s.isEmpty()) return true;
+        
+        int i = 0, j = s.length() - 1;
+        
+        while(i < j)
+        {
+            while( i < j && !Character.isLetterOrDigit(s.charAt(i))) i++; 
+            while( i < j && !Character.isLetterOrDigit(s.charAt(j))) j--;
+            
+            if( i < j && Character.toLowerCase(s.charAt(i)) != 
+               Character.toLowerCase(s.charAt(j)))
+            {
+                return false;
+            }
+            i++;
+            j--;
+        }
+        
+        return true;
+    }
     
     //https://leetcode.com/problems/decode-ways/
     //TODO
@@ -913,8 +1083,61 @@ public int strStr(String haystack, String needle) {
       
       return searchCharacter;
   }
+  
+  //https://leetcode.com/problems/bulls-and-cows/
+  public String GetHint(String secret, String guess) {
+      if ((secret == null && guess == null) || secret.length() != guess.length()) return "";
 
-  //notworking
+      char[] secretChars = secret.toCharArray();
+      char[] guessChars = guess.toCharArray();
+
+      int aBull = 0;
+      int bCow = 0;
+
+      HashMap<Integer, Integer> secretTracker = new HashMap<Integer, Integer>();
+
+      // look for bulls (match) and also build tracker
+      for (int i = 0; i < secretChars.length; i++ )
+      {
+          if (secretChars[i] == guessChars[i])
+          {
+              aBull++;
+              guessChars[i] = 'X';
+          }
+          else
+          {
+              int currentNumber = secretChars[i] - '0';
+
+              if (secretTracker.containsKey(currentNumber))
+              {
+            	  secretTracker.put(currentNumber, secretTracker.get(currentNumber) + 1);
+              }
+              else
+              {
+                  secretTracker.put(currentNumber, 1);
+              }                
+          }
+      }
+
+      for (int i = 0; i < guessChars.length; i++)
+      {
+          int currentNumber = guessChars[i] - '0';
+
+          if (currentNumber < 10 && secretTracker.containsKey(currentNumber))
+          {
+              // the key will be always there but if it is zero that mean there is no more that element
+              if (secretTracker.get(currentNumber) > 0)
+              {
+                  bCow++;                
+              }
+
+              secretTracker.put(currentNumber, secretTracker.get(currentNumber) - 1);
+          }
+      }
+
+      return aBull + "A" + bCow + "B";
+  }
+
   // https://leetcode.com/problems/complex-number-multiplication/description/
   public String complexNumberMultiply(String a, String b) {
       int[] complexNumberA = extractComplexNumbers(a);
@@ -925,7 +1148,7 @@ public int strStr(String haystack, String needle) {
       
       return resultNumber + "+" +  resultComplex + "i"; 
   }
-
+  
   // the format of complex number here is a + bi. so we can split the String representation in 2 parts using '+' split
   private int[] extractComplexNumbers(String complexNumber)
   {
@@ -933,15 +1156,13 @@ public int strStr(String haystack, String needle) {
   	
   	int[] complexPortions = new int[2];
   	
-  	// need to handle dangling meta character
-  	// https://stackoverflow.com/questions/40246231/java-util-regex-patternsyntaxexception-dangling-meta-character-near-index-0
   	String[] stringRepresentations = complexNumber.split("\\+");
   	
-  	complexPortions[0] = Integer.parseInt(stringRepresentations[0]);
-  	//complexPortions[1] = Integer.parseInt(stringRepresentations[1]);
-  	complexPortions[1] = Integer.parseInt(stringRepresentations[1].substring(0, stringRepresentations[1].indexOf('i')).trim());
-  	
-  	return complexPortions;
+		complexPortions[0] = Integer.parseInt(stringRepresentations[0]);
+		//complexPortions[1] = Integer.parseInt(stringRepresentations[1]);
+		complexPortions[1] = Integer.parseInt(stringRepresentations[1].substring(0, stringRepresentations[1].indexOf('i')).trim());
+		
+		return complexPortions;
   }
 
   //notworking

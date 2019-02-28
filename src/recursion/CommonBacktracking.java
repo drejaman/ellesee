@@ -103,6 +103,33 @@ public class CommonBacktracking {
 	    	}
     }
 
+    //https://leetcode.com/problems/subsets-ii/
+
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        List<List<Integer>> sets = new ArrayList<List<Integer>>();                     Arrays.sort(nums);
+
+        miniSubsetDup(sets, new ArrayList<Integer>(), nums, 0);
+        return sets;
+    }
+    
+    private void miniSubsetDup(List<List<Integer>> sets, List<Integer> set, int []nums, int startIndex)
+    {
+    	// in the subset case we always add the new set that came in
+    	if(!sets.contains(set))
+    	{
+        	sets.add(new ArrayList<Integer>(set));    		
+    	}
+    	
+    	for(int i = startIndex; i < nums.length; i++)
+    	{
+    		set.add(nums[i]);
+    		//add the next possible number
+    		miniSubsetDup(sets, set, nums, i + 1);
+    		//backtrack
+    		set.remove(set.size() - 1);
+    	}
+    }
+    
     // https://leetcode.com/problems/combination-sum/
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
     	List<List<Integer>> combinations = new ArrayList<List<Integer>>();

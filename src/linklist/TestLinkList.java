@@ -218,6 +218,57 @@ public class TestLinkList {
 	    	return true;
     }
     
+    //https://leetcode.com/problems/swap-nodes-in-pairs/
+    public ListNode swapPairs(ListNode head) {
+        if(head.next == null) return head;
+
+        ListNode start = head.next;
+        ListNode p = head, q = head.next;
+        
+        while(p != null && q != null)
+        {
+            ListNode r = q.next;
+            p.next = r;
+            q.next = p;
+            
+            p = r;
+            if(r != null) q = r.next;
+        }
+        
+        return start;
+    }
+    
+    //https://leetcode.com/problems/remove-nth-node-from-end-of-list/
+    public ListNode RemoveNthFromEnd(ListNode head, int n) {
+        if(head.next == null && n == 1) return null;
+        
+        int i = 0;
+        
+        ListNode marker = head;
+        
+        while(marker.next != null && i < n)
+        {
+            marker = marker.next;
+            i++;
+        }
+        
+        if( i == (n-1)) return head.next;
+        
+        ListNode prev = head;
+        ListNode current = head.next;
+        
+        while(marker.next != null)
+        {
+            marker = marker.next;
+            prev = current;
+            current = current.next;
+        }
+        
+        prev.next = current.next;
+        
+        return head;
+    }
+    
     //Cracking2.7 TODO
     //Cracking2.8 TODO
 

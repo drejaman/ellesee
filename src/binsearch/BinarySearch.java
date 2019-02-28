@@ -278,6 +278,38 @@ public class BinarySearch {
 	     return true;
 	    }
 
+   //https://leetcode.com/problems/first-bad-version/
+   public int FirstBadVersion(int n) {        
+       int low = 1, high = n;
+       int firstBadIndex = n;
+
+       while (low <= high)
+       {
+           int mid = (high - low) / 2 + low;
+
+           if (this.IsBadVersion(mid) == false)
+           {
+               low = mid + 1;
+           }
+           else
+           {
+               if (mid < firstBadIndex)
+               {
+                   firstBadIndex = mid;
+               }
+
+                   high = mid - 1;
+           }
+       }
+
+       return firstBadIndex;
+   }
+   
+   private boolean IsBadVersion(int version)
+   {
+	   return true;
+   }
+   
    //https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/
    //https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/solution/
    //Approach 2: Binary Search

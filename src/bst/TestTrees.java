@@ -46,6 +46,18 @@ public class TestTrees {
  
     //CAT: CONSTRUCT, NODE POSITIONS
     //------------------------------
+	//https://leetcode.com/problems/validate-binary-search-tree/
+    public boolean isValidBST(TreeNode root) {
+        return valid(root, null, null);
+    }
+    
+	private boolean valid(TreeNode p, Integer low, Integer high) 
+	{    if (p == null) return true;    
+	 return (low == null || p.val > low) 
+	     && (high == null || p.val < high)          
+	     && valid(p.left, low, p.val)          
+	     && valid(p.right, p.val, high); 
+	} 
     //https://leetcode.com/problems/maximum-binary-tree/description/
     /*
      * Approach: 
@@ -594,6 +606,30 @@ public class TestTrees {
 
     	return nodes;    	
     }
+    
+    //https://leetcode.com/problems/binary-tree-inorder-traversal/
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> newList = new ArrayList<Integer>();
+        if(root == null) return newList;
+        if(root.left != null) newList.addAll(inorderTraversal(root.left));
+        newList.add(root.val);
+        if(root.right != null) newList.addAll(inorderTraversal(root.right));
+        
+        return newList;
+    }
+
+	//https://leetcode.com/problems/binary-tree-preorder-traversal/
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> newList = new ArrayList<Integer>();
+        
+        if(root==null) return newList;
+        
+        newList.add(root.val);
+        if(root.left!=null) newList.addAll(preorderTraversal(root.left));
+        if(root.right!=null) newList.addAll(preorderTraversal(root.right));
+        
+        return newList;
+    }	
 
     //https://leetcode.com/problems/binary-tree-pruning/description/
     public TreeNode pruneTree(TreeNode root) {

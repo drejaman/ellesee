@@ -2,7 +2,9 @@ package numbers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 public class TestNumbers {
 
@@ -328,4 +330,145 @@ public class TestNumbers {
         
         return n % 2 == 0 ? myPow(x * x, n/2) : x * myPow(x * x, n/2);        
     }
+    
+    //https://leetcode.com/problems/single-number-iii/
+    //Input:  [1,2,1,3,2,5]
+    //Output: [3,5]
+    public int[] SingleNumber(int[] nums) {
+        if (nums == null || nums.length <= 1)
+        {
+            return nums;
+        }
+
+        HashMap<Integer, Boolean> numberCounter = new HashMap<Integer, Boolean>();
+
+        for (int key : nums)
+        {
+            if (!numberCounter.containsKey(key))
+            {
+                numberCounter.put(key, true);
+            }
+            else
+            {
+                //this portion to ensure we don't do a lot of remove/add operation for duplicates
+                if (numberCounter.get(key))
+                {
+                    numberCounter.remove(key);
+                    numberCounter.put(key, false);
+                }
+            }
+        }
+
+        ArrayList<Integer> keysWithMatchingValues = new ArrayList<Integer>();
+        
+        int i = 0;
+        
+        for(Entry<Integer, Boolean> entry : numberCounter.entrySet())
+        {
+        	if(entry.getValue())
+        	{
+        		keysWithMatchingValues.add(entry.getKey());
+        		i++;
+        	}
+        }
+
+        int[] singleNumbers = new int[i];
+
+        for(int j = 0; j < i; j++)
+        {
+        	singleNumbers[j] = keysWithMatchingValues.get(j);
+        }
+        
+        return singleNumbers;
+    }
+    
+    //https://leetcode.com/problems/single-number-ii/
+    public int singleNumber(int[] A) {
+        HashMap<Integer, Integer> numberMap = new HashMap<Integer, Integer>();
+
+        for(int i = 0; i < A.length; i++)
+        {
+            int currentNumber = A[i];
+            
+            if(numberMap.containsKey(currentNumber))
+            {
+                int value = numberMap.remove(currentNumber);
+                value++;
+                numberMap.put(currentNumber, value);
+                
+                if(value==3)
+                {
+                    numberMap.remove(currentNumber);
+                }
+            }
+            else
+            {
+                numberMap.put(currentNumber, 1);
+            }
+        }
+
+		return numberMap.keySet().iterator().next();
+    }
+
+    //https://leetcode.com/problems/product-of-array-except-self/
+    public int[] ProductExceptSelf(int[] nums)
+    {
+        if (nums == null || nums.length <= 1)
+        {
+            return nums;
+        }
+
+        int numLen = nums.length;
+
+        // compute the left product values of i
+        int []leftProduct = new int[numLen];
+
+        int[] finalProduct = new int[numLen];
+
+        // compute the right product values of i
+        int[] rightProduct = new int[numLen];
+
+        //initialize left array
+        leftProduct[0] = 1;
+
+        //calculate left product
+        for (int i = 1; i < numLen; i++)
+        {
+            leftProduct[i] = leftProduct[i - 1] * nums[i-1]; 
+        }
+
+        //initialize right array
+        rightProduct[numLen - 1] = 1;
+
+        //calculate right product
+        for (int i = numLen - 2; i >= 0; i--)
+        {
+            rightProduct[i] = rightProduct[i + 1] * nums[i + 1];
+        }
+
+        //calculate final product
+        for (int i = 0; i < numLen; i++)
+        { 
+            finalProduct[i] = leftProduct[i] * rightProduct[i];
+        }
+
+        return finalProduct;
+    }
+    
+    //https://leetcode.com/problems/reverse-integer/
+    public int reverse(int x) {		    
+		int sign = x > 0 ? 1 : -1;
+		x = sign * x;
+		
+		int y = 0;
+		
+		while(x > 0)
+		{
+		    y = y * 10 + x % 10;
+		    x /= 10;
+		}
+		    
+		return sign*y;    
+    }
+
 }

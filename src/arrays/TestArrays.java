@@ -290,6 +290,27 @@ public class TestArrays {
         return false;
     }
     
+    //https://leetcode.com/problems/search-a-2d-matrix/
+    public boolean searchMatrixI(int[][] matrix, int target) {
+        if(matrix==null || matrix.length==0) return false;
+        
+        //at first find the right row
+        int i = 0;
+        for(; i < matrix.length-1; i++){
+                if(target==matrix[i][0]) return true;
+                if(target>matrix[i][0] && target<matrix[i+1][0]){
+                    break;
+                }
+        }
+        
+        for(int j=0; j<matrix[i].length; j++){
+            if(target==matrix[i][j]) return true;
+        }
+
+        return false;
+    }
+
+    
     //https://leetcode.com/problems/container-with-most-water/
     //trick:
     //use two index for left (i) and right (j)
@@ -362,6 +383,98 @@ public class TestArrays {
     	}
     	
     	return -1;
+    }
+    
+    //https://leetcode.com/problems/sort-colors/
+    public void sortColors(int[] A) {
+        
+        if(A==null||A.length==0) return;
+        
+        int red = 0, white = 0, blue = 0;
+        
+        for(int i = 0; i < A.length; i++){
+            if(A[i]==0) red++;
+            if(A[i]==1) white++;
+            if(A[i]==2) blue++;
+        }
+        
+        for(int i=0; i < red; i++){
+            A[i] = 0;
+        }
+
+        for(int i=0; i < white; i++){
+            A[i+red] = 1;
+        }
+
+        for(int i=0; i < blue; i++){
+            A[i+red+white] = 2;
+        }
+    }
+    
+    //https://leetcode.com/problems/rotate-array/
+    public void Rotate(int[] nums, int k)
+    {
+        int arrayLen = nums.length;
+
+        if (k == arrayLen) return;
+
+        if (k >= arrayLen)
+        {
+            k = k % arrayLen;
+        }
+
+        int[] temp = new int[k];
+
+        // copy the last k elements to temp
+        for (int i = 0; i < k; i++)
+        {
+            temp[i] = nums[arrayLen - k + i];
+        }
+
+        // move the front part at the end of the array
+        for (int i = arrayLen - 1, j = arrayLen - k - 1; i >= k  && j >= 0 ; i--, j--)
+        {
+            nums[i] = nums[j]; 
+        }
+
+        // move the last elements (from temp array) to the front part of the array
+        for (int i = 0; i < temp.length; i++)
+        {
+            nums[i] = temp[i];
+        }
+    }
+    
+    //https://leetcode.com/problems/merge-sorted-array/
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        
+        if(nums1 == null || nums2 == null) return;
+        
+        int i = m - 1;
+        int j = n - 1;
+        int k = m + n - 1;
+        
+        while(i >= 0 && j >= 0)
+        {
+            if(nums1[i] > nums2[j])
+            {
+                nums1[k] = nums1[i];
+                i--;
+            }
+            else
+            {
+                nums1[k] = nums2[j];
+                j--;
+            }
+            k--;
+        }
+
+        //still have some elements left in nums2
+        while(j >= 0)
+        {
+                nums1[k] = nums2[j];
+                j--;
+                k--;
+        }
     }
     
   	public static int[] stockProfit(int[] stockPrices)
