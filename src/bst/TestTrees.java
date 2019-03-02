@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Stack;
 
 import linklist.ListNode;
@@ -239,6 +240,48 @@ public class TestTrees {
     	prev = root;
     }
 
+    //https://leetcode.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/
+    //Input: pre = [1,2,4,5,3,6,7], post = [4,5,2,6,7,3,1]
+    //Output: [1,2,3,4,5,6,7]
+    public TreeNode constructFromPrePost(int[] pre, int[] post) {
+        return constructFromPrePost(pre, 0, pre.length - 1, post, 0, pre.length - 1);
+    }
+    
+    private TreeNode constructFromPrePost(int[] pre, int preStart, int preEnd, int[] post, int postStart, int postEnd) {
+        // Base cases.
+        if (preStart > preEnd) {
+            return null;
+        }
+        if (preStart == preEnd) {
+            return new TreeNode(pre[preStart]);
+        }
+        
+        // Build root.
+        TreeNode root = new TreeNode(pre[preStart]);
+        
+        // Locate left subtree.
+        int leftSubRootInPre = preStart + 1; 
+        int leftSubRootInPost = findLeftSubRootInPost(pre[leftSubRootInPre], post, postStart, postEnd);
+        int leftSubEndInPre = leftSubRootInPre + (leftSubRootInPost - postStart);
+        
+        // Divide.
+        root.left = constructFromPrePost(pre, leftSubRootInPre, leftSubEndInPre, 
+                                                    post, postStart, leftSubRootInPost);  
+        root.right = constructFromPrePost(pre, leftSubEndInPre + 1, preEnd, 
+                                                     post, leftSubRootInPost + 1, postEnd - 1);        
+        return root;
+    }
+    
+    private int findLeftSubRootInPost(int leftSubRootVal, int[] post, int postStart, int postEnd) {
+        for (int i = postStart; i <= postEnd; i++) {
+            if (post[i] == leftSubRootVal) {
+                return i;
+            }
+        }
+        
+        throw new IllegalArgumentException();
+    }
+
     
     //CAT: TWO TREES
     //--------------
@@ -264,33 +307,72 @@ public class TestTrees {
     	// null tree is always a subTree
     	if(t2 == null) return true;
 
-    	return subTree(t1, t2);
+    	return isSubtree(t1, t2);
     }
 
-    private boolean subTree(TreeNode t1, TreeNode t2)
-    {
+    //https://leetcode.com/problems/subtree-of-another-tree/
+    public boolean isSubtree(TreeNode s, TreeNode t) {
     	// the big tree is null and we still haven't found the match
-    	if(t1 == null) return false;
+    	if(s == null) return false;
     	
     	//the values matched now try matching the whole tree
-    	else if(t1.val == t2.val && matchTree(t1, t2))
+    	if(s != null && t != null && s.val == t.val && matchTree(s, t))
 		{
 			return true;
 		}
 
+    	// ended up the subtree not matching in full
     	// otherwise continue the search on big tree's left and right
-    	return subTree(t1.left, t2) || subTree(t1.right, t2);
+        boolean inLeft = false, inRight = false;
+        
+        if(s.left != null) inLeft = isSubtree(s.left, t);
+        if(s.right != null) inRight = isSubtree(s.right, t);
+    	return (inLeft || inRight);
     }
-    
+        
     private boolean matchTree(TreeNode t1, TreeNode t2)
     {
-    	if(t1 == null && t2 == null) return true;//both are null so they match
-    	else if(t1 == null || t2 == null) return false;//one of then null so no match
-//    	else if(t1.val != t2.val) return false;//value doesn't match. don't need this check
+    	//both are null so they match
+    	if(t1 == null && t2 == null) return true;
+    	//one of then null so no match
+    	else if(t1 == null || t2 == null) return false;
+    	//value doesn't match. don't need this check
+    	else if(t1 != null && t2 != null && t1.val != t2.val) return false;
+    	//t1 and t2's values match so check their left and right subtree
     	else return matchTree(t1.left, t2.left) && matchTree(t1.right, t2.right);
     }
-
     
+    //https://leetcode.com/problems/most-frequent-subtree-sum/
+    HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+    
+    public int[] findFrequentTreeSum(TreeNode root) {
+    	int[] result = new int[map.size()];
+    	
+    	findSubtreeSum(root);
+    	
+    	for(Entry<Integer, Integer> entry : map.entrySet())
+    	{
+    		entry.getKey();
+    	}
+    	
+    	return result;
+    }
+    
+    public int findSubtreeSum(TreeNode node)
+    {
+    	if(node == null) return 0;
+    	
+    	int sum = node.val;
+    	
+    	sum += findSubtreeSum(node.left);
+    	sum += findSubtreeSum(node.right);
+    	
+    	//increase the frequency of the sum by 1
+    	map.put(sum, map.getOrDefault(sum, 0) + 1);
+    	
+    	return sum;
+    }
+
     //CAT: Serialization
     //------------------
     // https://leetcode.com/problems/verify-preorder-serialization-of-a-binary-tree/description/
@@ -563,6 +645,33 @@ public class TestTrees {
     	return totalWays;
     }
     
+    //https://leetcode.com/problems/kth-smallest-element-in-a-bst/
+    int currentCount = 0;
+    int smallest = Integer.MAX_VALUE;
+    
+    public int kthSmallest(TreeNode root, int k) {
+        kthSmallestTraversal(root, k);
+        return smallest;
+    }
+
+    // we are doing an inorder traversal as that prints tree 
+    // in the smallest to largest order
+    // so we keep a global counter and stop when reach the value k
+    private void kthSmallestTraversal(TreeNode root, int k)
+    {
+    	if(root == null) return;
+    	
+    	kthSmallestTraversal(root.left, k);  
+
+        currentCount++;
+    	if(currentCount == k) 
+    	{
+    		smallest = root.val;
+    		return;
+    	}
+    	
+    	kthSmallestTraversal(root.right, k);
+    }
     
     //CAT: OTHERS
     //-----------
@@ -673,18 +782,22 @@ public class TestTrees {
         		&& isBalanced(root.right);
     }
     
+    //https://leetcode.com/problems/minimum-depth-of-binary-tree/
+    public int MinDepth(TreeNode root) {
+        if(root == null) return 0;
+        
+        if(root.left == null && root.right != null) return 1 + MinDepth(root.right);
+        if(root.right == null && root.left != null) return 1 + MinDepth(root.left);
+        
+        return 1 + Math.min(MinDepth(root.left), MinDepth(root.right));
+    }
+    
     public int maxDepth(TreeNode node)
     {
     	if(node == null) return 0;
     	
     	return Math.max(maxDepth(node.left), maxDepth(node.right)) + 1;
     }
-    
-    //https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
-    //TODO
-//    public TreeNode buildTree(int[] preorder, int[] inorder) {
-//        
-//    }
     
     //https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/solution/
     //TODO
