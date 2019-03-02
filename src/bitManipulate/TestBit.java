@@ -46,4 +46,28 @@ public class TestBit {
     	
     	return count;
     }
+    
+    //https://leetcode.com/problems/number-of-1-bits/
+    public int HammingWeight(int n) {
+        if (n <= 0)
+        {
+            return 0;
+        }
+
+        // this is important as n is provided explicitly as uint
+        // so if n is casted to int somewhere then large number like   
+        ///4294967295 (11111111111111111111111111111111) will give error
+        int result = 0;
+
+        while (n > 0)
+        {
+            // result += (int) n % 2 will yield to wrong result in some cases
+            result += n % 2;
+            n /= 2;
+        }
+
+        // now you can convert the result to int
+        return (int) result;
+    }
+
 }

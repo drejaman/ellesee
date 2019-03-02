@@ -1032,6 +1032,97 @@ public int strStr(String haystack, String needle) {
         return true;
     }
     
+    //https://leetcode.com/problems/isomorphic-strings/
+    public boolean IsIsomorphic(String s, String t) {
+        if (s == null || t == null || s.length() != t.length())
+        {
+            return false;
+        }
+
+        HashMap<Character, Character> tracker = new HashMap<Character, Character>();
+
+        char[] sChars = s.toCharArray();
+        char[] tChars = t.toCharArray();
+
+        int len = s.length();
+
+        for (int i = 0; i < len; i++)
+        {
+            if (tracker.get(sChars[i]) != tChars[i])
+            {
+                return false;
+            }
+            else if (!tracker.containsValue(tChars[i]))
+            {
+                tracker.put(sChars[i], tChars[i]);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        return true;
+   }
+    
+    //https://leetcode.com/problems/add-binary/
+    public String AddBinary(String a, String b)
+    {
+        if (a == null || a.isEmpty()) return b;
+
+        if (b == null || b.isEmpty()) return a;
+
+
+        int aLen = a.length();
+        int bLen = b.length();
+        int sum = 0;
+        int carry = 0;
+        int aVal = 0, bVal = 0;
+
+        StringBuilder builder = new StringBuilder();
+
+        for (int i = aLen - 1, j = bLen - 1; i >= 0 || j >= 0; )
+        {
+            if (i >= 0)
+            {
+                aVal = a.charAt(i) - '0';
+                i--;
+            }
+            else
+            {
+                aVal = 0;
+            }
+
+            if (j >= 0)
+            {
+                bVal = b.charAt(j) - '0';
+                j--;
+            }
+            else
+            {
+                bVal = 0;
+            }
+
+            sum = (aVal ^ bVal) ^ carry;
+            // there's a carry only when we had a previous carry and any or both of a, b are 1
+            carry = (aVal & bVal) | (bVal & carry)  | (aVal & carry);
+            builder.append(sum);
+        }
+
+        if (carry == 1)
+        {
+            builder.append(carry);            
+        }
+
+        //TODO
+        //Arrays.
+        //char[] chars = builder.toString()..toCharArray().Reverse().ToArray();
+
+        //return new String(chars);
+        return builder.toString();
+    }
+
+    
     //https://leetcode.com/problems/decode-ways/
     //TODO
 //    public int numDecodings(String s) {

@@ -88,21 +88,24 @@ public class BinarySearchTree
 		else return maxValue(node.getRight());
 	}
 	
+	//https://leetcode.com/problems/path-sum/
 	public boolean hasPathSum(TreeNode node, int sum)
 	{
-		//if(node!=null)
-		System.out.println("Current Sum is:" + sum);
+        if(node == null) return false;
+        
 		//checks here if it reached the leaf of the tree and the sum reaches zero
-		if((sum - node.getValue()) == 0 && node.getLeft() == null && node.getRight() == null) 
+		if((sum - node.val) == 0 && node.left == null && node.right == null) 
 			return true;
 		
 		boolean left = false, right = false;
 		
-		if(node.getLeft()!=null)
-			left = hasPathSum(node.getLeft(),sum-node.getValue());
-		if(node.getRight()!=null)
-			right = hasPathSum(node.getRight(),sum-node.getValue());
-		return (left||right);
+		if(node.left != null)
+			left = hasPathSum(node.left, sum - node.val);
+        
+		if(node.right != null)
+			right = hasPathSum(node.right, sum - node.val);
+		
+        return (left || right);
 	}
 	
 	//this one changes the tree to its mirror

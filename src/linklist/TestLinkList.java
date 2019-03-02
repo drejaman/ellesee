@@ -120,8 +120,44 @@ public class TestLinkList {
 		node.next = addTwoNumbers(l1 != null ? l1.next: null, l2 != null ? l2.next: null, value/10);
 		
 		return node;
-}
+    }
     
+    //https://leetcode.com/problems/merge-two-sorted-lists/
+    public ListNode MergeTwoLists(ListNode l1, ListNode l2) {
+        if(l1 == null && l2 == null)
+        {
+            return null;
+        }
+        
+        if(l1 == null)
+        {
+            return l2;
+        }
+        
+        if(l2 == null)
+        {
+            return l1;
+        }
+        
+        if(l1!=null && l2!=null)
+        {
+            if(l1.val <= l2.val)
+            {
+                l1.next = MergeTwoLists(l1.next, l2);
+                return l1;
+            }
+
+            if(l1.val > l2.val)
+            {
+                l2.next = MergeTwoLists(l1, l2.next);
+                return l2;
+            }
+        }
+        
+        return null;
+    }
+    
+    //https://leetcode.com/problems/remove-duplicates-from-sorted-list/
     //Cracking2.1 - No buffer (HashMap) allowed. So solved using 2 pointers and requires O(N2) time
     public void deleteDups(ListNode head)
     {
@@ -183,6 +219,7 @@ public class TestLinkList {
     	return p2;
     }
     
+    //https://leetcode.com/problems/palindrome-linked-list/
     //Cracking2.6
     public boolean isPalindrome(ListNode head)
     {
@@ -269,6 +306,57 @@ public class TestLinkList {
         return head;
     }
     
+    //https://leetcode.com/problems/remove-linked-list-elements/
+    public ListNode RemoveElements(ListNode head, int val) {
+        if(head == null) return null;
+        
+        //handles the case where the head contains the val to be removed
+        // head !=n null covers the case when the whole list contains the same element that is being deleted like
+        // [4,4,4,4,4,4], 4
+        while(head != null && head.val == val) head = head.next;
+
+        if(head == null) return null;
+        
+        ListNode prev = head;
+        ListNode current = head.next;
+        
+        while(current!= null)
+        {
+            //only the deletion case
+            while(current!= null && current.val == val)
+            {
+                current = current.next;
+            }
+            //covers deletion and non deletion
+            prev.next = current;
+            prev = current;
+            
+            // special case when the last element is deleted
+            if(current != null)
+                current = current.next;
+        }
+        
+        return head;
+    }
+    
+    //https://leetcode.com/problems/linked-list-cycle/
+    public boolean hasCycle(ListNode head) {
+        ListNode current = head;
+        ListNode currentDouble = head;
+        
+        while(currentDouble!=null && currentDouble.next!=null)
+        {
+            current = current.next;
+            currentDouble = currentDouble.next.next;
+            
+            if(currentDouble!=null && current.val == currentDouble.val) 
+                return true;
+        }
+        
+        return false;
+    }
+
+
     //Cracking2.7 TODO
     //Cracking2.8 TODO
 

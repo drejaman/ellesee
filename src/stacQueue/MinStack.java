@@ -2,6 +2,7 @@ package stacQueue;
 
 import java.util.Stack;
 
+//https://leetcode.com/problems/min-stack/
 //Cracking3.2
 class MinStack {
     private Stack<Integer> stack;

@@ -302,7 +302,7 @@ public class TestTrees {
     }
 
     //Cracking4.10
-    public boolean containsTree(TreeNode t1, TreeNode t2)
+    public boolean contains(TreeNode t1, TreeNode t2)
     {
     	// null tree is always a subTree
     	if(t2 == null) return true;
@@ -799,15 +799,63 @@ public class TestTrees {
     	return Math.max(maxDepth(node.left), maxDepth(node.right)) + 1;
     }
     
-    //https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/solution/
-    //TODO
-//    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-//        
-//    }
+    //https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/
+    //https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/
+    public TreeNode LowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if(root==null)
+        {
+            return null;
+        }
+        
+        if(root.val == p.val && (this.containsTree(root.left, q) || this.containsTree(root.right, q)))
+        {
+            return p;
+        }
+        
+        if(root.val == q.val && (this.containsTree(root.left, p) || this.containsTree(root.right, p)))
+        {
+            return q;
+        }
+        
+        if(root.left != null && root.right != null)
+        {
+            if((this.containsTree(root.left, p) && this.containsTree(root.right, q))
+            ||(this.containsTree(root.left, q) && this.containsTree(root.right, p)))
+            {
+                return root;
+            }
+        }
+        
+        if(root.left != null && this.containsTree(root.left, p) && this.containsTree(root.left, q))
+        {
+            return LowestCommonAncestor(root.left, p, q);
+        }
+        
+        if(root.right != null && this.containsTree(root.right, p) && this.containsTree(root.right, q))
+        {
+            return LowestCommonAncestor(root.right, p, q);
+        }
+        
+        return null;
+    }
     
-    //https://leetcode.com/problems/kth-smallest-element-in-a-bst/
-    //TODO
-//    public int kthSmallest(TreeNode root, int k) {
-//        
-//    }
+    private boolean containsTree(TreeNode root, TreeNode seeker)
+    {
+        if(root == null && seeker == null)
+        {
+            return true;
+        }
+        
+        if((root == null && seeker != null) || (root != null && seeker == null))
+        {
+            return false;
+        }
+        
+        if(root.val == seeker.val)
+        {
+            return true;
+        }
+        
+        return (containsTree(root.left, seeker)||containsTree(root.right, seeker));
+    }
 }

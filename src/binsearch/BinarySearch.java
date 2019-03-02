@@ -1,7 +1,7 @@
 package binsearch;
 
 public class BinarySearch {
-	//https://leetcode.com/problems/search-insert-position/submissions/
+	//https://leetcode.com/problems/search-insert-position/
     public int searchInsert(int[] nums, int target) {
         if(nums == null || nums.length == 0) return -1;
         

@@ -470,5 +470,48 @@ public class TestNumbers {
 		    
 		return sign*y;    
     }
+    
+    //https://leetcode.com/problems/power-of-three/
+    public boolean IsPowerOfThree(int n) {
+        if(n == 0) return false;
+        
+        while(n % 3 == 0)
+        {
+            n /= 3;
+        }
+        
+        return n == 1;
+    }
 
+    //https://leetcode.com/problems/power-of-two/
+    public boolean IsPowerOfTwo(int n) {
+        if(n == 0 || n <= Integer.MIN_VALUE || n >= Integer.MAX_VALUE) return false;
+        
+        return (n & (n-1)) == 0;
+    }
+    
+    //https://leetcode.com/problems/palindrome-number/
+    public boolean ssPalindrome(int x) {
+        // converting this number to a string then checking the palindrome is a trivial probelm
+        // cost of that is additional space for string. so that won't be applied here
+        // instead we reverse the number and then check with the actual number and if they are same then it's palindrome
+
+        if (x < 0) return false;
+
+        // when it's just one digit
+        if ((x / 10) == 0) return true;
+
+        int reverse = 0;
+        int n = x;
+
+        while (n > 0)
+        {
+            reverse = reverse * 10 + n % 10;
+            n /= 10;
+        }
+
+        if (reverse == x) return true;
+
+        return false;
+    }
 }

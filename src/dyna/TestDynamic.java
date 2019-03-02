@@ -200,5 +200,45 @@ public class TestDynamic {
 		}
 		
 		return dp[n];
-    }    
+    }
+    
+    //https://leetcode.com/problems/house-robber/
+    public int rob(int[] nums)
+    {
+
+        if (nums == null || nums.length == 0)
+        {
+            return 0;
+        }
+
+        int len = nums.length;
+
+        if (len == 1)
+        {
+            return nums[0];
+        }
+
+        int[] rob = new int[len];
+
+        if (len > 1)
+        {
+            rob[0] = nums[0];
+            rob[1] = Math.max(nums[1], rob[0]);
+        }
+
+        if (len > 2)
+        {
+            rob[2] = Math.max(nums[2] + nums[0], rob[1]);
+        }
+
+        if (len > 3)
+        {
+            for (int i = 3; i < len; i++)
+            {
+                rob[i] = Math.max(nums[i] + Math.max(rob[i - 2], rob[i - 3]), rob[i - 1]);
+            }
+        }
+
+        return rob[len - 1];
+    }
 }

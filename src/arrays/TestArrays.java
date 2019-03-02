@@ -1,5 +1,8 @@
 package arrays;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TestArrays {
 
 	public TestArrays()
@@ -144,7 +147,45 @@ public class TestArrays {
         return uniqueNumbers;
     }
     
-    
+    //https://leetcode.com/problems/remove-element/
+    public int removeElement(int[] A, int elem) {
+        int len = A.length - 1;
+        
+        for(int i = 0; i <= len; i++)
+        {
+            if(A[i]==elem)
+            {
+                while(len >= 0 && A[len] == elem) len--;
+
+                if(len > i)
+                {
+                    A[i] = A[len];
+                    len--;
+                }
+            }
+        }
+        
+        return len+1;
+    }
+
+    //https://leetcode.com/problems/missing-number/
+    public int MissingNumber(int[] nums)
+    {
+        if (nums == null) return -1;
+
+        int numLen = nums.length;
+
+        int sum = (numLen * (numLen + 1))/ 2;
+
+        for (int num : nums)
+        {
+            sum -=  num;
+        }
+
+        //return (numLen > sum) ? numLen : sum;
+        return sum;
+    }
+
     //https://leetcode.com/problems/move-zeroes/
     public void moveZeroes(int[] nums) {
         
@@ -477,6 +518,31 @@ public class TestArrays {
         }
     }
     
+    //https://leetcode.com/problems/pascals-triangle/
+    public List<List<Integer>> generate(int numRows) {
+    	List<List<Integer>> triangle = new ArrayList<List<Integer>>();
+
+	ArrayList<Integer> previousRow = new ArrayList<Integer>();
+	
+	for(int i = 0; i < numRows; i++){//this is for rows
+		ArrayList<Integer> currentRow = new ArrayList<Integer>();
+		
+		for(int j = 0; j < (i+1); j++){//the number of columns in each row is equal to row number
+			
+			if(j==0||j==i) currentRow.add(j, 1);
+			else{
+				int cellValue = previousRow.get(j-1) + previousRow.get(j);
+				currentRow.add(j, cellValue);
+			}
+		}
+		
+		triangle.add(i, currentRow);
+		previousRow = currentRow;
+	}
+
+	return triangle;
+    }
+
   	public static int[] stockProfit(int[] stockPrices)
   	{
   	  int maxProfit = 0;
@@ -510,4 +576,39 @@ public class TestArrays {
 
   	  return dates;
   	}
+  	
+  	//https://leetcode.com/problems/plus-one/submissions/
+    public int[] plusOne(int[] digits) {
+        if(digits==null || digits.length==0) return null;
+        
+        int len = digits.length;
+        
+        //if LSB is less than 9 
+        if(digits[len-1] < 9){
+            digits[len-1]++;
+            return digits;
+        }
+        
+        int carry = 1;
+        int sum = 0;
+        
+        for(int j = len-1; j >= 0; j--){
+            sum = digits[j] + carry;
+            
+            digits[j] = sum%10;
+            carry = sum/10;
+        }
+        
+        if(carry==1){
+            int[] newNumber = new int[len+1];
+            newNumber[0] = 1;
+            
+            for(int i = 0; i < len; i++){
+                newNumber[i+1] = digits[i];
+            }
+            return newNumber;
+        }else{
+            return digits;
+        }
+    }
 }
