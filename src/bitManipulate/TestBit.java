@@ -69,5 +69,25 @@ public class TestBit {
         // now you can convert the result to int
         return (int) result;
     }
+    
+    //https://leetcode.com/problems/hamming-distance/
+    public int HammingDistance(int x, int y) {
+        int distance = x ^ y;
 
+        return this.NumberOf1Bits(distance);
+    }
+
+	public int NumberOf1Bits(int n)
+	{
+	        int count = 0;
+	
+	        while(n != 0)
+	        {
+	            count++;
+	
+	            n &= (n - 1);    
+	        }
+	
+	        return count;
+	}
 }

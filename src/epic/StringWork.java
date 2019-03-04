@@ -26,6 +26,7 @@ public char[] reverseString(String word)
 	return reverse;
 }
 
+//https://leetcode.com/problems/reverse-string/
 public char[] reverseString(char[] word)
 {
 int len=word.length-1;

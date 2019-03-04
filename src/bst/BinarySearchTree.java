@@ -14,19 +14,19 @@ public class BinarySearchTree
 	{
 		if(child.getValue() <= parent.getValue())	//less than or equal
 		//if(child.getValue()>parent.getValue())	//just uncomment this line to test function isBST 
-			{
-				if(parent.getLeft() == null)
-					parent.setLeft(child);
-				else
-					addNode(parent.getLeft(),child);
-			}
+		{
+			if(parent.getLeft() == null)
+				parent.setLeft(child);
+			else
+				addNode(parent.getLeft(),child);
+		}
 		else 
-			{
-				if(parent.getRight() == null)
-					parent.setRight(child);
-				else
-					addNode(parent.getRight(),child);
-			}			
+		{
+			if(parent.getRight() == null)
+				parent.setRight(child);
+			else
+				addNode(parent.getRight(),child);
+		}			
 	}
 	
 	public void printTree(TreeNode printer)
@@ -86,26 +86,6 @@ public class BinarySearchTree
 		if(node.getRight() == null)
 			return node.getValue();
 		else return maxValue(node.getRight());
-	}
-	
-	//https://leetcode.com/problems/path-sum/
-	public boolean hasPathSum(TreeNode node, int sum)
-	{
-        if(node == null) return false;
-        
-		//checks here if it reached the leaf of the tree and the sum reaches zero
-		if((sum - node.val) == 0 && node.left == null && node.right == null) 
-			return true;
-		
-		boolean left = false, right = false;
-		
-		if(node.left != null)
-			left = hasPathSum(node.left, sum - node.val);
-        
-		if(node.right != null)
-			right = hasPathSum(node.right, sum - node.val);
-		
-        return (left || right);
 	}
 	
 	//this one changes the tree to its mirror

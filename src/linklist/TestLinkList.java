@@ -11,7 +11,7 @@ public class TestLinkList {
 	public void test()
 	{
 //		printLinkedList(createLinkedListFromArray(new int[] {1,4,3,2,5,2}));
-		printLinkedList(partition(createLinkedListFromArray(new int[] {1,4,3,2,5,2}), 3));		
+		//printLinkedList(partition(createLinkedListFromArray(new int[] {1,4,3,2,5,2}), 3));		
 	}
 	
 	public ListNode createLinkedListFromArray(int[] array)
@@ -327,6 +327,7 @@ public class TestLinkList {
             {
                 current = current.next;
             }
+            
             //covers deletion and non deletion
             prev.next = current;
             prev = current;
@@ -339,6 +340,21 @@ public class TestLinkList {
         return head;
     }
     
+    //https://leetcode.com/problems/delete-node-in-a-linked-list/
+    public void deleteNode(ListNode node) {
+        if(node==null) return;
+
+        if(node.next == null)
+        {
+            node = null;
+        }
+        else
+        {
+            node.val = node.next.val;
+            node.next = node.next.next;
+        }
+    }
+
     //https://leetcode.com/problems/linked-list-cycle/
     public boolean hasCycle(ListNode head) {
         ListNode current = head;
@@ -354,6 +370,26 @@ public class TestLinkList {
         }
         
         return false;
+    }
+
+    //https://leetcode.com/problems/reverse-linked-list/
+    public ListNode ReverseList(ListNode head) {
+        if(head == null || head.next == null) return head;
+        
+        ListNode prev = head;
+        ListNode current = prev.next;
+        prev.next = null;
+                
+        while(current != null)
+        {
+            ListNode temp = current.next;
+            current.next = prev;
+            
+            prev = current;
+            current = temp;
+        }
+        
+        return prev;
     }
 
 

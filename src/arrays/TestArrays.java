@@ -1,6 +1,8 @@
 package arrays;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 public class TestArrays {
@@ -32,9 +34,10 @@ public class TestArrays {
      
      for(int i = 0; i < r; i++) {
     	 	for(int j = 0; j < c; j++) {
-    	 		reshapedMatrix[i][j] = nums[oi][oj%originalColumns];
+    	 		reshapedMatrix[i][j] = nums[oi][oj % originalColumns];
     	 		
-    	 		// column of the original array increases after each number is visited. so should be mod of columnNo
+    	 		// column of the original array increases after each number is visited
+    	 		// so should be mod of columnNo
     	 		oj++;
     	 		// row of the original array increases after each row is done for all columns
     	 		if(oj % originalColumns == 0) oi++;
@@ -90,33 +93,41 @@ public class TestArrays {
     public int removeDuplicates(int[] nums) {
         if(nums == null || nums.length == 0) return 0;
         
-    	int currentPos = 0;
+    	int uniquePos = 0;
     	
-    	for(int i = 0; i < nums.length - 1; i++, currentPos++)
+    	//key trick here is:
+    	//uniquePos gets increased only for the unique number
+    	//i always gets increased even for duplicate numbers
+    	for(int i = 0; i < nums.length - 1; i++, uniquePos++)
     	{
     		// for array like this [1,1,1,2,2,2,2,3,3,3,3,4] this line 
     		// at first copies a[0] = 1 and after the while loop it also copies the last same number a[2] = 1
     		// which will give the result [1,1,2,2,3,3,4]
     		// removing the line i-- after while will make sure the result is [1,2,3,4]
-    		nums[currentPos] = nums[i];
+    		nums[uniquePos] = nums[i];
 
     		if(nums[i] == nums[i + 1])
     		{
+    			//make sure to only increase i for duplicates
     			while(i < nums.length - 1 && nums[i] == nums[i+1])
     			{
     				i++;
     			}
-    			// remove only the line below if you want to make sure the result array will only contain non-dups
+    			// remove only the line below if you want to make sure 
+    			// the result array will only contain non-dups
+    			// removing this line makes sure we skip all duplicates
+    			// and only keep one copy of every unique number
     			i--;
     		}
     	}
     	
-    	nums[currentPos] = nums[nums.length - 1];
+    	//the final update
+    	nums[uniquePos] = nums[nums.length - 1];
     	
-    	return currentPos + 1;
+    	return uniquePos + 1;
     }    
     
-    //https://leetcode.com/problems/remove-duplicates-from-sorted-array/submissions/
+    //https://leetcode.com/problems/remove-duplicates-from-sorted-array/
     //runtime O(n)
     //trick: we need two pointers
     //i points to the running index in the array
@@ -128,8 +139,8 @@ public class TestArrays {
 
         int uniqueNumbers = 1;
         
-        //?At this step we mark all duplicate numbers as -1
-        for( int i=1; i < A.length;)
+        // At this step we mark all duplicate numbers as -1
+        for( int i = 1; i < A.length;)
         {
         	// as long as it is the same number we keep increasing i
             while(i < A.length && A[i] == currentNumber)
@@ -137,6 +148,9 @@ public class TestArrays {
                 i++;
             }
             
+            //we are done with duplicate numbers and
+            //now A[i] contains a new unique number
+            //so add that unique number to the array A
             if(i < A.length){
                 currentNumber = A[i++];    
                 A[uniqueNumbers] = currentNumber;
@@ -153,7 +167,9 @@ public class TestArrays {
         
         for(int i = 0; i <= len; i++)
         {
-            if(A[i]==elem)
+        	//when we find the element we move the last element
+        	//from the list to that location
+            if(A[i] == elem)
             {
                 while(len >= 0 && A[len] == elem) len--;
 
@@ -169,6 +185,7 @@ public class TestArrays {
     }
 
     //https://leetcode.com/problems/missing-number/
+    //Mathematically sum = n * (n + 1) / 2
     public int MissingNumber(int[] nums)
     {
         if (nums == null) return -1;
@@ -184,6 +201,28 @@ public class TestArrays {
 
         //return (numLen > sum) ? numLen : sum;
         return sum;
+    }
+    
+    //https://leetcode.com/problems/contains-duplicate/
+    public boolean ContainsDuplicate(int[] nums) {
+        if (nums == null || nums.length < 2)
+        {
+            return false;
+        }
+
+        HashSet<Integer> tracker = new HashSet<Integer>();
+
+        for (int i : nums)
+        { 
+            if(tracker.contains(i))
+            {
+                return true;
+            }
+
+            tracker.add(i);
+        }
+
+        return false;
     }
 
     //https://leetcode.com/problems/move-zeroes/
@@ -242,7 +281,7 @@ public class TestArrays {
          return maxSum;
    }
     
-    //https://leetcode.com/problems/subarray-sum-equals-k/solution/
+    //https://leetcode.com/problems/subarray-sum-equals-k/
     // O(n2) runtime, O(1) space
     // trick: 2 loops
     // for each i we start summing it up with another loop. if the sum == k we break
@@ -269,6 +308,7 @@ public class TestArrays {
     		 if(sum == k)
     		 {
     			 sumCount++;
+    			 break;
     		 }
     	 }
      }
@@ -351,7 +391,6 @@ public class TestArrays {
         return false;
     }
 
-    
     //https://leetcode.com/problems/container-with-most-water/
     //trick:
     //use two index for left (i) and right (j)
@@ -453,6 +492,9 @@ public class TestArrays {
     }
     
     //https://leetcode.com/problems/rotate-array/
+    //Input: [1,2,3,4,5,6,7] and k = 3
+    //Output: [5,6,7,1,2,3,4]
+    //O(n) time and space
     public void Rotate(int[] nums, int k)
     {
         int arrayLen = nums.length;
@@ -522,27 +564,27 @@ public class TestArrays {
     public List<List<Integer>> generate(int numRows) {
     	List<List<Integer>> triangle = new ArrayList<List<Integer>>();
 
-	ArrayList<Integer> previousRow = new ArrayList<Integer>();
-	
-	for(int i = 0; i < numRows; i++){//this is for rows
-		ArrayList<Integer> currentRow = new ArrayList<Integer>();
+		ArrayList<Integer> previousRow = new ArrayList<Integer>();
 		
-		for(int j = 0; j < (i+1); j++){//the number of columns in each row is equal to row number
+		for(int i = 0; i < numRows; i++){//this is for rows
+			ArrayList<Integer> currentRow = new ArrayList<Integer>();
 			
-			if(j==0||j==i) currentRow.add(j, 1);
-			else{
-				int cellValue = previousRow.get(j-1) + previousRow.get(j);
-				currentRow.add(j, cellValue);
+			for(int j = 0; j < (i+1); j++){//the number of columns in each row is equal to row number				
+				if( j == 0 || j == i ) currentRow.add(j, 1);
+				else{
+					int cellValue = previousRow.get(j-1) + previousRow.get(j);
+					currentRow.add(j, cellValue);
+				}
 			}
+			
+			triangle.add(i, currentRow);
+			previousRow = currentRow;
 		}
-		
-		triangle.add(i, currentRow);
-		previousRow = currentRow;
-	}
-
-	return triangle;
+	
+		return triangle;
     }
 
+    //https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/
   	public static int[] stockProfit(int[] stockPrices)
   	{
   	  int maxProfit = 0;
@@ -576,6 +618,36 @@ public class TestArrays {
 
   	  return dates;
   	}
+    
+    // runtime O(N)
+    public int maxProfit(int[] prices) {
+        if(prices == null || prices.length == 0) return 0;
+        
+        boolean bought = false;
+        
+        int profit = 0;
+        
+        int purchasePrice = Integer.MAX_VALUE;
+        
+        for(int i = 0; i < prices.length; i++)
+        {
+            if(prices[i] < purchasePrice){
+              purchasePrice = prices[i];
+              bought = true;
+            } 
+            
+            if(bought && 
+            	((i < prices.length - 1 && prices[i] > prices[i + 1]) ||  
+            	(i == prices.length - 1) && (prices[i] > purchasePrice)))
+            {
+                profit += prices[i] - purchasePrice;
+                bought = false;
+                purchasePrice = Integer.MAX_VALUE;
+            }
+        }
+        
+        return profit;
+    }
   	
   	//https://leetcode.com/problems/plus-one/submissions/
     public int[] plusOne(int[] digits) {
@@ -610,5 +682,87 @@ public class TestArrays {
         }else{
             return digits;
         }
+    }
+    
+    //https://leetcode.com/problems/majority-element/
+    public int MajorityElement(int[] nums) {
+        if (nums == null || nums.length == 0)
+        {
+            return -1;
+        }
+
+        int targetLen = nums.length / 2;
+
+        HashMap<Integer, Integer>  tracker = new HashMap<Integer, Integer>();
+
+        for(int n : nums)
+        {
+            //gets the value for n and checks if that is the majority
+            if (tracker.get(n) >= targetLen)
+            {
+                return n;
+            }
+
+            tracker.put(n, tracker.getOrDefault(n, 0) + 1);
+        }
+
+        return -1;
+    }
+    
+    //https://leetcode.com/problems/find-all-numbers-disappeared-in-an-array/
+    //Input:[4,3,2,7,8,2,3,1]
+    //Output:[5,6]
+    public List<Integer> FindDisappearedNumbers(int[] nums)
+    {
+        int n = nums.length;
+
+        boolean[] presence = new boolean[n];
+
+        for(int num : nums)
+        {
+            if(!presence[num - 1])
+            {
+                presence[num - 1] = true;
+            }
+        }
+
+        List<Integer> missing = new ArrayList<Integer>();
+
+        for(int i = 0; i < presence.length; i++)
+        {
+            if(!presence[i])
+            {
+                missing.add(i + 1);
+            }
+        }
+
+        return missing;
+    }
+
+    //https://leetcode.com/problems/max-consecutive-ones/
+    public int FindMaxConsecutiveOnes(int[] nums)
+    {
+        int max1s = 0;
+        int running1s = 0;
+
+        for(int i : nums)
+        {
+            if(i == 1)
+            {
+                running1s++;
+                
+                if(running1s > max1s)
+                {
+                    max1s = running1s;
+                }
+            }
+
+            if(i != 1)
+            {
+                running1s = 0;
+            }
+        }
+
+        return max1s;
     }
 }

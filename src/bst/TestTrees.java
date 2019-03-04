@@ -53,12 +53,15 @@ public class TestTrees {
     }
     
 	private boolean valid(TreeNode p, Integer low, Integer high) 
-	{    if (p == null) return true;    
-	 return (low == null || p.val > low) 
+	{    
+		if (p == null) return true;    
+
+		return (low == null || p.val > low) 
 	     && (high == null || p.val < high)          
 	     && valid(p.left, low, p.val)          
 	     && valid(p.right, p.val, high); 
-	} 
+	}
+	
     //https://leetcode.com/problems/maximum-binary-tree/description/
     /*
      * Approach: 
@@ -111,6 +114,25 @@ public class TestTrees {
     	}
     	
     	return maxPosition;
+    }
+    
+    //https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/
+    public TreeNode sortedArrayToBST(int[] num) {
+        if(num==null || num.length==0) return null;
+        
+        return ArrayToBST(num, 0, num.length);
+    }
+    
+    private TreeNode ArrayToBST(int[] num, int min, int max){
+        int rootIndex = (min + max) / 2;
+        
+        if(min > max || rootIndex < 0 || rootIndex >= num.length) return null;
+        
+        TreeNode root = new TreeNode(num[rootIndex]);
+        root.left = ArrayToBST(num, min, rootIndex-1);
+        root.right = ArrayToBST(num, rootIndex+1, max);
+        
+        return root;
     }
     
     // https://leetcode.com/problems/insert-into-a-binary-search-tree/
@@ -243,6 +265,7 @@ public class TestTrees {
     //https://leetcode.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/
     //Input: pre = [1,2,4,5,3,6,7], post = [4,5,2,6,7,3,1]
     //Output: [1,2,3,4,5,6,7]
+    //lastnight
     public TreeNode constructFromPrePost(int[] pre, int[] post) {
         return constructFromPrePost(pre, 0, pre.length - 1, post, 0, pre.length - 1);
     }
@@ -282,6 +305,21 @@ public class TestTrees {
         throw new IllegalArgumentException();
     }
 
+    //https://leetcode.com/problems/invert-binary-tree/
+    public TreeNode invertTree(TreeNode root) {
+        if(root!=null)
+        {
+            TreeNode temp = root.left;
+            
+            root.left = root.right;
+            root.right = temp;
+            
+            invertTree(root.left);
+            invertTree(root.right);
+        }
+        
+        return root;
+    }
     
     //CAT: TWO TREES
     //--------------
@@ -343,6 +381,7 @@ public class TestTrees {
     }
     
     //https://leetcode.com/problems/most-frequent-subtree-sum/
+    //TODO
     HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
     
     public int[] findFrequentTreeSum(TreeNode root) {
@@ -358,7 +397,7 @@ public class TestTrees {
     	return result;
     }
     
-    public int findSubtreeSum(TreeNode node)
+    private int findSubtreeSum(TreeNode node)
     {
     	if(node == null) return 0;
     	
@@ -372,6 +411,23 @@ public class TestTrees {
     	
     	return sum;
     }
+    
+    //https://leetcode.com/problems/same-tree/
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        if(p == null && q ==null) return true;
+        
+        if((p == null && q != null) || (p != null && q == null))
+            return false;
+        
+        if(p.val == q.val)
+        {
+            return isSameTree(p.left, q.left)
+                && isSameTree(p.right, q.right);
+        }
+        
+        return false;
+    }
+
 
     //CAT: Serialization
     //------------------
@@ -387,6 +443,7 @@ public class TestTrees {
             if (--edgeCount < 0) return false;
             if (!node.equals("#")) edgeCount += 2;
         }
+        
         return edgeCount == 0;
     }
     
@@ -411,10 +468,12 @@ public class TestTrees {
     	if(node == null) return "#";
     	
     	//this contains the serialization of the subtree rooted at node 
-    	String currentSerial = node.val + "," + serializeToFindDuplicate(node.left) + "," + serializeToFindDuplicate(node.right);
+    	String currentSerial = node.val + "," + 
+    							serializeToFindDuplicate(node.left) + "," + 
+    							serializeToFindDuplicate(node.right);
     	
     	//for the above example when it traverse left 4 it will create serialization like 4,1,#,#,2,#,#
-    	//and put it into subtreeCount hashmap
+    	//and put it into subtreeCount hashMap
     	subtreeCount.put(currentSerial, subtreeCount.getOrDefault(currentSerial, 0) + 1);
     	
     	//then later when it traverses right 4 it will create the same serialization 
@@ -610,6 +669,26 @@ public class TestTrees {
     	return root.val + left + right;
     }
     
+	//https://leetcode.com/problems/path-sum/
+	public boolean hasPathSum(TreeNode node, int sum)
+	{
+        if(node == null) return false;
+        
+		//checks here if it reached the leaf of the tree and the sum reaches zero
+		if((sum - node.val) == 0 && node.left == null && node.right == null) 
+			return true;
+		
+		boolean left = false, right = false;
+		
+		if(node.left != null)
+			left = hasPathSum(node.left, sum - node.val);
+        
+		if(node.right != null)
+			right = hasPathSum(node.right, sum - node.val);
+		
+        return (left || right);
+	}
+    
     //Cracking4.12 pathswithsum
     //we need 2 methods:
     //method - 1:continue tracking currentSum and from topDown and return totalWays when the targetSum found
@@ -676,7 +755,7 @@ public class TestTrees {
     //CAT: OTHERS
     //-----------
 
-    // https://leetcode.com/problems/minimum-absolute-difference-in-bst/description/
+    // https://leetcode.com/problems/minimum-absolute-difference-in-bst/
     // The trick here is that the min difference between any nodes in any positions in the tree
     // that means do a sorted traversal (inorder) and then get the difference between pairs and 
     // return the minimum difference
@@ -792,6 +871,7 @@ public class TestTrees {
         return 1 + Math.min(MinDepth(root.left), MinDepth(root.right));
     }
     
+    //https://leetcode.com/problems/maximum-depth-of-binary-tree/
     public int maxDepth(TreeNode node)
     {
     	if(node == null) return 0;

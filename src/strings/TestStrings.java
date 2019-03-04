@@ -260,7 +260,7 @@ public int numJewelsInStones(String J, String S) {
 	return jewelCount;
 }
 
-// https://leetcode.com/problems/shortest-distance-to-a-character/description/
+// https://leetcode.com/problems/shortest-distance-to-a-character/
 public int[] shortestToChar(String S, char C) {
 	ArrayList<Integer> positionsOfC = new ArrayList<Integer>();
 	
@@ -1255,7 +1255,31 @@ public int strStr(String haystack, String needle) {
 		
 		return complexPortions;
   }
+  
+  //https://leetcode.com/problems/excel-sheet-column-number/
+  public int TitleToNumber(String s) {
+      int columnValue = 0;
 
+      if (s == null || s.length() == 0)
+      {
+          return columnValue;
+      }
+
+      int len = s.length() - 1;
+
+      char[] excelColumn = s.toCharArray();
+
+      for (int i = 0; i <= len; i++)
+      {
+          columnValue += (excelColumn[i] - 'A' + 1) * (int) Math.pow(26, len - i);
+      }
+
+      return columnValue;        
+  }
+
+  //https://leetcode.com/problems/valid-anagram/submissions/
+  //TODO get the solved solution here
+  
   //notworking
   // this will not give the right result for cases like 23:51, 23:58, 00:01
   // with this implementation the answer will be 7 where it should be 3

@@ -3,6 +3,7 @@ package numbers;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -71,6 +72,7 @@ public class TestNumbers {
     }
     
     // https://leetcode.com/problems/judge-route-circle/description/
+    //https://leetcode.com/problems/robot-return-to-origin/
     // removed
     public boolean judgeCircle(String moves) {
 	 //initial position 0,0
@@ -334,7 +336,7 @@ public class TestNumbers {
     //https://leetcode.com/problems/single-number-iii/
     //Input:  [1,2,1,3,2,5]
     //Output: [3,5]
-    public int[] SingleNumber(int[] nums) {
+    public int[] SingleNumberIII(int[] nums) {
         if (nums == null || nums.length <= 1)
         {
             return nums;
@@ -383,7 +385,7 @@ public class TestNumbers {
     }
     
     //https://leetcode.com/problems/single-number-ii/
-    public int singleNumber(int[] A) {
+    public int singleNumberII(int[] A) {
         HashMap<Integer, Integer> numberMap = new HashMap<Integer, Integer>();
 
         for(int i = 0; i < A.length; i++)
@@ -409,6 +411,35 @@ public class TestNumbers {
 
 		return numberMap.keySet().iterator().next();
     }
+
+    //https://leetcode.com/problems/single-number/
+    public int singleNumberI(int[] A) {
+		HashMap<Integer, Integer> numberList = new HashMap<Integer, Integer>();
+
+		for(int key:A)
+		{
+			int value = 1;
+			if(numberList.containsKey(key))
+			{
+				value = numberList.remove(key) + 1;				
+			}
+			
+			numberList.put(key, value);
+		}
+		
+		Iterator<Integer> iterate = numberList.keySet().iterator();
+		
+		while(iterate.hasNext())
+		{
+			int current = iterate.next();
+			if(numberList.get(current)==1)
+				{
+					return current;
+				}
+		}
+		
+		return -1;
+	}
 
     //https://leetcode.com/problems/product-of-array-except-self/
     public int[] ProductExceptSelf(int[] nums)
@@ -491,7 +522,7 @@ public class TestNumbers {
     }
     
     //https://leetcode.com/problems/palindrome-number/
-    public boolean ssPalindrome(int x) {
+    public boolean isPalindrome(int x) {
         // converting this number to a string then checking the palindrome is a trivial probelm
         // cost of that is additional space for string. so that won't be applied here
         // instead we reverse the number and then check with the actual number and if they are same then it's palindrome
@@ -513,5 +544,28 @@ public class TestNumbers {
         if (reverse == x) return true;
 
         return false;
+    }
+    
+    //https://leetcode.com/problems/add-digits/submissions/
+    public int AddDigits(int num) {
+        if (num / 10 == 0) return num;
+
+        int finalDigit = -1;
+
+        while ((num / 10) > 0)
+        {
+            int current = num;
+            finalDigit = 0;
+
+            while (current > 0)
+            {
+                finalDigit += current % 10;
+                current /= 10;
+            }
+
+            num = finalDigit;
+        }
+
+        return finalDigit;
     }
 }
