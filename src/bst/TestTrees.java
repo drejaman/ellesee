@@ -701,7 +701,7 @@ public class TestTrees {
     	int pathsFromRoot = countPathsWithSumFromNode(node, targetSum, 0);
     	
     	int pathsFromLeft = countPathsWithSum(node.left, targetSum);
-    	int pathsFromRight = countPathsWithSum(node.left, targetSum);
+    	int pathsFromRight = countPathsWithSum(node.right, targetSum);
     	
     	return pathsFromRoot + pathsFromLeft + pathsFromRight;
     }
@@ -754,7 +754,6 @@ public class TestTrees {
     
     //CAT: OTHERS
     //-----------
-
     // https://leetcode.com/problems/minimum-absolute-difference-in-bst/
     // The trick here is that the min difference between any nodes in any positions in the tree
     // that means do a sorted traversal (inorder) and then get the difference between pairs and 
@@ -832,12 +831,14 @@ public class TestTrees {
     {
     	if(root == null) return false;
     	
+    	//the ordering is important
     	boolean leftOne = HasOneInTree(root.left);
     	boolean rightOne = HasOneInTree(root.right);
     	
     	if(!leftOne) root.left = null;
     	if(!rightOne) root.right = null;
     	
+    	// there is at least one 1 in this subtree rooted at root
     	return root.val == 1 || leftOne || rightOne;
     }
     
@@ -861,6 +862,14 @@ public class TestTrees {
         		&& isBalanced(root.right);
     }
     
+    //https://leetcode.com/problems/maximum-depth-of-binary-tree/
+    public int maxDepth(TreeNode node)
+    {
+    	if(node == null) return 0;
+    	
+    	return Math.max(maxDepth(node.left), maxDepth(node.right)) + 1;
+    }
+    
     //https://leetcode.com/problems/minimum-depth-of-binary-tree/
     public int MinDepth(TreeNode root) {
         if(root == null) return 0;
@@ -871,32 +880,31 @@ public class TestTrees {
         return 1 + Math.min(MinDepth(root.left), MinDepth(root.right));
     }
     
-    //https://leetcode.com/problems/maximum-depth-of-binary-tree/
-    public int maxDepth(TreeNode node)
-    {
-    	if(node == null) return 0;
-    	
-    	return Math.max(maxDepth(node.left), maxDepth(node.right)) + 1;
-    }
-    
     //https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/
     //https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/
+    //lastnight
     public TreeNode LowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if(root==null)
+        if(root == null)
         {
             return null;
         }
         
+        //case - 1
         if(root.val == p.val && (this.containsTree(root.left, q) || this.containsTree(root.right, q)))
         {
             return p;
         }
         
+        //case - 2
         if(root.val == q.val && (this.containsTree(root.left, p) || this.containsTree(root.right, p)))
         {
             return q;
         }
         
+        //case - 3 
+        //either left contains p and right contains q 
+        //either left contains q and right contains p
+        //then root is the LCA
         if(root.left != null && root.right != null)
         {
             if((this.containsTree(root.left, p) && this.containsTree(root.right, q))
@@ -906,16 +914,19 @@ public class TestTrees {
             }
         }
         
+        //case - 4: otherwise check if left contains LCA
         if(root.left != null && this.containsTree(root.left, p) && this.containsTree(root.left, q))
         {
             return LowestCommonAncestor(root.left, p, q);
         }
         
+        //case - 5: otherwise check if right contains LCA
         if(root.right != null && this.containsTree(root.right, p) && this.containsTree(root.right, q))
         {
             return LowestCommonAncestor(root.right, p, q);
         }
-        
+ 
+        //case - 6: No LCA
         return null;
     }
     

@@ -30,6 +30,8 @@ public class TestGraphs {
      return paths;
     }
     
+    //trick: since we are using the same subpath (same nodes) several times
+    //we don't use visit matrix or state
     public void dfsSearch(int node, int[][] graph, List<List<Integer>> paths, List<Integer> path)
     {
     		//we have reached the last node of the graph
@@ -47,9 +49,9 @@ public class TestGraphs {
     			path.add(nextNode);
     			//call dfsSearch recursively with this reachable node
     			dfsSearch(nextNode, graph, paths, path);
-            // this is important to ensure the path is rolled back for failure cases 
-            // where we haven't reached to the destination (n-1) the node
-            path.remove(path.size() - 1);
+	            // this is important to ensure the path is rolled back for failure cases 
+	            // where we haven't reached to the destination (n-1) the node
+	            path.remove(path.size() - 1);
     		}
     }
     
@@ -64,13 +66,13 @@ public class TestGraphs {
         
         for(int i = 0; i < len; i++)
         {
-        		//we will call dfsVisit for each row to checks friendship for each person
-        		//but this check will reduce the call in case that row's relations are already checked out
-    			if(M[i][i] == 1)
-    			{
-    				this.dfsVisitFriend(M, i, len);
-    				count++;
-    			}
+    		//we will call dfsVisit for each row to checks friendship for each person
+    		//but this check will reduce the call in case that row's relations are already checked out
+			if(M[i][i] == 1)
+			{
+				this.dfsVisitFriend(M, i, len);
+				count++;
+			}
         }
         
         return count;
@@ -79,22 +81,22 @@ public class TestGraphs {
     //dfs the grid for r-th person
     private void dfsVisitFriend(int[][] grid, int r, int len)
     {
-    		//check r's friendship with other persons
-    		for(int c = 0; c < len; c++)
-    		{
-    			//if there is a friendship exists between r and c then reset in both r and c's rows
-    			if(grid[r][c] == 1)
-    			{
-    				grid[r][c] = grid[c][r] = 0;
-    				//since r and c are friends then also check who are also friends with c
-    				//that way as long as we can do this recursively they are just in one circle
-    				this.dfsVisitFriend(grid, c, len);
-    			}
-    		}
+		//check r's friendship with other persons
+		for(int c = 0; c < len; c++)
+		{
+			//if there is a friendship exists between r and c then reset in both r and c's rows
+			if(grid[r][c] == 1)
+			{
+				grid[r][c] = grid[c][r] = 0;
+				//since r and c are friends then also check who are also friends with c
+				//that way as long as we can do this recursively they are just in one circle
+				this.dfsVisitFriend(grid, c, len);
+			}
+		}
     	}
     
     //https://leetcode.com/problems/number-of-islands/
-    //trick: 
+    //logic: 
     //traverse the matrix and for each cell with 1 value call dfsVisit
     //that will set the cell to 0 and call dfsVisit for its adjacent cells
     //so at 1 call of dfsVisit it will reach to all 1s that can be connected to that 1
@@ -108,81 +110,91 @@ public class TestGraphs {
         
         for(int i = 0; i < row; i++)
         {
-        		for(int j = 0; j < col; j++)
-        		{
-        			//if we are not allowed to change the matrix then we can 
-        			if(grid[i][j] == '1')
-        			{
-        				this.dfsVisitIsland(grid, i, j, row, col);
-        				count++;
-        			}
-        		}
+    		for(int j = 0; j < col; j++)
+    		{
+    			//if we are not allowed to change the matrix then we can 
+    			if(grid[i][j] == '1')
+    			{
+    				this.dfsVisitIsland(grid, i, j, row, col);
+    				count++;
+    			}
+    		}
         }
         
         return count;
     }
     
-    //the dfsVisit is called when the cell is 1. this sets the current cell to 1 and call dfsVisit for all adjacent cell
+    //the dfsVisit is called when the cell is 1. this sets the current cell to 0 
+    //and call dfsVisit for all adjacent cell
     private void dfsVisitIsland(char[][] grid, int r, int c, int row, int col)
     {
-    		//if the cell is not 1 (already set to 0) then return as it is 
-    		//either was already 0 or set to 0
-    		//so its adjacent cell cannot be part of the island
-    		if(r < 0 || c < 0 || r >= row || c >= col || grid[r][c] != '1') return;
+		//if the cell is not 1 (already set to 0) then return as it is 
+		//either was already 0 or set to 0
+		//so its adjacent cell cannot be part of the island
+		if(r < 0 || c < 0 || r >= row || c >= col || grid[r][c] != '1') return;
 
-    		grid[r][c] = '0';
-    		
-    		//island consists of only the up or down or left or right cell not the diagonal ones
-    		this.dfsVisitIsland(grid, r, c-1, row, col);
-    		this.dfsVisitIsland(grid, r, c+1, row, col);
-    		this.dfsVisitIsland(grid, r-1, c, row, col);
-    		this.dfsVisitIsland(grid, r+1, c, row, col);
+		grid[r][c] = '0';
+		
+		//island consists of only the up or down or left or right cell not the diagonal ones
+		this.dfsVisitIsland(grid, r, c-1, row, col);
+		this.dfsVisitIsland(grid, r, c+1, row, col);
+		this.dfsVisitIsland(grid, r-1, c, row, col);
+		this.dfsVisitIsland(grid, r+1, c, row, col);
     }
     
     //https://leetcode.com/problems/max-area-of-island/
     public int maxAreaOfIsland(int[][] grid) {
-    		int maxArea = 0;
+		int maxArea = 0;
  
-    		if(grid == null || grid.length == 0) return maxArea;
+		if(grid == null || grid.length == 0) return maxArea;
     		
-    		for(int i = 0; i < grid.length; i++)
-    		{
-    			for(int j = 0; j < grid[0].length; j++)
-    			{
-    				//if it is 1 then it is part of the Area
-    				if(grid[i][j] == 1)
-    				{
-    					maxArea = Math.max(maxArea, maxAreaVisit(grid, i, j, new boolean[grid.length][grid[0].length]));
-    				}
-    			}
-    		}
-    		
-    		return maxArea;
+		for(int i = 0; i < grid.length; i++)
+		{
+			for(int j = 0; j < grid[0].length; j++)
+			{
+				//if it is 1 then it is part of the Area
+				if(grid[i][j] == 1)
+				{
+					maxArea = Math.max(maxArea, 
+							maxAreaVisit(grid, i, j, new boolean[grid.length][grid[0].length]));
+				}
+			}
+		}
+		
+		return maxArea;
     }
     
     //this is a bit tricky as visit[r][c]
-    //visit[r][c] ensures that one cell is not counted twice when area calculation is ongoing
+    //ensures that one cell is not counted twice when area calculation is ongoing
     private int maxAreaVisit(int[][] grid, int r, int c, boolean[][] visit)
     {
-    		//we need to check the indices at first otherwise it could be array index out of founds exception
-    		if(r < 0 || c < 0 || r >= grid.length || c >= grid[0].length || grid[r][c] == 0 || visit[r][c])
-    			return 0;
-    		
-    			//keeping the cell [r][c] in the area we expand the area 4 ways
-    			//and get area that can be covered 4 ways adding the cell [r][c]
-    			//this will give 
-    			visit[r][c] = true;
-    			return 1 + maxAreaVisit(grid, r - 1, c, visit) + maxAreaVisit(grid, r + 1, c, visit)
-    					+ maxAreaVisit(grid, r, c - 1, visit) + maxAreaVisit(grid, r, c + 1, visit);
+		//we need to check the indices at first otherwise it could be array index out of founds exception
+		//also check if the cell is already visited
+		if(r < 0 || c < 0 || r >= grid.length || c >= grid[0].length || grid[r][c] == 0 || visit[r][c])
+			return 0;
+		
+		//keeping the cell [r][c] in the area we expand the area 4 ways
+		//and get area that can be covered 4 ways adding the cell [r][c]
+		//this will give 
+		visit[r][c] = true;
+		return 1 + maxAreaVisit(grid, r - 1, c, visit) + maxAreaVisit(grid, r + 1, c, visit)
+				+ maxAreaVisit(grid, r, c - 1, visit) + maxAreaVisit(grid, r, c + 1, visit);
     }
 
     // https://leetcode.com/problems/surrounded-regions/
+    // A region is captured by flipping all 'O's into 'X's in that surrounded region.
+    //logic: check all the border rows and columns cell
+    //if any of them are O then call dfs and mark all the connecting O to broder
+    //with B so that in the next phase those Os are not turned into X
+    //in the second pass if the cell is still O then turn it into X
+    //if the cell is B then turn it back into O
     public void solve(char[][] board) {
         if(board == null || board.length == 0 || board[0].length == 0) return;
         
         int rows = board.length;
         int cols = board[0].length;
         
+        // pass - 1: turn the bordering O and connecting ones to B
         for(int i = 0; i < rows ; i++)
         {
         	//check column 0 of each row
@@ -192,6 +204,7 @@ public class TestGraphs {
         	if(board[i][cols - 1] == 'O') expandBorderDfs(board, i, cols - 1);
         }
         
+        // pass - 2: turn remaining Os into X and turn back Bs to Os
         for(int j = 0; j < cols ; j++)
         {
         	//check every column of row 0
@@ -243,14 +256,14 @@ public class TestGraphs {
         //the matching can start at any cell
         for(int i = 0; i < board.length; i++)
         {
-        		for(int j = 0; j < board[0].length; j++)
-        		{
-        			if(board[i][j] == word.charAt(0))
-        			{
-        				if(wordExist(board, i, j, word, 0, new boolean[board.length][board[0].length]))
-        					return true;
-        			}
-        		}
+    		for(int j = 0; j < board[0].length; j++)
+    		{
+    			if(board[i][j] == word.charAt(0))
+    			{
+    				if(wordExist(board, i, j, word, 0, new boolean[board.length][board[0].length]))
+    					return true;
+    			}
+    		}
         }
         
         return false;
@@ -277,6 +290,7 @@ public class TestGraphs {
     			wordExist(board, r, c + 1, word, wi + 1, visit))
     			return true;
  
+    		//trick
     		// this is the key as this is backtracking to setting the character's visit to false 
     		// that was likely can later be used for another pass
     		visit[r][c] = false;
@@ -285,41 +299,41 @@ public class TestGraphs {
     }
 
     //https://leetcode.com/problems/keys-and-rooms/
-    //trick: 
+    //logic: 
     //start from room0 and push it into stack
     //keep popping from stack the current room
     //check each room key for current room
     //if the room is not already visited then set visit to true
     //and push it into stack
-    //at the end check visit
+    //at the end check visit array
     //if all cell of the visit are set to true then return true
     public boolean canVisitAllRooms(List<List<Integer>> rooms) {
-    		if(rooms == null) return true;
-    		
-    		boolean[] visit = new boolean[rooms.size()];
-    		
-    		Stack<Integer> traverse = new Stack<Integer>();
-    		visit[0] = true;
-    		traverse.push(0);
-    		
-    		while(!traverse.isEmpty())
-    		{
-    			int current = traverse.pop();
-    			
-    			for(int key : rooms.get(current))
-    			{
-    				if(!visit[key])
-    				{
-    					visit[key] = true;
-    					traverse.push(key);
-    				}
-    			}
-    		}
-    		
-    		for(boolean visited : visit)
-    			if(!visited) return false;
-    		
-    		return true;
+		if(rooms == null) return true;
+		
+		boolean[] visit = new boolean[rooms.size()];
+		
+		Stack<Integer> traverse = new Stack<Integer>();
+		visit[0] = true;
+		traverse.push(0);
+		
+		while(!traverse.isEmpty())
+		{
+			int current = traverse.pop();
+			
+			for(int key : rooms.get(current))
+			{
+				if(!visit[key])
+				{
+					visit[key] = true;
+					traverse.push(key);
+				}
+			}
+		}
+		
+		for(boolean visited : visit)
+			if(!visited) return false;
+		
+		return true;
     }
     
     //https://leetcode.com/problems/find-bottom-left-tree-value/
@@ -329,36 +343,37 @@ public class TestGraphs {
     int maxHeight = Integer.MIN_VALUE;
 
     public int findBottomLeftValue(TreeNode root) {
-	    	if(root == null) return -1;
-	    	
-	    	findBottomLeftHeight(root, 1);
-	    	
-	    	return minLeftValue;
+    	if(root == null) return -1;
+    	
+    	findBottomLeftHeight(root, 1);
+    	
+    	return minLeftValue;
     }
     
     private void findBottomLeftHeight(TreeNode root, int currentHeight)
     {
-	    	if( root == null) return;
+    	if( root == null) return;
 
-	    	//for each node check if the currentHeight is greater than max at that time
-	    	//and if that is the case update the value and max height
-    		if(currentHeight > maxHeight)
-    		{
-    			minLeftValue = root.val;
-    			maxHeight = currentHeight;
-    		}
-    		
-    		//it will at first call the left child recursively 
-    		//that will make sure we get the bottom most left child's value 
-	    	if(root.left != null) findBottomLeftHeight(root.left, 1 + currentHeight);
-	    	
-	    	if(root.right != null) findBottomLeftHeight(root.right, 1 + currentHeight);
+    	//for each node check if the currentHeight is greater than max at that time
+    	//and if that is the case update the value and max height
+		if(currentHeight > maxHeight)
+		{
+			minLeftValue = root.val;
+			maxHeight = currentHeight;
+		}
+		
+		//it will at first call the left child recursively 
+		//that will make sure we get the bottom most left child's value 
+    	if(root.left != null) findBottomLeftHeight(root.left, 1 + currentHeight);
+    	
+    	if(root.right != null) findBottomLeftHeight(root.right, 1 + currentHeight);
     }	    
     
     //https://leetcode.com/problems/house-robber-iii/
     //idea: level order traversal won't work here
     //do dfs. for each node the max could be 
     //either adding that node [0] or not adding that node [1]
+    //lastnight
     public int rob(TreeNode root) {
 	    if(root == null) return 0;
 	   

@@ -41,6 +41,7 @@ public class BinarySearch {
     //https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/
     // 6, 7, 9, 11, 1, 3, 4, 5
     // 0, 1, 2, 3,  4, 5, 6, 7
+    //lastnight
     public int findMin(int[] nums) {
         if(nums == null || nums.length == 0) return -1;
         
@@ -69,6 +70,7 @@ public class BinarySearch {
     
     //https://leetcode.com/problems/search-in-rotated-sorted-array/
     //no duplicates exist
+    //lastnight
     public int searchRotated(int[] nums, int left, int right, int x)
     {
     	if(nums == null || nums.length == 0) return -1;
@@ -178,8 +180,9 @@ public class BinarySearch {
 	   }
 	   
 	   //after we find a mid with no empty string then check with needle 
-	   // compareTo returns negative if this string is less than the argument string
+	   //trick: compareTo returns negative if this string is less than the argument string
 	   // "abc", "abd", "abe", "abf", "abe"
+	   // that means the String we are looking for is greater than strings[mid]
 	   if(strings[mid].compareTo(needle) < 0)
 	   {
 		   // so for compareTo negative result then the needle if greater than mid

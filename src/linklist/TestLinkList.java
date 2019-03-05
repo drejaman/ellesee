@@ -53,7 +53,7 @@ public class TestLinkList {
         
         // if equal to x then it will go to next list
         ListNode beforeX = null, afterX = null, 
-        		beforeXcurrent = null, afterXcurrent = null; 
+        		 beforeXcurrent = null, afterXcurrent = null; 
         
     	ListNode current = head;
     	
@@ -146,7 +146,8 @@ public class TestLinkList {
                 l1.next = MergeTwoLists(l1.next, l2);
                 return l1;
             }
-
+            
+            //don't need this if check
             if(l1.val > l2.val)
             {
                 l2.next = MergeTwoLists(l1, l2.next);
@@ -159,37 +160,40 @@ public class TestLinkList {
     
     //https://leetcode.com/problems/remove-duplicates-from-sorted-list/
     //Cracking2.1 - No buffer (HashMap) allowed. So solved using 2 pointers and requires O(N2) time
+    //two loops and two pointers
+    //lastnight
     public void deleteDups(ListNode head)
     {
-	    	if(head == null) return;
-	    	
-	    	ListNode current = head;
-	    	
-	    	//O(N) outer loop contributing to total of O(N2)
-	    	while(current != null)
-	    	{
-	    		ListNode runner = current;
-	    		
-	    		// O(N) time
-	    		// we have to have the runner.next check as we will actually 
-	    		// access the value of runner.next
-	    		while(runner.next != null)
-	    		{
-	    			//when the value match and we update then it could be the case that
-	    			//runner.next.next was already null (last node). so we don't do
-	    			// runner = runner.next when we find the match and update runner.next
-	    			if(runner.next.val == current.val)
-	    			{
-	    				runner.next = runner.next.next;
-	    			}
-	    			else
-	    			{
-	    				runner = runner.next;
-	    			}
-	    		}
-	    		
-	    		current = current.next;
-	    	}
+    	if(head == null) return;
+    	
+    	ListNode current = head;
+    	
+    	//O(N) outer loop contributing to total of O(N2)
+    	while(current != null)
+    	{
+    		ListNode runner = current;
+    		
+    		// O(N) time
+    		// we have to have the runner.next check as we will actually 
+    		// access the value of runner.next
+    		while(runner.next != null)
+    		{
+    			//trick
+    			//when the value match and we update then it could be the case that
+    			//runner.next.next was already null (last node). so we don't do
+    			// runner = runner.next when we find the match and update only runner.next
+    			if(runner.next.val == current.val)
+    			{
+    				runner.next = runner.next.next;
+    			}
+    			else
+    			{
+    				runner = runner.next;
+    			}
+    		}
+    		
+    		current = current.next;
+    	}
     }
     
     //Cracking 2.2
@@ -223,59 +227,66 @@ public class TestLinkList {
     //Cracking2.6
     public boolean isPalindrome(ListNode head)
     {
-	    	ListNode slow = head, fast = head;
-	    	
-	    	Stack<Integer> listStack = new Stack<Integer>();
-	    	
-	    	// this condition is important as we break either when we reach at the end (even case)
-	    	// or we are one node away from the end (odd case)
-	    	// also for fast we are moving 2 nodes at a time. so we don't get null pointer exception
-	    	// for fast.next.next
-	    	while(fast != null && fast.next != null)
-	    	{
-	    		listStack.push(slow.val);
-	    		slow = slow.next;
-	    		fast = fast.next.next;
-	    	}
-	    	
-	    	// that means list has odd elements and skip that one middle element
-	    	if(fast != null) slow = slow.next;
-	    	
-	    	// now the validation part    	
-	    	while(slow != null)
-	    	{
-	    		if(slow.val != listStack.pop().intValue())
-	    		{
-	    			return false;
-	    		}
-	    		
-	    		slow = slow.next;
-	    	}
-	    	
-	    	return true;
+    	ListNode slow = head, fast = head;
+    	
+    	Stack<Integer> listStack = new Stack<Integer>();
+    	
+    	// this condition is important as we break either when we reach at the end (even case)
+    	// or we are one node away from the end (odd case)
+    	// also for fast we are moving 2 nodes at a time. so we don't get null pointer exception
+    	// for fast.next.next
+    	while(fast != null && fast.next != null)
+    	{
+    		listStack.push(slow.val);
+    		slow = slow.next;
+    		fast = fast.next.next;
+    	}
+    	
+    	//trick
+    	//that means list has odd elements and skip that one middle element
+    	if(fast != null) slow = slow.next;
+    	
+    	// now the validation part    	
+    	while(slow != null)
+    	{
+    		if(slow.val != listStack.pop().intValue())
+    		{
+    			return false;
+    		}
+    		
+    		slow = slow.next;
+    	}
+    	
+    	return true;
     }
     
     //https://leetcode.com/problems/swap-nodes-in-pairs/
+    //lastnight
     public ListNode swapPairs(ListNode head) {
         if(head.next == null) return head;
 
+        //we need to keep track of head of the list
+        //which will be original head.next pointed by start
         ListNode start = head.next;
-        ListNode p = head, q = head.next;
+        ListNode first = head, second = head.next;
         
-        while(p != null && q != null)
+        //first->second->third->fourth
+        while(first != null && second != null)
         {
-            ListNode r = q.next;
-            p.next = r;
-            q.next = p;
+        	//trick
+            ListNode temp = second.next;//third
+            first.next = temp;//first->temp (third)
+            second.next = first;//second->first->temp(third)
             
-            p = r;
-            if(r != null) q = r.next;
+            first = temp;//first = third
+            if(temp != null) second = temp.next;//second = fourth
         }
         
         return start;
     }
     
     //https://leetcode.com/problems/remove-nth-node-from-end-of-list/
+    //lastnight
     public ListNode RemoveNthFromEnd(ListNode head, int n) {
         if(head.next == null && n == 1) return null;
         
@@ -289,7 +300,7 @@ public class TestLinkList {
             i++;
         }
         
-        if( i == (n-1)) return head.next;
+        if(i == (n-1)) return head.next;
         
         ListNode prev = head;
         ListNode current = head.next;
@@ -307,6 +318,7 @@ public class TestLinkList {
     }
     
     //https://leetcode.com/problems/remove-linked-list-elements/
+    //lastnight
     public ListNode RemoveElements(ListNode head, int val) {
         if(head == null) return null;
         
@@ -320,10 +332,11 @@ public class TestLinkList {
         ListNode prev = head;
         ListNode current = head.next;
         
+        //trick
         while(current!= null)
         {
             //only the deletion case
-            while(current!= null && current.val == val)
+            while(current != null && current.val == val)
             {
                 current = current.next;
             }
@@ -342,7 +355,7 @@ public class TestLinkList {
     
     //https://leetcode.com/problems/delete-node-in-a-linked-list/
     public void deleteNode(ListNode node) {
-        if(node==null) return;
+        if(node == null) return;
 
         if(node.next == null)
         {
@@ -365,7 +378,7 @@ public class TestLinkList {
             current = current.next;
             currentDouble = currentDouble.next.next;
             
-            if(currentDouble!=null && current.val == currentDouble.val) 
+            if(currentDouble != null && current.val == currentDouble.val) 
                 return true;
         }
         
@@ -373,6 +386,7 @@ public class TestLinkList {
     }
 
     //https://leetcode.com/problems/reverse-linked-list/
+    //lastnight
     public ListNode ReverseList(ListNode head) {
         if(head == null || head.next == null) return head;
         
@@ -391,7 +405,6 @@ public class TestLinkList {
         
         return prev;
     }
-
 
     //Cracking2.7 TODO
     //Cracking2.8 TODO

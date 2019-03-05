@@ -35,7 +35,8 @@ public void test()
 
 // for anagram the characters can be in different places
 // but they have to be the same characters with same no of repeats
-public boolean checkAnagram(String str1,String str2)
+//TODO validate if this logic is right. find some contradiction
+public boolean checkAnagram(String str1, String str2)
 {
 	if(str1.length() != str2.length())
 		return false;
@@ -57,17 +58,19 @@ public boolean checkAnagram(String str1,String str2)
 
 public boolean checkPalinDrome(String str)
 {
-	char[] chars=str.toCharArray();
-	int len=str.length();
-	int start=0;
-	int end=len-1;
-	while(start<end)
+	char[] chars = str.toCharArray();
+	int len = str.length();
+	int start = 0;
+	int end = len-1;
+	
+	while(start < end)
 	{
-		if(chars[start]!=chars[end])
+		if(chars[start] != chars[end])
 			return false;		
 		start++;
 		end--;
 	}
+	
 	return true;	
 }
 
@@ -121,21 +124,29 @@ public String reverseWords1(String s) {
     
     for(int i = s.length() - 1; i >= 0; i--)
     {
-    		//that means we have finished a word/
-    		//reached end of the word
-    		//the word is in betweed index 
+		//that means we have finished a word/
+		//reached end of the word
+		//the word is in between index 
         if(s.charAt(i) == ' '){
             j = i;
         }
         
-        // we have reached end of a word
+        //we have reached end of a word
+        //or beginning of the sentence
+        //say for 'is blue' when i at b then s.charAt(i - 1) == ' '
         else if(i == 0 || s.charAt(i - 1) == ' ')
         {
+        	//don't add the space at the beginning of the line
+        	//builder is still empty so we don't anything
             if(builder.length() != 0)
             {
                 builder.append(' ');
             }
             
+            //add the word as is 
+            //j is pointing at the end of the line or the space after the word
+            //i is pointing at the beginning of the word
+            //we add 'blue' to builder
             builder.append(s.substring(i, j));
         }
     }
@@ -154,7 +165,7 @@ public String[] findWords(String[] words) {
 	// A good demonstration for 2D ArrayList and how to initialize an ArrayList
 	ArrayList<ArrayList<Character>> lines = new ArrayList<ArrayList<Character>>();
 
-	// key: how to initialize the array is important
+	//trick: how to initialize the array is important
 	lines.add(new ArrayList<Character>(Arrays.asList('q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p')));
 	lines.add(new ArrayList<Character>(Arrays.asList('a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l')));
 	lines.add(new ArrayList<Character>(Arrays.asList('z', 'x', 'c', 'v', 'b', 'n', 'm')));
@@ -164,6 +175,8 @@ public String[] findWords(String[] words) {
 	for(String wordAnyCase : words)
 	{
 		String word = wordAnyCase.toLowerCase();
+		
+		//at first we need to figure out what kb lines is probably used
 		char firstChar = word.charAt(0);
 		int lineIndex = lines.get(0).contains(firstChar) == true ? 0 : -1;
 		
@@ -172,6 +185,8 @@ public String[] findWords(String[] words) {
 			lineIndex = lines.get(1).contains(firstChar) == true ? 1 : 2;
 		}
 		
+		//pass the right kb line and validate 
+		//whole word is constructed using same kb letters
 		if(isValidWordUsingSameKBLine(word, lines.get(lineIndex)))
 		{
 			validWords.add(wordAnyCase);
@@ -199,12 +214,12 @@ private boolean isValidWordUsingSameKBLine(String word, ArrayList<Character> lin
 }
 
 /// https://leetcode.com/problems/first-unique-character-in-a-string/description/
-// key: to use LinkedHashMap
+// trick: to use LinkedHashMap
 // Hash table and linked list implementation of the Map interface, with predictable iteration order.
 public int firstUniqChar(String s) {
 	char[] allChars = s.toCharArray();
 	
-	// this keeps track of the characters the way it is inserted
+	//trick: this keeps track of the characters the way it is inserted
 	LinkedHashMap<Character, Integer> map = new LinkedHashMap<Character, Integer>();
 	
 	for(int i = 0; i < allChars.length; i++)
@@ -279,6 +294,7 @@ public int[] shortestToChar(String S, char C) {
 	
 	int[] shortestDistance = new int[S.length()];
 	
+	//trick: to find the right cIndex that are closest to that character
 	for(int i = 0; i < sChars.length; i++)
 	{
 		// if the currentIndex of the Character C is not the last one
@@ -287,11 +303,10 @@ public int[] shortestToChar(String S, char C) {
 		{
 			// running index i will be either closer to cIndex or cIndex + 1
 			shortestDistance[i] = Math.min(Math.abs(i - positionsOfC.get(cIndex)), 
-					Math.abs(i - positionsOfC.get(cIndex + 1)));
+											Math.abs(i - positionsOfC.get(cIndex + 1)));
 
 			// but if running index i is greater than cIndex then we 
 			if(i >= positionsOfC.get(cIndex + 1)) cIndex++;				
-			
 		}
 		// case when cIndex at its last and 
 		// we are handling i that are greater than last cIndex
@@ -386,7 +401,7 @@ public List<String> subdomainVisits(String[] cpdomains) {
 	return output;
 }
 
-// https://leetcode.com/problems/encode-and-decode-tinyurl/description/
+// https://leetcode.com/problems/encode-and-decode-tinyurl/
 // Straight forward implementation using a HashMap
 private static HashMap<String, String> urlMapper = new HashMap<String, String>();
 
@@ -395,11 +410,8 @@ public String encode(String longUrl) {
 	// when the url is already mapped
 	if(urlMapper.containsValue(longUrl))
 	{
-		Iterator<?> it = urlMapper.entrySet().iterator();
-		
-		while(it.hasNext())
+		for(Entry<String, String> entry : urlMapper.entrySet())
 		{
-			Map.Entry entry = (Map.Entry) it.next();
 			if(entry.getValue().equals(longUrl))
 				return entry.getKey().toString();
 		}
@@ -411,7 +423,7 @@ public String encode(String longUrl) {
     // ensuring that we are using a new key
     while(urlMapper.containsKey(newKey))
     {
-    		newKey = "http:////tinyurl.com//" + GenerateRandomString(6);
+		newKey = "http:////tinyurl.com//" + GenerateRandomString(6);
     }
     
     urlMapper.put(newKey, longUrl);
@@ -449,6 +461,8 @@ public List<String> findAndReplacePattern(String[] words, String pattern) {
 	HashMap<Character, Character> patternMapper = new HashMap<Character, Character>();
 	char[] patternChars = pattern.toCharArray();
  
+	//for each word we map to pattern word's chars and 
+	//check if the letters match subsequent time
 	 for(String word: words)
 	 {
 	 	char[] wordChars = word.toCharArray();
@@ -476,7 +490,8 @@ public List<String> findAndReplacePattern(String[] words, String pattern) {
 			break;    				
 		}
 	}
-	// this logic is important to make sure "abb" and "ccc" are not matched
+	//
+	//trick:this logic is important to make sure "abb" and "ccc" are not matched
 	// as c is already keyed with a. without this logic c will be also keyed with b
 	else if(patternMapper.containsValue(wordChars[i]))
 	{
@@ -490,6 +505,7 @@ public List<String> findAndReplacePattern(String[] words, String pattern) {
 	}
  	}
  	
+	//for each matched word we put them in the matchedWords list
  	if(isMatched)
  	{
  		matchedWords.add(word);
@@ -497,6 +513,47 @@ public List<String> findAndReplacePattern(String[] words, String pattern) {
  }
  
  return matchedWords;
+}
+
+//https://leetcode.com/problems/word-pattern/
+//Input: pattern = "abba", str = "dog cat cat dog"
+//Output: true
+//Input:pattern = "abba", str = "dog cat cat fish"
+//Output: false
+public boolean WordPattern(String pattern, String str) {
+    if (pattern.isEmpty() || str.isEmpty()) return false;
+    
+    HashMap<Character, String> tracker = new HashMap<Character, String>();
+
+    char[] patternChars = pattern.toCharArray();
+    String[] stringList = str.split(" ");
+    
+    if(patternChars.length != stringList.length) return false;
+
+    for (int i = 0; i < patternChars.length; i++)
+    {
+        if (!tracker.containsKey(patternChars[i]))
+        {
+            // handle cases like "abba" "dog dog dog dog"
+            if (tracker.containsValue(stringList[i]))
+            {
+                return false;
+            }
+
+            tracker.put(patternChars[i], stringList[i]);
+        }
+        else
+        { 
+            if (tracker.containsKey(patternChars[i]))
+            {
+                String value = tracker.get(patternChars[i]);
+                if (!value.equals(stringList[i]))
+                    return false;
+            }
+        }
+    }
+
+    return true;
 }
 
 // https://leetcode.com/problems/implement-strstr/
@@ -604,51 +661,14 @@ public int strStr(String haystack, String needle) {
         return prefix.toString();
     }
 
-    //https://leetcode.com/problems/word-pattern/
-    public boolean WordPattern(String pattern, String str) {
-        if (pattern.isEmpty() || str.isEmpty()) return false;
-        
-        HashMap<Character, String> tracker = new HashMap<Character, String>();
-
-        char[] patternChars = pattern.toCharArray();
-        String[] stringList = str.split(" ");
-        
-        if(patternChars.length != stringList.length) return false;
-
-        for (int i = 0; i < patternChars.length; i++)
-        {
-            if (!tracker.containsKey(patternChars[i]))
-            {
-                // handle cases like "abba" "dog dog dog dog"
-                if (tracker.containsValue(stringList[i]))
-                {
-                    return false;
-                }
-
-                tracker.put(patternChars[i], stringList[i]);
-            }
-            else
-            { 
-                if (tracker.containsKey(patternChars[i]))
-                {
-                    String value = tracker.get(patternChars[i]);
-                    if (!value.equals(stringList[i]))
-                        return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
-
 	//https://leetcode.com/problems/roman-to-integer/
 	//Input: "MCMXCIV"
 	//Output: 1994
 	//Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
+    //lastnight
 	public int romanToInt(String s) {
-		//key: look how the hashMap is initialized
-		Map<Character, Integer> romanMap= new HashMap<Character, Integer>()
+		//trick: look how the hashMap is initialized
+		HashMap<Character, Integer> romanMap= new HashMap<Character, Integer>()
 		{{
 			put('M', 1000); 
 			put('D', 500);
@@ -666,11 +686,12 @@ public int strStr(String haystack, String needle) {
 		{
 			//M(1000), C (100), M(1000), X (10), C(100), I(1), V(5)
 			current = romanMap.get(ch);
-			//key: this is the main logic
-			//when the current is greater than prev that means either 9, 90, etc
+			//trick
+			//logic: this is the main logic
+			//when the current is greater than prev that means either 9 (IX), 90 (XC), etc
 			//corrective measure is current(say X is 10) - 2 * prev (I is 1)
 			//as we added the prev already to value in previous step
-			//so the right addition is current - 2*prev to also remove addition of prev
+			//so the right addition is current - 2 * prev to also remove addition of prev
 			//1000, 100, 1000 - 2 * 100 = 800, 10,   100 - 2 * 10 = 80, 1, 5 - 2 * 1 			
 			value += current > prev ? current - 2 * prev : current;
 			//1000, 100, 1000, 10, 100, 1, 5
@@ -684,8 +705,8 @@ public int strStr(String haystack, String needle) {
 	// trick: initialize array, start with the highest value also considering 9's like 900 90 etc.
 	// start dividing up the number from the highest value values[0]
   	public String intToRoman(int num) {
-  		String []romanChars = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
-  		int []values = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+  		String[] romanChars = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+  		int[] values = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
   		
   		StringBuilder builder = new StringBuilder();
   		
@@ -776,111 +797,110 @@ public int strStr(String haystack, String needle) {
     }
     
     //cracking1.5
+    //lastnight
     public boolean oneEditDistanceAway(String s1, String s2)
     {
-	    	if(Math.abs(s1.length() - s2.length()) > 1) return false;
-	    	
-	    	String shorter = s1.length() < s2.length() ? s1 : s2;
-	    	String longer = s1.length() < s2.length() ? s2 : s1;
-	    	
-	    	boolean foundMatch = false;
-	    	
-	    	int index1 = 0, index2 = 0;
-	    	
-	    	while(index1 < shorter.length() && index2 < longer.length())
-	    	{
-	    		// the characters are not matched. so it has to be insert or replace
-	    		if(shorter.charAt(index1) != longer.charAt(index2))
-	    		{
-	    			// already one mismatch found before. so another mismatch means not one edit distance away
-	    			if(foundMatch) return false;
-	    			//otherwise mark the first mismatch
-	    			foundMatch = true;
-	    			
-	    			//if the lengths are same that means it is a replace. so move shorter pointer
-	    	   		if(shorter.length() == longer.length())
-	        		{
-	        			index1++;
-	        		}
-	    	   		//otherwise is an insert. so no short pointer is changed
-	        	}
-	    		//they are matching so move both pointers are increased
-	    		else
-	    		{
-	    			index1++;
-	    		}
-	    		//longer pointer is always increased
-	    		index2++;
-	    	}
-	    	
-	    	return true;
+    	if(Math.abs(s1.length() - s2.length()) > 1) return false;
+    	
+    	String shorter = s1.length() < s2.length() ? s1 : s2;
+    	String longer = s1.length() < s2.length() ? s2 : s1;
+    	
+    	boolean foundMismatch = false;
+    	
+    	int index1 = 0, index2 = 0;
+    	
+    	while(index1 < shorter.length() && index2 < longer.length())
+    	{
+    		// the characters are not matched. so it has to be insert or replace
+    		if(shorter.charAt(index1) != longer.charAt(index2))
+    		{
+    			// already one mismatch found before. so another mismatch means not one edit distance away
+    			if(foundMismatch) return false;
+    			//otherwise mark the first mismatch
+    			foundMismatch = true;
+    			
+    			//if the lengths are same that means it is a replace. so move shorter pointer
+    	   		if(shorter.length() == longer.length())
+        		{
+        			index1++;
+        		}
+    	   		//otherwise is an insert. so no short pointer is changed
+        	}
+    		//they are matching so move both pointers are increased
+    		else
+    		{
+    			index1++;
+    		}
+    		//longer pointer is always increased
+    		index2++;
+    	}
+    	
+    	return true;
     }
     
     //https://leetcode.com/problems/split-array-into-fibonacci-sequence/
     //Input: "123456579"
-    	//Output: [123,456,579]
+    //Output: [123,456,579]
     public List<Integer> splitIntoFibonacci(String S) {
     	
-    		List<Integer> result = new ArrayList<Integer>();
-        
-    		if(S == null || S.isEmpty() || S.length() < 3)
-    			return result;
+		List<Integer> result = new ArrayList<Integer>();
+    
+		if(S == null || S.isEmpty() || S.length() < 3)
+			return result;
     			
         int strLen = S.length();
         
         //start with len 1 and keep on going to strLen/3
         for(int len = 1; len < strLen / 3; len++)
         {
-        		//we need to clear the result everytime we change len for numbers
-	        	result.clear();
-	        	int beginIndex = 0, first = 0, second = 0, third = 0;
-	        	
-	        	if(beginIndex + len < strLen)
-	        	first = Integer.parseInt(S.substring(beginIndex, beginIndex + len));
-	        	
-	        	beginIndex = beginIndex + len;
-	        	if(beginIndex + len < strLen)
-	        	second = Integer.parseInt(S.substring(beginIndex, beginIndex + len));
-	        	
-	        	beginIndex = beginIndex + len;
-	        	if(beginIndex + len < strLen)
-	        	third = Integer.parseInt(S.substring(beginIndex, beginIndex + len));        
-	        	
-	        	if(first + second == third && third != 0)
-	        	{
-	        		result.add(first);
-	        		result.add(second);
+    		//we need to clear the result everytime we change len for numbers
+        	result.clear();
+        	int beginIndex = 0, first = 0, second = 0, third = 0;
+        	
+        	if(beginIndex + len < strLen)
+        	first = Integer.parseInt(S.substring(beginIndex, beginIndex + len));
+        	
+        	beginIndex = beginIndex + len;
+        	if(beginIndex + len < strLen)
+        	second = Integer.parseInt(S.substring(beginIndex, beginIndex + len));
+        	
+        	beginIndex = beginIndex + len;
+        	if(beginIndex + len < strLen)
+        	third = Integer.parseInt(S.substring(beginIndex, beginIndex + len));        
+        	
+        	if(first + second == third && third != 0)
+        	{
+        		result.add(first);
+        		result.add(second);
 
-	        		while(first + second == third)
+        		while(first + second == third)
+	        	{
+	        		result.add(third);
+	        		
+	        		first = second;
+	        		second = third;
+	        		//now beginIndex points to the end of previous third number
+		        	beginIndex = beginIndex + len;
+		        	
+		        	if(beginIndex + len < strLen)
 		        	{
-		        		result.add(third);
-		        		
-		        		first = second;
-		        		second = third;
-		        		//now beginIndex points to the end of previous third number
-			        	beginIndex = beginIndex + len;
+		        		third = Integer.parseInt(S.substring(beginIndex, beginIndex  + len));			        		
 			        	
-			        	if(beginIndex + len < strLen)
-			        	{
+		        		// to handle cases like below
+		        		// at the end second = 8, third = 1, len = 1
+		        		// as third < second, len = 2, third = 13
+		        		// Input: "11235813"
+		        		// Output: [1,1,2,3,5,8,13]
+		        		if(third < second)
+		        		{
+		        			len++;
 			        		third = Integer.parseInt(S.substring(beginIndex, beginIndex  + len));			        		
-				        	
-			        		// to handle cases like below
-			        		// at the end second = 8, third = 1, len = 1
-			        		// as third < second, len = 2, third = 13
-			        		// Input: "11235813"
-			        		// Output: [1,1,2,3,5,8,13]
-			        		if(third < second)
-			        		{
-			        			len++;
-				        		third = Integer.parseInt(S.substring(beginIndex, beginIndex  + len));			        		
-			        		}
-			        	}		
-			        	
-		        	}
-	        	}
+		        		}
+		        	}				        	
+		        }
+	        }	
 	        	
-	        	
-	        	if(beginIndex +  len == S.length()) return result;
+        	if(beginIndex +  len == S.length()) return result;
         }
         
         return result;
@@ -888,27 +908,34 @@ public int strStr(String haystack, String needle) {
 
     //https://leetcode.com/problems/group-anagrams/
     //sort the strings based on their anagram key
+    //Input: ["eat", "tea", "tan", "ate", "nat", "bat"],
+    //Output:
+    //	[
+    //	  ["ate","eat","tea"],
+    //	  ["nat","tan"],
+    //	  ["bat"]
+    //	]
     public List<List<String>> groupAnagrams(String[] strs) {
         List<List<String>> wordList = new ArrayList<List<String>>();
 	        
-	    	if(strs == null || strs.length == 0) return wordList;
-	    	
-	    	HashMap<String, List<String>> hashList = new HashMap<String, List<String>>();
-	    	
-	    	for(String str : strs)
-	    	{
-	    		char[] strChars = str.toCharArray();
-	    		Arrays.sort(strChars);
-	    		String sorted = new String(strChars);
+    	if(strs == null || strs.length == 0) return wordList;
+    	
+    	HashMap<String, List<String>> hashList = new HashMap<String, List<String>>();
+    	
+    	for(String str : strs)
+    	{
+			char[] strChars = str.toCharArray();
+			Arrays.sort(strChars);
+			String sorted = new String(strChars);
 	    		
-	    		//gives you the list based on the key 'sorted' or a new List of Strings
-            List<String> list = hashList.getOrDefault(sorted, new ArrayList<String>());
-            list.add(str);
-            hashList.put(sorted, list);
-	    	}
+    		//gives you the list based on the key 'sorted' or a new List of Strings
+	        List<String> list = hashList.getOrDefault(sorted, new ArrayList<String>());
+	        list.add(str);
+	        hashList.put(sorted, list);
+    	}
 	    	
 	    for (String key: hashList.keySet()) {
-	    		wordList.add(hashList.get(key));
+    		wordList.add(hashList.get(key));
 	    }
         
         return wordList;
@@ -926,6 +953,7 @@ public int strStr(String haystack, String needle) {
 
         for (char ch : parens)
         {
+        	//trick: don't use switch/case as that will not give you the right result
             if (ch == '(' || ch == '{' || ch == '[')
             {
                 tracker.push(ch);
@@ -934,11 +962,11 @@ public int strStr(String haystack, String needle) {
             {
                 if (tracker.size() <= 0) return false;
 
-                char currentChar = tracker.pop();
+                char poppedChar = tracker.pop();
 
-                if (!(currentChar == '(' && ch == ')'
-                    || currentChar == '{' && ch == '}'
-                    || currentChar == '[' && ch == ']'))
+                if (!(poppedChar == '(' && ch == ')'
+                    || poppedChar == '{' && ch == '}'
+                    || poppedChar == '[' && ch == ']'))
                 {
                     return false;
                 }
@@ -952,9 +980,13 @@ public int strStr(String haystack, String needle) {
     //logic: Reduce B to a single word bmax as described above, 
     //then compare the counts of letters between words a in A, and bmax.
     //Time Complexity: O(A+B), where A and B is the total amount of information in A and B respectively.
-   //Space Complexity: O(A.length+B.length). 
+    //Space Complexity: O(A.length+B.length). 
+    //Input: A = ["amazon","apple","facebook","google","leetcode"], B = ["e","o"]
+    //Output: ["facebook","google","leetcode"]
     public List<String> wordSubsets(String[] A, String[] B) {
-        int[] bmax = count("");
+        int[] bmax = count("");//gets a fresh array of bmax[26]
+        
+        //for the given input bmax[e] = 1, bmax[o] = 1
         for (String b: B) {
             int[] bCount = count(b);
             for (int i = 0; i < 26; ++i)
@@ -962,11 +994,16 @@ public int strStr(String haystack, String needle) {
         }
 
         List<String> ans = new ArrayList<String>();
+        
+        //for the given sample 
+        //for amazon, aCount[e] = 0 < bmax[e] so continue
+        //for facebook, aCount[e] = 1 == bmax[e], aCount[o] = 2 > bmax[o] 
+        //so add facebook to result
         search: for (String a: A) {
             int[] aCount = count(a);
             for (int i = 0; i < 26; ++i)
                 if (aCount[i] < bmax[i])
-                    continue search;
+                    continue search;//for amazon, aCount[e] = 0 < bmax[e] so continue
             ans.add(a);
         }
 
@@ -981,6 +1018,9 @@ public int strStr(String haystack, String needle) {
     }
     
     //https://leetcode.com/problems/longest-substring-without-repeating-characters/
+    //Input: "abcdcefg"
+    //Output: 5 
+    //lastnight
     public int lengthOfLongestSubstring(String s) {
     	boolean exists[] = new boolean[256];
     	
@@ -988,21 +1028,23 @@ public int strStr(String haystack, String needle) {
     	
     	for(int j = 0; j < s.length(); j++)
     	{
-    		while(i < s.length() && exists[s.charAt(j)])
+    		while(i < s.length() && exists[s.charAt(j)])//for j = 4 this will become true
     		{
-    			// keep on incrementing i until we past the first occurrence of the repeated character
-    			// in the current substring
-    			// for example in abcdcefg j = 4 when we get the current max substring abcd
-    			// the next possible non repeated substring will start from index, i = 3 (d) as then
-    			// so after i is increased to 2 then exists[c] is reset resulting into i = 3 and this while 
-    			// loop breaks
-    			exists[s.charAt(i)] = false;
-    			i++;
+				// keep on incrementing i until we past the first occurrence of the repeated character
+				// in the current substring
+				// for example in abcdcefg, j = 4 when we get the current max substring abcd
+				// the next possible non repeated substring will start from index, i = 3 (d) as then
+				// so after i is increased to 2 then exists[c] is reset resulting into i = 3 and this while 
+				// loop breaks
+    			//then it will reset exists[s.charAt(i)] from i = 0 to 2
+    			//like exists[a], exists[b], exists[c] all will reset to false
+				exists[s.charAt(i)] = false;
+				i++;
     		}
     		
     		// case when the character doesn't already exist in 
     		// current ongoing longest substring consideration
-    		exists[s.charAt(j)] = true;
+    		exists[s.charAt(j)] = true;//exists[c] will be set to true second time here
     		maxLen = Math.max(j - i + 1, maxLen);
     	}
     	
@@ -1033,6 +1075,10 @@ public int strStr(String haystack, String needle) {
     }
     
     //https://leetcode.com/problems/isomorphic-strings/
+    //Input: s = "egg", t = "add"
+    //Output: true
+    //Input: s = "foo", t = "bar"
+    //Output: false
     public boolean IsIsomorphic(String s, String t) {
         if (s == null || t == null || s.length() != t.length())
         {
@@ -1052,6 +1098,9 @@ public int strStr(String haystack, String needle) {
             {
                 return false;
             }
+            //make sure the current value is not already to mapped
+            //to another character
+            //without this check foo and bar will give result true
             else if (!tracker.containsValue(tChars[i]))
             {
                 tracker.put(sChars[i], tChars[i]);

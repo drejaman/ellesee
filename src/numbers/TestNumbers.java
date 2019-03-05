@@ -105,8 +105,7 @@ public class TestNumbers {
      return verticalSum == 0 && horizontalSum == 0;
     }
     
-    // https://leetcode.com/problems/find-all-duplicates-in-an-array/description/
-    
+    // https://leetcode.com/problems/find-all-duplicates-in-an-array/
     // trick: the key is 1 <= a[i] <= n (n = size of array) 
     // The concept here is to negate the number at array[number - 1] 
     // Once a value is negated, if it requires to be negated again then it is a duplicate
@@ -130,28 +129,31 @@ public class TestNumbers {
 	//    1, nums[0] = -4, 
 	//    3, nums[2] = -2, 2
     public List<Integer> findDuplicates(int[] nums) {
-    		List<Integer> result = new ArrayList<Integer>();
-    		
-    		if(nums == null || nums.length == 0) return result;
-    		
-    		for(int num : nums)
-    		{
-    			int index = Math.abs(num) - 1;
-    			
-    			if(nums[index] > 0) nums[index] = -nums[index];
-    			
-    			// otherwise it was already negated once
-    			// so num is duplicate and so index = num - 1 is visited twice
-    			else
-    			{
-    				result.add(Math.abs(num));
-    			}
-    		}
-    		
-    		return result;
+		List<Integer> result = new ArrayList<Integer>();
+		
+		if(nums == null || nums.length == 0) return result;
+		
+		for(int num : nums)
+		{
+			int index = Math.abs(num) - 1;
+			
+			if(nums[index] > 0) nums[index] = -nums[index];
+			
+			// otherwise it was already negated once
+			// so num is duplicate and so index = num - 1 is visited twice
+			else
+			{
+				result.add(Math.abs(num));
+			}
+		}
+		
+		return result;
     }
     
     // https://leetcode.com/problems/array-partition-i/
+    //Input: [1,4,3,2]
+    //Output: 4
+    //Explanation: n is 2, and the maximum sum of pairs is 4 = min(1, 2) + min(3, 4).
     public int arrayPairSum(int[] nums) {
     	int len = nums.length;
     	int sum = 0;
@@ -173,7 +175,9 @@ public class TestNumbers {
     	// the tricky part is to determine whether it is increasing or decreasing
     	// specially for the cases like [2,2,2,3] or [2,2,2,1]
         int i = 1;
-        while(i < A.length && A[i] - A[i-1] == 0) i++;            
+        
+        while(i < A.length && A[i] - A[i-1] == 0) i++; 
+        
         boolean increasing = (i < A.length && (A[i] - A[i-1]) >= 0) ? true : false;
         
         if(increasing)
@@ -274,6 +278,7 @@ public class TestNumbers {
     // L[digit] last[9] = 0, last[8] = 4, last[6] = 3, last[3] = 2
     // Last[digit] > i
     // O(N) runtime actually O(kn) as k = 10 constant making it O(N), O(1) space
+    //lastnight
     public int maximumSwap(int num) {
     		if(num == 0) return num;
     		
@@ -326,8 +331,8 @@ public class TestNumbers {
         //if the power (n) is negative then we need to change x into fraction
         if(n < 0)
         {
-	        	n = -n;
-	        	x = 1/x;
+        	n = -n;
+        	x = 1/x;
         }
         
         return n % 2 == 0 ? myPow(x * x, n/2) : x * myPow(x * x, n/2);        
@@ -442,6 +447,7 @@ public class TestNumbers {
 	}
 
     //https://leetcode.com/problems/product-of-array-except-self/
+    //lastnight
     public int[] ProductExceptSelf(int[] nums)
     {
         if (nums == null || nums.length <= 1)
