@@ -273,7 +273,6 @@ public class TestNumbers {
 
     // https://leetcode.com/problems/maximum-swap/
     // find the max digit and min digit before max and swap them
-    // need to get this working for 98368
     // input: 98368
     // L[digit] last[9] = 0, last[8] = 4, last[6] = 3, last[3] = 2
     // Last[digit] > i
@@ -331,8 +330,8 @@ public class TestNumbers {
         //if the power (n) is negative then we need to change x into fraction
         if(n < 0)
         {
-        	n = -n;
-        	x = 1/x;
+	        	n = -n;
+	        	x = 1/x;
         }
         
         return n % 2 == 0 ? myPow(x * x, n/2) : x * myPow(x * x, n/2);        
@@ -347,21 +346,21 @@ public class TestNumbers {
             return nums;
         }
 
-        HashMap<Integer, Boolean> numberCounter = new HashMap<Integer, Boolean>();
+        HashMap<Integer, Boolean> mapper = new HashMap<Integer, Boolean>();
 
         for (int key : nums)
         {
-            if (!numberCounter.containsKey(key))
+            if (!mapper.containsKey(key))
             {
-                numberCounter.put(key, true);
+                mapper.put(key, true);
             }
             else
             {
                 //this portion to ensure we don't do a lot of remove/add operation for duplicates
-                if (numberCounter.get(key))
+                if (mapper.get(key))
                 {
-                    numberCounter.remove(key);
-                    numberCounter.put(key, false);
+                    mapper.remove(key);
+                    mapper.put(key, false);
                 }
             }
         }
@@ -370,7 +369,7 @@ public class TestNumbers {
         
         int i = 0;
         
-        for(Entry<Integer, Boolean> entry : numberCounter.entrySet())
+        for(Entry<Integer, Boolean> entry : mapper.entrySet())
         {
         	if(entry.getValue())
         	{
@@ -390,6 +389,7 @@ public class TestNumbers {
     }
     
     //https://leetcode.com/problems/single-number-ii/
+    //Could you implement it without using extra memory?
     public int singleNumberII(int[] A) {
         HashMap<Integer, Integer> numberMap = new HashMap<Integer, Integer>();
 
@@ -403,7 +403,7 @@ public class TestNumbers {
                 value++;
                 numberMap.put(currentNumber, value);
                 
-                if(value==3)
+                if(value == 3)
                 {
                     numberMap.remove(currentNumber);
                 }
@@ -448,7 +448,7 @@ public class TestNumbers {
 
     //https://leetcode.com/problems/product-of-array-except-self/
     //lastnight
-    public int[] ProductExceptSelf(int[] nums)
+    public int[] productExceptSelf(int[] nums)
     {
         if (nums == null || nums.length <= 1)
         {
@@ -460,10 +460,10 @@ public class TestNumbers {
         // compute the left product values of i
         int []leftProduct = new int[numLen];
 
-        int[] finalProduct = new int[numLen];
-
         // compute the right product values of i
         int[] rightProduct = new int[numLen];
+
+        int[] finalProduct = new int[numLen];
 
         //initialize left array
         leftProduct[0] = 1;
@@ -505,7 +505,7 @@ public class TestNumbers {
 		    x /= 10;
 		}
 		    
-		return sign*y;    
+		return sign * y;    
     }
     
     //https://leetcode.com/problems/power-of-three/
@@ -552,8 +552,8 @@ public class TestNumbers {
         return false;
     }
     
-    //https://leetcode.com/problems/add-digits/submissions/
-    public int AddDigits(int num) {
+    //https://leetcode.com/problems/add-digits/
+    public int addDigits(int num) {
         if (num / 10 == 0) return num;
 
         int finalDigit = -1;

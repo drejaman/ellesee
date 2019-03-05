@@ -5,14 +5,17 @@ public class FixedMultiStack {
 	private int numberOfStacks = 3;
 	private int stackCapacity;
 	
+	//keeps all the elements
 	private int[] values;
-	private int[] sizes;
+	
+	//points to the index in each stack
+	private int[] indexInStack;
 	
 	FixedMultiStack(int capacity)
 	{
 		stackCapacity = capacity;
 		values = new int[numberOfStacks * stackCapacity];
-		sizes = new int[numberOfStacks];
+		indexInStack = new int[numberOfStacks];
 	}
 	
 	public void push(int stackNum, int value) //throws StackFullException
@@ -20,7 +23,7 @@ public class FixedMultiStack {
 		//if(isFull(stackNum)) throw new StackFullException();
 		if(isFull(stackNum)) return;
 		// increase stack pointer to the next free index when the new item can be stored
-		sizes[stackNum]++;
+		indexInStack[stackNum]++;
 		// gets the free index
 		values[indexOfTop(stackNum)] = value;
 	}
@@ -32,7 +35,7 @@ public class FixedMultiStack {
 		int value = values[indexOfTop(stackNum)];
 		// this line is optional to clear and assumed it will automatically clear
 		values[indexOfTop(stackNum)] = 0;
-		sizes[stackNum]--;
+		indexInStack[stackNum]--;
 		return value;
 	}
 	
@@ -45,16 +48,16 @@ public class FixedMultiStack {
 
 	public boolean isEmpty(int stackNum)
 	{
-		return sizes[stackNum] == 0;
+		return indexInStack[stackNum] == 0;
 	}
 	
 	public boolean isFull(int stackNum)
 	{
-		return (sizes[stackNum] == stackCapacity);
+		return (indexInStack[stackNum] == stackCapacity);
 	}
 	
 	public int indexOfTop(int stackNum)
 	{
-		return (stackNum - 1) * stackCapacity + sizes[stackNum];
+		return (stackNum - 1) * stackCapacity + indexInStack[stackNum];
 	}
 }

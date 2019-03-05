@@ -12,6 +12,8 @@ public class CommonBacktracking {
         return permutedNumbers;
     }
     
+    //trick: for every call to this the for loop will start from i = 0 to array length
+    //the check is when adding to currentList if that character/number already exists
     private void permuteArray(int[] nums, List<List<Integer>> lists, List<Integer> list)
     {
 		if(nums.length == list.size() && !lists.contains(list))
@@ -46,6 +48,9 @@ public class CommonBacktracking {
         return permutedNumbers;
     }
     
+    //trick: similar to previous to call again to this with a for loop starting at i = 0
+    //difference is this one keeps track of index and a visit array to check 
+    //if that is already added to current list
     private void permuteVisit(int[] nums, List<List<Integer>> lists, List<Integer> list, boolean[] visit)
     {
 		if(nums.length == list.size() && !lists.contains(list))
@@ -83,6 +88,7 @@ public class CommonBacktracking {
         return sets;
     }
     
+    //trick: call with the increased index
     private void miniSubset(List<List<Integer>> sets, List<Integer> set, int []nums, int startIndex)
     {
     	// in the subset case we always add the new set that came in
@@ -104,7 +110,6 @@ public class CommonBacktracking {
     }
 
     //https://leetcode.com/problems/subsets-ii/
-
     public List<List<Integer>> subsetsWithDup(int[] nums) {
         List<List<Integer>> sets = new ArrayList<List<Integer>>();                     Arrays.sort(nums);
 
@@ -112,6 +117,8 @@ public class CommonBacktracking {
         return sets;
     }
     
+    //trick: before adding another set check 
+    //if it already exists in result set
     private void miniSubsetDup(List<List<Integer>> sets, List<Integer> set, int []nums, int startIndex)
     {
     	// in the subset case we always add the new set that came in
@@ -131,40 +138,41 @@ public class CommonBacktracking {
     }
     
     // https://leetcode.com/problems/combination-sum/
+    //trick: for loop starts with currentIndex
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
-    	List<List<Integer>> combinations = new ArrayList<List<Integer>>();
-    	
-    	SingleCombination(combinations, new ArrayList<Integer>(), candidates, target, 0);
-    	return combinations;
+	    	List<List<Integer>> combinations = new ArrayList<List<Integer>>();
+	    	
+	    	SingleCombination(combinations, new ArrayList<Integer>(), candidates, target, 0);
+	    	return combinations;
     }
     
     private void SingleCombination(List<List<Integer>> combinations, List<Integer> combination, 
     		int[] candidates, int target, int start)
     {
-    	if(target < 0) return;
-    	
-    	if(target == 0)
-    	{
-    		combinations.add(new ArrayList<Integer>(combination));
-    		return;
-    	}
-    	
-    	// i is for the index in the array
-    	for(int i = start; i < candidates.length; i++)
-    	{
-    		combination.add(candidates[i]);
-    		// since we can re use the same number when we call recursively we don't increase the start (index)
-    		SingleCombination(combinations, combination, candidates, target - candidates[i], i);
-    		// we backtrack when a combination doesn't yield a result set
-    		combination.remove(combination.size() - 1);
-    	}
+	    	if(target < 0) return;
+	    	
+	    	if(target == 0)
+	    	{
+	    		combinations.add(new ArrayList<Integer>(combination));
+	    		return;
+	    	}
+	    	
+	    	// i is for the index in the array
+	    	for(int i = start; i < candidates.length; i++)
+	    	{
+	    		combination.add(candidates[i]);
+	    		// since we can re use the same number when we call recursively we don't increase the start (index)
+	    		SingleCombination(combinations, combination, candidates, target - candidates[i], i);
+	    		// we backtrack when a combination doesn't yield a result set
+	    		combination.remove(combination.size() - 1);
+	    	}
     }
     
     // https://leetcode.com/problems/combination-sum-ii/
     // variation with i: each number can be used only once
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
         List<List<Integer>> lists = new ArrayList<List<Integer>>();
-        //the line below is different than sum-i
+        //the line below is different than sum-I
         Arrays.sort(candidates);
         singleCombination(lists, new ArrayList<Integer>(), candidates, target, 0);
         return lists;
@@ -173,30 +181,29 @@ public class CommonBacktracking {
     private void singleCombination(List<List<Integer>> combinations, List<Integer> combination, 
     		int[] candidates, int target, int startIndex)
     {
-    	if(target == 0)
-    	{
-    		combinations.add(new ArrayList<Integer>(combination));
-    		return;
-    	}
+	    	if(target == 0)
+	    	{
+	    		combinations.add(new ArrayList<Integer>(combination));
+	    		return;
+	    	}
     	
-    	for(int i = startIndex; i < candidates.length; i++)
-    	{
-    		// this line is crucial to make sure the same combination does not get added to the lists 
-    		// even though there are same duplicate number
-    		// Input: [10,1,2,7,6,1,5], 8
-    		// Output without the line below: [[1,1,6],[1,2,5],[1,7],[1,2,5],[1,7],[2,6]] 
-    		// so there are some repeats
-    		// Output with the line below: [[1,1,6],[1,2,5],[1,7],[2,6]]
-            if (i > startIndex && candidates[i] == candidates[i-1]) continue;
-
-    		combination.add(candidates[i]);
-    		singleCombination(combinations, combination, candidates, target - candidates[i], i);
-    		combination.remove(combination.size() - 1);
-    	}
+	    	for(int i = startIndex; i < candidates.length; i++)
+	    	{
+	    		// this line is crucial to make sure the same combination does not get added to the lists 
+	    		// even though there are same duplicate number
+	    		// Input: [10,1,2,7,6,1,5], 8
+	    		// Output without the line below: [[1,1,6],[1,2,5],[1,7],[1,2,5],[1,7],[2,6]] 
+	    		// so there are some repeats
+	    		// Output with the line below: [[1,1,6],[1,2,5],[1,7],[2,6]]
+	        if (i > startIndex && candidates[i] == candidates[i-1]) continue;
+	
+	    		combination.add(candidates[i]);
+	    		singleCombination(combinations, combination, candidates, target - candidates[i], i);
+	    		combination.remove(combination.size() - 1);
+	    	}
     }
     
     // https://leetcode.com/problems/combination-sum-iii/
-    // this solution is very important as this will solve the backtracking recursive solutions
     // recursive backtracking solutions are like this where you need to come up a list of possible solutions
     public List<List<Integer>> combinationSum3(int k, int n) {
         List<List<Integer>> combinations = new ArrayList<List<Integer>>();
@@ -208,21 +215,32 @@ public class CommonBacktracking {
     private void SingleCombination(int k, int remainderSum, int start, List<List<Integer>> combinations, List<Integer> combination)
     {
     	
-    	if(remainderSum == 0 && combination.size() == k)
-    	{
-    		combinations.add(new ArrayList<Integer>(combination));
-    		return;// return as one path has been added completely fulfilling the conditions
-    	}
-    	
-    	for(int i = start; i <= 9; i++)
-    	{
+	    	if(remainderSum == 0 && combination.size() == k)
+	    	{
+	    		combinations.add(new ArrayList<Integer>(combination));
+	    		return;// return as one path has been added completely fulfilling the conditions
+	    	}
+	    	
+	    	for(int i = start; i <= 9; i++)
+	    	{
 			combination.add(i);
 			SingleCombination(k, remainderSum - i, i + 1, combinations, combination);
-    		combination.remove(combination.size() - 1);
-    	}
+	    		combination.remove(combination.size() - 1);
+	    	}
     }
     
     //https://leetcode.com/problems/combinations/
+//    Input: n = 4, k = 2
+//    		Output:
+//    		[
+//    		  [2,4],
+//    		  [3,4],
+//    		  [2,3],
+//    		  [1,2],
+//    		  [1,3],
+//    		  [1,4],
+//    		]
+    //trick:similar to combination sum
     public List<List<Integer>> combine(int n, int k) {
         List<List<Integer>> combinations= new ArrayList<List<Integer>>();
         combine(combinations, new ArrayList<Integer>(), 1, n, k);
@@ -247,12 +265,13 @@ public class CommonBacktracking {
     
     //https://leetcode.com/problems/letter-combinations-of-a-phone-number/
     //not exactly backtracking more like recursive
+    //lastnight
     private String[] map = 
     		new String[] {" ", "*", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
     
-    public List<String> letterCombinations(String digits) {
-    		
+    public List<String> letterCombinations(String digits) {    		
 		List<String> words = new ArrayList<String>();
+		
         if(digits == null || digits.isEmpty() || digits.length() == 0)
         {
         		return words;
@@ -275,7 +294,7 @@ public class CommonBacktracking {
     		
     		for(char ch : map[currentDigit].toCharArray())
     		{
-        			letterCombinations(digits, currentIndex + 1, words, word + ch);    				
+    			letterCombinations(digits, currentIndex + 1, words, word + ch);    				
     		}
     }
 
@@ -337,19 +356,19 @@ public class CommonBacktracking {
 
     private void singleSubArray(List<List<Integer>> lists, List<Integer> list, int[] nums, int sum, int startIndex, int maxLen, int len)
     {
-    	if(sum == 0 && len > 0)
-    	{
-    		maxLen = len;
-    		lists.add(new ArrayList<Integer>(list));
-    		return;
-    	}
-    	
-    	if(maxLen == 0)     	for(int i = startIndex; i >= 0; i--)
-    	{
-    		list.add(nums[i]);
-    		singleSubArray(lists, list, nums, sum - nums[i], i - 1, maxLen, list.size());
-    		list.remove(list.size() - 1);
-    	}
+	    	if(sum == 0 && len > 0)
+	    	{
+	    		maxLen = len;
+	    		lists.add(new ArrayList<Integer>(list));
+	    		return;
+	    	}
+	    	
+	    	if(maxLen == 0)     	for(int i = startIndex; i >= 0; i--)
+	    	{
+	    		list.add(nums[i]);
+	    		singleSubArray(lists, list, nums, sum - nums[i], i - 1, maxLen, list.size());
+	    		list.remove(list.size() - 1);
+	    	}
     }
     
     //https://leetcode.com/problems/palindrome-partitioning/
