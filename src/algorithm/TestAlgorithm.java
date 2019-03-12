@@ -11,7 +11,7 @@ public TestAlgorithm()
 
 public void test()
 {
-	int[] array= {5,4,6,8,10,100,1,91,3};
+	int[] array = {5,4,6,8,10,100,1,91,3};
 //	findThreeSumInArray(array);
 	
 	//tests find two sum in an array given the index of the array of what number the 

@@ -21,13 +21,13 @@ public class TestGraphs {
 	//in this case we consider the target is the last node = graph.length - 1
 	//variation could be we are also given the specific target
     public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
-     List<List<Integer>> paths = new ArrayList<List<Integer>>();
-     List<Integer> path = new ArrayList<Integer>();
-     
-     path.add(0);     
-     dfsSearch(0, graph, paths, path);
-     
-     return paths;
+	     List<List<Integer>> paths = new ArrayList<List<Integer>>();
+	     List<Integer> path = new ArrayList<Integer>();
+	     
+	     path.add(0);     
+	     dfsSearch(0, graph, paths, path);
+	     
+	     return paths;
     }
     
     //trick: since we are using the same subpath (same nodes) several times
@@ -56,8 +56,9 @@ public class TestGraphs {
     }
     
     //https://leetcode.com/problems/friend-circles/
-    // need to add some better explanation
-    //  If M[i][j] = 1, then the ith and jth students are direct friends with each other, otherwise not.
+    //TODO need to add some better explanation
+    // If M[i][j] = 1, then the i-th and j-th students 
+    // are direct friends with each other, otherwise not.
     public int findCircleNum(int[][] M) {
         if(M == null || M.length == 0) return 0;
         
@@ -67,7 +68,8 @@ public class TestGraphs {
         for(int i = 0; i < len; i++)
         {
     		//we will call dfsVisit for each row to checks friendship for each person
-    		//but this check will reduce the call in case that row's relations are already checked out
+    		//but this check will reduce the call in case 
+        	//that row's relations are already checked out
 			if(M[i][i] == 1)
 			{
 				this.dfsVisitFriend(M, i, len);
@@ -93,7 +95,7 @@ public class TestGraphs {
 				this.dfsVisitFriend(grid, c, len);
 			}
 		}
-    	}
+    }
     
     //https://leetcode.com/problems/number-of-islands/
     //logic: 
@@ -164,7 +166,7 @@ public class TestGraphs {
 		return maxArea;
     }
     
-    //this is a bit tricky as visit[r][c]
+    //trick: this is a bit tricky as visit[r][c]
     //ensures that one cell is not counted twice when area calculation is ongoing
     private int maxAreaVisit(int[][] grid, int r, int c, boolean[][] visit)
     {
@@ -195,6 +197,7 @@ public class TestGraphs {
         int cols = board[0].length;
         
         // pass - 1: turn the bordering O and connecting ones to B
+        // pass - 1a: check column 0 and column n-1
         for(int i = 0; i < rows ; i++)
         {
         	//check column 0 of each row
@@ -204,7 +207,7 @@ public class TestGraphs {
         	if(board[i][cols - 1] == 'O') expandBorderDfs(board, i, cols - 1);
         }
         
-        // pass - 2: turn remaining Os into X and turn back Bs to Os
+        // pass - 1b: check row 0 and row n-1
         for(int j = 0; j < cols ; j++)
         {
         	//check every column of row 0
@@ -214,6 +217,7 @@ public class TestGraphs {
         	if(board[rows - 1][j] == 'O') expandBorderDfs(board, rows - 1, j);
         }
         
+        // pass - 2: turn remaining Os into X and turn back Bs to Os
         //now expand X
         for(int i = 0; i < rows; i++ )
         {
@@ -233,6 +237,7 @@ public class TestGraphs {
     
     //expand the bordering 0s at first using DFS
     //expand the map and mark them as B if they are somehow connected to Bordering 0
+    //the key here is to look for indices so that it doesn't go beyond boundary
     private void expandBorderDfs(char[][] board, int i, int j)
     {
     	if(i < 0 || i > board.length - 1 || j < 0 || j > board[0].length - 1) return;
@@ -290,7 +295,7 @@ public class TestGraphs {
     			wordExist(board, r, c + 1, word, wi + 1, visit))
     			return true;
  
-    		//trick
+    		//trick:
     		// this is the key as this is backtracking to setting the character's visit to false 
     		// that was likely can later be used for another pass
     		visit[r][c] = false;

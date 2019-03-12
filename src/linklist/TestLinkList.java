@@ -52,7 +52,7 @@ public class TestLinkList {
         if(head == null) return null;
         
         // if equal to x then it will go to next list
-        ListNode beforeX = null, afterX = null, 
+        ListNode beforeXhead = null, afterXhead = null, 
         		 beforeXcurrent = null, afterXcurrent = null; 
         
     	ListNode current = head;
@@ -61,9 +61,9 @@ public class TestLinkList {
     	{
     		if(current.val < x)
     		{
-        		if(beforeX == null)
+        		if(beforeXhead == null)
         		{
-        			beforeX = current;
+        			beforeXhead = current;
         			beforeXcurrent = current;
         		}
         		else
@@ -74,9 +74,9 @@ public class TestLinkList {
     		}
     		else
     		{
-        		if(afterX == null)
+        		if(afterXhead == null)
         		{
-        			afterX = current;
+        			afterXhead = current;
         			afterXcurrent = current;
         		}
         		else
@@ -92,10 +92,10 @@ public class TestLinkList {
     	// this step is crucial to ensure we don't fall into a loop
     	if(afterXcurrent != null) afterXcurrent.next = null;
     	
-    	if(beforeX == null) return afterX;
+    	if(beforeXhead == null) return afterXhead;
     	
-    	beforeXcurrent.next = afterX;
-        return beforeX;
+    	beforeXcurrent.next = afterXhead;
+        return beforeXhead;
     }
     
     //https://leetcode.com/problems/add-two-numbers/
@@ -139,8 +139,12 @@ public class TestLinkList {
             return l1;
         }
         
-        if(l1!=null && l2!=null)
+        if(l1 != null && l2 != null)
         {
+        	//trick: the smaller one's next will point to
+        	//method call of smaller's next and the other list
+        	//then we return the smaller one
+        	
             if(l1.val <= l2.val)
             {
                 l1.next = MergeTwoLists(l1.next, l2);
@@ -197,7 +201,7 @@ public class TestLinkList {
     }
     
     //Cracking 2.2
-    public ListNode nthToLast(ListNode head, int k)
+    public ListNode kthToLast(ListNode head, int k)
     {
     	if(head == null) return null;
     	
@@ -242,7 +246,7 @@ public class TestLinkList {
     		fast = fast.next.next;
     	}
     	
-    	//trick
+    	//trick:
     	//that means list has odd elements and skip that one middle element
     	if(fast != null) slow = slow.next;
     	
@@ -329,19 +333,23 @@ public class TestLinkList {
 
         if(head == null) return null;
         
+        //at this point we know head doesn't contain an element
+        //whose value is same as val
         ListNode prev = head;
         ListNode current = head.next;
         
-        //trick
+        //trick:
         while(current!= null)
         {
             //only the deletion case
+        	//keep on skipping the elements whose value equals val
             while(current != null && current.val == val)
             {
                 current = current.next;
             }
             
             //covers deletion and non deletion
+            //sets prev's next to a node whose va
             prev.next = current;
             prev = current;
             
@@ -403,6 +411,8 @@ public class TestLinkList {
             current = temp;
         }
         
+        //trick: it can get confusing what to return current/prev
+        //so keep in mind that you need to return prev
         return prev;
     }
 

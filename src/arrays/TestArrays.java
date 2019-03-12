@@ -95,7 +95,7 @@ public class TestArrays {
         
     	int uniquePos = 0;
     	
-    	//key trick here is:
+    	//trick:
     	//uniquePos gets increased only for the unique number
     	//i always gets increased even for duplicate numbers
     	for(int i = 0; i < nums.length - 1; i++, uniquePos++)
@@ -181,7 +181,7 @@ public class TestArrays {
             }
         }
         
-        return len+1;
+        return len + 1;
     }
 
     //https://leetcode.com/problems/missing-number/
@@ -225,6 +225,7 @@ public class TestArrays {
         return false;
     }
 
+    //TODO: check if this logic really works
     //https://leetcode.com/problems/move-zeroes/
     public void moveZeroes(int[] nums) {
         
@@ -242,6 +243,7 @@ public class TestArrays {
         for(int i = zeroIndex; zeroIndex > -1 && i < nums.length && zeroIndex < nums.length; i++)
         {
         	// find a zeroIndex
+        	// we only set zI when i is lessthan
             if(nums[i] == 0 && i < zeroIndex) zeroIndex = i;
             
             //we have found an index that doesn't contain 0 and we haven't just set the zeroIndex
@@ -250,6 +252,7 @@ public class TestArrays {
                 nums[zeroIndex] = nums[i];
                 nums[i] = 0;
                 
+                //trick:
                 // this is the key as after the swap we have to scan for zero 
                 // right after from previous zeroIndex
                 int tempIndex = i;
@@ -283,7 +286,7 @@ public class TestArrays {
     
     //https://leetcode.com/problems/subarray-sum-equals-k/
     // O(n2) runtime, O(1) space
-    // trick: 2 loops
+    //trick: 2 loops
     // for each i we start summing it up with another loop. if the sum == k we break
     // else for another i run another loop
     public int subarraySum(int[] nums, int k) {
@@ -350,7 +353,7 @@ public class TestArrays {
     }
     
     //https://leetcode.com/problems/search-a-2d-matrix-ii/
-    // trick: start at row 0 and col n-1 
+    //trick: start at row 0 and col n-1 
     // if the target is greater than current no increase row
     // or decrease column
     //runtime O(m+n) 
@@ -376,16 +379,16 @@ public class TestArrays {
         if(matrix==null || matrix.length==0) return false;
         
         //at first find the right row
-        int i = 0;
-        for(; i < matrix.length-1; i++){
-                if(target==matrix[i][0]) return true;
-                if(target>matrix[i][0] && target<matrix[i+1][0]){
+        int row = 0;
+        for(; row < matrix.length-1; row++){
+                if(target == matrix[row][0]) return true;
+                if(target > matrix[row][0] && target < matrix[row+1][0]){
                     break;
                 }
         }
         
-        for(int j=0; j<matrix[i].length; j++){
-            if(target==matrix[i][j]) return true;
+        for(int j = 0; j < matrix[row].length; j++){
+            if(target == matrix[row][j]) return true;
         }
 
         return false;
@@ -442,6 +445,7 @@ public class TestArrays {
     	
     	for(int i = 0; i < len ; i++)
     	{
+    		//fill in with max value up to index i
     		//maxLeft[i] = Math.max(max, A[i]);	//this line doesn't work
     		max = Math.max(max, A[i]);	
     		maxLeft[i] = max;
@@ -451,12 +455,15 @@ public class TestArrays {
     	
     	for(int i = len - 1; i >= 0 ; i--)
     	{
+    		//fill in with min value up to index i starting from end
     		//minRight[i] = Math.min(min, A[i]);// this doesn't work!
     		min = Math.min(min, A[i]);	
             minRight[i] = min;
     	}
     	
     	//now find the index where it can be partitioned
+    	//the index where min of right is same or greater 
+    	//than max of left
     	for(int i = 1; i < len; i++)
     	{
     		if(maxLeft[i - 1] <= minRight[i]) return i;
@@ -515,12 +522,14 @@ public class TestArrays {
         }
 
         // move the front part at the end of the array
+        // copy [1,2,3,4,x,x,x] to [x,x,x,1,2,3,4] 
         for (int i = arrayLen - 1, j = arrayLen - k - 1; i >= k  && j >= 0 ; i--, j--)
         {
             nums[i] = nums[j]; 
         }
 
         // move the last elements (from temp array) to the front part of the array
+        //fill in [x,x,x,1,2,3,4] with temp array [5,6,7,1,2,3,4]
         for (int i = 0; i < temp.length; i++)
         {
             nums[i] = temp[i];
@@ -528,6 +537,7 @@ public class TestArrays {
     }
     
     //https://leetcode.com/problems/merge-sorted-array/
+    //assumption nums1 has enough space to copy the other array
     public void merge(int[] nums1, int m, int[] nums2, int n) {
         
         if(nums1 == null || nums2 == null) return;
@@ -552,6 +562,7 @@ public class TestArrays {
         }
 
         //still have some elements left in nums2
+        //if the rest elements in nums2 are smaller than nums1
         while(j >= 0)
         {
                 nums1[k] = nums2[j];
@@ -714,9 +725,7 @@ public class TestArrays {
     //Output:[5,6]
     public List<Integer> FindDisappearedNumbers(int[] nums)
     {
-        int n = nums.length;
-
-        boolean[] presence = new boolean[n];
+        boolean[] presence = new boolean[nums.length];
 
         for(int num : nums)
         {

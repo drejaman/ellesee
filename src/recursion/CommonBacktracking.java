@@ -33,6 +33,7 @@ public class CommonBacktracking {
 		}
     }
 
+    //lastnight
     public List<List<Integer>> permuteUnique(int[] nums) {
         List<List<Integer>> permutedNumbers = new ArrayList<List<Integer>>();
         
@@ -62,10 +63,11 @@ public class CommonBacktracking {
 		for(int i = 0; i < nums.length; i++)
 		{
 			if(visit[i]) continue;
-			// key: when a number has the same value with its previous, 
+			//trick: when a number has the same value with its previous, 
 			// we can use this number only if previous is used
 			if(i > 0 && nums[i-1] == nums[i] && !visit[i-1]) continue;
 			
+			//trick: no list.contains() check
 			list.add(nums[i]);
 			visit[i] = true;
  			
@@ -89,6 +91,7 @@ public class CommonBacktracking {
     }
     
     //trick: call with the increased index
+    //add every set to the final result
     private void miniSubset(List<List<Integer>> sets, List<Integer> set, int []nums, int startIndex)
     {
     	// in the subset case we always add the new set that came in
@@ -161,7 +164,8 @@ public class CommonBacktracking {
 	    	for(int i = start; i < candidates.length; i++)
 	    	{
 	    		combination.add(candidates[i]);
-	    		// since we can re use the same number when we call recursively we don't increase the start (index)
+	    		//trick: since we can re use the same number when we call recursively 
+	    		//we don't increase the start (index)
 	    		SingleCombination(combinations, combination, candidates, target - candidates[i], i);
 	    		// we backtrack when a combination doesn't yield a result set
 	    		combination.remove(combination.size() - 1);
@@ -189,13 +193,13 @@ public class CommonBacktracking {
     	
 	    	for(int i = startIndex; i < candidates.length; i++)
 	    	{
-	    		// this line is crucial to make sure the same combination does not get added to the lists 
+	    		//trick: this line is crucial to make sure the same combination does not get added to the lists 
 	    		// even though there are same duplicate number
 	    		// Input: [10,1,2,7,6,1,5], 8
 	    		// Output without the line below: [[1,1,6],[1,2,5],[1,7],[1,2,5],[1,7],[2,6]] 
 	    		// so there are some repeats
 	    		// Output with the line below: [[1,1,6],[1,2,5],[1,7],[2,6]]
-	        if (i > startIndex && candidates[i] == candidates[i-1]) continue;
+		        if (i > startIndex && candidates[i] == candidates[i-1]) continue;
 	
 	    		combination.add(candidates[i]);
 	    		singleCombination(combinations, combination, candidates, target - candidates[i], i);
@@ -204,6 +208,11 @@ public class CommonBacktracking {
     }
     
     // https://leetcode.com/problems/combination-sum-iii/
+    //Find all possible combinations of k numbers that add up to a number n, 
+    //given that only numbers from 1 to 9 can be used and 
+    //each combination should be a unique set of numbers.
+    //Input: k = 3, n = 9
+	//Output: [[1,2,6], [1,3,5], [2,3,4]]
     // recursive backtracking solutions are like this where you need to come up a list of possible solutions
     public List<List<Integer>> combinationSum3(int k, int n) {
         List<List<Integer>> combinations = new ArrayList<List<Integer>>();
@@ -212,7 +221,8 @@ public class CommonBacktracking {
         return combinations;
     }
     
-    private void SingleCombination(int k, int remainderSum, int start, List<List<Integer>> combinations, List<Integer> combination)
+    private void SingleCombination(int k, int remainderSum, int start, List<List<Integer>> combinations, 
+    		List<Integer> combination)
     {
     	
 	    	if(remainderSum == 0 && combination.size() == k)
@@ -221,10 +231,11 @@ public class CommonBacktracking {
 	    		return;// return as one path has been added completely fulfilling the conditions
 	    	}
 	    	
+	    	//trick: using i + 1 in the recursive call makes sure we are using 
 	    	for(int i = start; i <= 9; i++)
 	    	{
-			combination.add(i);
-			SingleCombination(k, remainderSum - i, i + 1, combinations, combination);
+				combination.add(i);
+				SingleCombination(k, remainderSum - i, i + 1, combinations, combination);
 	    		combination.remove(combination.size() - 1);
 	    	}
     }
@@ -284,18 +295,18 @@ public class CommonBacktracking {
     
     private void letterCombinations(String digits, int currentIndex, List<String> words, String word)
     {
-    		if(currentIndex >= digits.length())
-    		{
-    			words.add(new String(word));
-    			return;
-    		}
-    		
-    		int currentDigit = digits.charAt(currentIndex) - '0';
-    		
-    		for(char ch : map[currentDigit].toCharArray())
-    		{
-    			letterCombinations(digits, currentIndex + 1, words, word + ch);    				
-    		}
+		if(currentIndex >= digits.length())
+		{
+			words.add(new String(word));
+			return;
+		}
+		
+		int currentDigit = digits.charAt(currentIndex) - '0';
+		
+		for(char ch : map[currentDigit].toCharArray())
+		{
+			letterCombinations(digits, currentIndex + 1, words, word + ch);    				
+		}
     }
 
     //notworking

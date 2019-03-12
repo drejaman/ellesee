@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Stack;
@@ -41,9 +40,9 @@ public boolean checkAnagram(String str1, String str2)
 	if(str1.length() != str2.length())
 		return false;
 	
-	int index = 0, sum1 = 0, sum2 = 0;
+	int index = 0, sum1 = 0, sum2 = 0, len = str1.length();
 	
-	while(index < str1.length())
+	while(index < len)
 	{
 		sum1 += str1.charAt(index);
 		sum2 += str2.charAt(index);
@@ -101,6 +100,7 @@ private String reverseWhole(String s) {
 	
 	// done in O(N/2) passes
 	// set i = 0 and j = N - 1
+	//trick: i < j need to be careful not putting <=
 	for(int i = 0, j = s.length() - 1; i < j ; i++, j--)
 	{
 		char temp = stringChars[i];
@@ -113,7 +113,8 @@ private String reverseWhole(String s) {
 
 //https://leetcode.com/problems/reverse-words-in-a-string/
 //Input: "the sky is blue",
-//Output: "blue is sky the".
+//Output: "blue is sky the"
+//lastnight
 public String reverseWords1(String s) {
     if(s == null || s.isEmpty()) return s;
     
@@ -476,33 +477,33 @@ public List<String> findAndReplacePattern(String[] words, String pattern) {
 		for(int i = 0; i < wordChars.length; i++)
 		{
 			// pattern key is already in mapper
-		if(patternMapper.containsKey(patternChars[i]))
-		{
-			// they matched
-		if(patternMapper.get(patternChars[i]) == wordChars[i])
-		{
-			continue;
-		}
-		// they don't match
-		else
-		{
-			isMatched = false;
-			break;    				
-		}
-	}
-	//
-	//trick:this logic is important to make sure "abb" and "ccc" are not matched
-	// as c is already keyed with a. without this logic c will be also keyed with b
-	else if(patternMapper.containsValue(wordChars[i]))
-	{
-		isMatched = false;
-		break;
-	}
-	// otherwise add the key
-	else
-	{
-		patternMapper.put(patternChars[i], wordChars[i]);    			
-	}
+			if(patternMapper.containsKey(patternChars[i]))
+			{
+				// they matched
+				if(patternMapper.get(patternChars[i]) == wordChars[i])
+				{
+					continue;
+				}
+				// they don't match
+				else
+				{
+					isMatched = false;
+					break;    				
+				}
+			}
+			//
+			//trick:this logic is important to make sure "abb" and "ccc" are not matched
+			// as c is already keyed with a. without this logic c will be also keyed with b
+			else if(patternMapper.containsValue(wordChars[i]))
+			{
+				isMatched = false;
+				break;
+			}
+			// otherwise add the key
+			else
+			{
+				patternMapper.put(patternChars[i], wordChars[i]);    			
+			}
  	}
  	
 	//for each matched word we put them in the matchedWords list
@@ -684,6 +685,7 @@ public int strStr(String haystack, String needle) {
 		
 		for(char ch : s.toCharArray())
 		{
+			//MCMXCIV
 			//M(1000), C (100), M(1000), X (10), C(100), I(1), V(5)
 			current = romanMap.get(ch);
 			//trick
@@ -704,6 +706,7 @@ public int strStr(String haystack, String needle) {
   	//https://leetcode.com/problems/integer-to-roman/
 	// trick: initialize array, start with the highest value also considering 9's like 900 90 etc.
 	// start dividing up the number from the highest value values[0]
+	//lastnight
   	public String intToRoman(int num) {
   		String[] romanChars = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
   		int[] values = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
@@ -730,7 +733,7 @@ public int strStr(String haystack, String needle) {
   	}   
 	
     //https://leetcode.com/problems/string-to-integer-atoi/
-  	// trick:
+  	//trick:
   	// only formula is int digit = Character.getNumericValue(str.charAt(i));   
   	//	      number = number * 10 + digit;
   	// the rest is handling the corner cases
@@ -974,6 +977,7 @@ public int strStr(String haystack, String needle) {
         }
 
         return tracker.size() == 0;
+        //return tracker.isEmpty();
     }    
 
     //https://leetcode.com/problems/word-subsets/
@@ -1059,6 +1063,7 @@ public int strStr(String haystack, String needle) {
         
         while(i < j)
         {
+        	//removed characters that 
             while( i < j && !Character.isLetterOrDigit(s.charAt(i))) i++; 
             while( i < j && !Character.isLetterOrDigit(s.charAt(j))) j--;
             

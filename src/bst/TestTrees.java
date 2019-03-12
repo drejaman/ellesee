@@ -137,7 +137,10 @@ public class TestTrees {
     
     // https://leetcode.com/problems/insert-into-a-binary-search-tree/
     public TreeNode insertIntoBST(TreeNode root, int val) {
-    	// this line is the key
+    	//trick: this line is the key
+    	// we have found the right spot where we can insert the value
+    	// at that point it was already on the correct side of the node
+    	// by which the recursive method insertIntoBST was called
         if(root == null)
             root = new TreeNode(val);
         else if(val < root.val)
@@ -197,6 +200,11 @@ public class TestTrees {
         
         TreeNode leftChild = sortedListToBST(start, mid - 1);
         TreeNode root = new TreeNode(list.val);
+        //trick: as list is global so it gets updated by recursive calls
+        //the leftChild recursive calls are at first that's why the left subtree
+        //gets created bottom up and then root is created and leftChild is 
+        //assigned to root's left
+        //that's why the next 2 lines as is very important
         list = list.next;
         root.left = leftChild;
         root.right = sortedListToBST(mid + 1, end);
@@ -208,7 +216,7 @@ public class TestTrees {
     // this solution works perfectly fine except for huge input the memory limit exceeds
     // runtime O(N) - number of nodes in the tree
     // goal: all the nodes are in the right side. that means only the right children has value  
-    // logic: 
+    //logic: 
     // if right child is empty then node.right = node.left
     // if right child is not empty then push the right child in the stack, 
     // then node.right = node.left and then recursively call the method with node.left
@@ -242,6 +250,7 @@ public class TestTrees {
     }
     
     // here is the alternate solution
+    //lastnight
     private TreeNode prev = null;
     
     public void flatten(TreeNode root)
@@ -270,7 +279,8 @@ public class TestTrees {
         return constructFromPrePost(pre, 0, pre.length - 1, post, 0, pre.length - 1);
     }
     
-    private TreeNode constructFromPrePost(int[] pre, int preStart, int preEnd, int[] post, int postStart, int postEnd) {
+    private TreeNode constructFromPrePost(int[] pre, int preStart, int preEnd,
+    		int[] post, int postStart, int postEnd) {
         // Base cases.
         if (preStart > preEnd) {
             return null;
@@ -285,6 +295,8 @@ public class TestTrees {
         // Locate left subtree.
         int leftSubRootInPre = preStart + 1; 
         int leftSubRootInPost = findLeftSubRootInPost(pre[leftSubRootInPre], post, postStart, postEnd);
+        //trick: important to remember this single line
+        //easy way to remember - sum up the calculated ones and then deducts given one (postStart)
         int leftSubEndInPre = leftSubRootInPre + (leftSubRootInPost - postStart);
         
         // Divide.
@@ -381,15 +393,15 @@ public class TestTrees {
     }
     
     //https://leetcode.com/problems/most-frequent-subtree-sum/
-    //TODO
-    HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+    //TODO how to convert hashMap into array in Java
+    HashMap<Integer, Integer> freqSumMap = new HashMap<Integer, Integer>();
     
     public int[] findFrequentTreeSum(TreeNode root) {
-    	int[] result = new int[map.size()];
+    	int[] result = new int[freqSumMap.size()];
     	
     	findSubtreeSum(root);
     	
-    	for(Entry<Integer, Integer> entry : map.entrySet())
+    	for(Entry<Integer, Integer> entry : freqSumMap.entrySet())
     	{
     		entry.getKey();
     	}
@@ -407,7 +419,7 @@ public class TestTrees {
     	sum += findSubtreeSum(node.right);
     	
     	//increase the frequency of the sum by 1
-    	map.put(sum, map.getOrDefault(sum, 0) + 1);
+    	freqSumMap.put(sum, freqSumMap.getOrDefault(sum, 0) + 1);
     	
     	return sum;
     }
@@ -436,6 +448,7 @@ public class TestTrees {
     // for root = 2 - 0 = 2, for internal node = 2 - 1
     // so for every non-leaf node we visit we add 2 to count and reduce 1 for the incoming one
     // at the end if the count is zero then the serialization is right
+    //TODO not clear on the logic yet
     public static boolean isValidSerialization(String preorder) {
         String[] nodes = preorder.split(",");
         int edgeCount = 1;
@@ -631,7 +644,7 @@ public class TestTrees {
         
         for(List<Integer> current : nodeValues)
         {
-	        	//careful about this Collections.max
+	        	//trick:careful about this Collections.max
 	        	largeValues.add(Collections.max(current));        	
         }
         
@@ -694,6 +707,7 @@ public class TestTrees {
     //method - 1:continue tracking currentSum and from topDown and return totalWays when the targetSum found
     //countPathsWithSumFromNode
     //method - 2: at each node call method-1 for root, call method-2 for both left and right
+	//lastnight
     public int countPathsWithSum(TreeNode node, int targetSum)
     {
     	if(node == null) return 0;
@@ -743,6 +757,9 @@ public class TestTrees {
     	kthSmallestTraversal(root.left, k);  
 
         currentCount++;
+        
+        //as this is inOrder
+        //the check needs to be in the middle
     	if(currentCount == k) 
     	{
     		smallest = root.val;
@@ -804,7 +821,16 @@ public class TestTrees {
         
         return newList;
     }
-
+    
+    public static void InOrderPrint(TreeNode node)
+    {
+    	if(node == null) return;
+    	
+    	if(node.left != null) InOrderPrint(node.left);
+    	System.out.print(node.val + ", ");
+    	if(node.right != null) InOrderPrint(node.right);
+    }
+    
 	//https://leetcode.com/problems/binary-tree-preorder-traversal/
     public List<Integer> preorderTraversal(TreeNode root) {
         List<Integer> newList = new ArrayList<Integer>();
@@ -819,6 +845,7 @@ public class TestTrees {
     }	
 
     //https://leetcode.com/problems/binary-tree-pruning/description/
+    //lastnight
     public TreeNode pruneTree(TreeNode root) {
     	return HasOneInTree(root) ? root : null;
     }
@@ -835,20 +862,12 @@ public class TestTrees {
     	boolean leftOne = HasOneInTree(root.left);
     	boolean rightOne = HasOneInTree(root.right);
     	
+    	//setting the subtree to null if the subtree doesn't contain a 1
     	if(!leftOne) root.left = null;
     	if(!rightOne) root.right = null;
     	
     	// there is at least one 1 in this subtree rooted at root
     	return root.val == 1 || leftOne || rightOne;
-    }
-    
-    public static void InOrderPrint(TreeNode node)
-    {
-    	if(node == null) return;
-    	
-    	if(node.left != null) InOrderPrint(node.left);
-    	System.out.print(node.val + ", ");
-    	if(node.right != null) InOrderPrint(node.right);
     }
     
     //https://leetcode.com/problems/balanced-binary-tree/

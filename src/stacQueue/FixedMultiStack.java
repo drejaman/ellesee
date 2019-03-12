@@ -11,7 +11,7 @@ public class FixedMultiStack {
 	//points to the index in each stack
 	private int[] indexInStack;
 	
-	FixedMultiStack(int capacity)
+	public FixedMultiStack(int capacity)
 	{
 		stackCapacity = capacity;
 		values = new int[numberOfStacks * stackCapacity];
