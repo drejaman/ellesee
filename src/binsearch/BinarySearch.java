@@ -148,13 +148,13 @@ public class BinarySearch {
     //need to know CompareTo()
     //The result is positive if the first string is lexicographically greater than the second string 
     //else the result would be negative.
-   public int searchSparse(String[] strings, int left, int right, String needle)
+   public int searchSparse(String[] words, int left, int right, String needle)
    {
 	   if(left > right) return -1;
 	   
 	   int mid = (left + right)/2;
 	   
-	   if(strings[mid].equals(needle)) return mid;
+	   if(words[mid].equals(needle)) return mid;
 	   
 	   //this is required to skip through the empty string ("")
 	   int midLeft = mid - 1;
@@ -163,13 +163,13 @@ public class BinarySearch {
 	   // this stopping logic is important
 	   while(midLeft > left && midRight < right)
 	   {
-		   if(!strings[midLeft].equals(""))
+		   if(!words[midLeft].equals(""))
 		   {
 			   mid = midLeft;
 			   break;
 		   }
 
-		   if(!strings[midRight].equals(""))
+		   if(!words[midRight].equals(""))
 		   {
 			   mid = midRight;
 			   break;
@@ -183,14 +183,14 @@ public class BinarySearch {
 	   //trick: compareTo returns negative if this string is less than the argument string
 	   // "abc", "abd", "abe", "abf", "abe"
 	   // that means the String we are looking for is greater than strings[mid]
-	   if(strings[mid].compareTo(needle) < 0)
+	   if(words[mid].compareTo(needle) < 0)
 	   {
 		   // so for compareTo negative result then the needle if greater than mid
 		   // so searches the upper half
-		   return searchSparse(strings, mid + 1, right, needle);
+		   return searchSparse(words, mid + 1, right, needle);
 	   }
 	   
-	   return searchSparse(strings, left, mid - 1, needle);
+	   return searchSparse(words, left, mid - 1, needle);
    }
    
     //Cracking 10.8 findDuplicates TODO

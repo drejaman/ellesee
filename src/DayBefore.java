@@ -152,6 +152,7 @@ public class DayBefore {
         if (preStart > preEnd) {
             return null;
         }
+        
         if (preStart == preEnd) {
             return new TreeNode(pre[preStart]);
         }
@@ -483,43 +484,43 @@ public class DayBefore {
     // O(N) runtime actually O(kn) as k = 10 constant making it O(N), O(1) space
     //lastnight
     public int maximumSwap(int num) {
-    		if(num == 0) return num;
-    		
-    		char[] numChars = Integer.toString(num).toCharArray();
-    		
-    		if(numChars.length == 1) return num;
-    		
-    		int[] last = new int[10];
-    		
-    		//find the last (lowest value for that digit) index of each digit (1 - 9)
-    		for(int i = 0; i < numChars.length; i++)
-    		{
-    			last[numChars[i] - '0'] = i;
-    		}
+		if(num == 0) return num;
+		
+		char[] numChars = Integer.toString(num).toCharArray();
+		
+		if(numChars.length == 1) return num;
+		
+		int[] last = new int[10];
+		
+		//find the last (lowest value for that digit) index of each digit (1 - 9)
+		for(int i = 0; i < numChars.length; i++)
+		{
+			last[numChars[i] - '0'] = i;
+		}
 
-    		//start with left for the number
-    		//first lower value than higher value to be replaced
-    		for(int i = 0; i < numChars.length; i++)
-    		{
-        		//start with the highest digit 9
-    			//and go up to the current value at index i
-    			for(int digit = 9; digit > numChars[i] - '0'; digit--)
-    			{
-    				//found a digit higher than current digit but at lower value index
-    				//so make the swap bumping up the current number
-    				if(last[digit] > i)
-    				{
-    					char temp = numChars[last[digit]];
-    					numChars[last[digit]] = numChars[i];
-    					numChars[i] = temp;
-    					
-    					//we only need one swap so return
-    					return Integer.valueOf(new String(numChars));
-    				}
-    			}
-    		}
-    		
-    		return num;
+		//start with left for the number
+		//first lower value than higher value to be replaced
+		for(int i = 0; i < numChars.length; i++)
+		{
+    		//start with the highest digit 9
+			//and go up to the current value at index i
+			for(int digit = 9; digit > numChars[i] - '0'; digit--)
+			{
+				//found a digit higher than current digit but at lower value index
+				//so make the swap bumping up the current number
+				if(last[digit] > i)
+				{
+					char temp = numChars[last[digit]];
+					numChars[last[digit]] = numChars[i];
+					numChars[i] = temp;
+					
+					//we only need one swap so return
+					return Integer.valueOf(new String(numChars));
+				}
+			}
+		}
+		
+		return num;
     }
 
     //https://leetcode.com/problems/product-of-array-except-self/
@@ -802,9 +803,9 @@ public int romanToInt(String s) {
 	}
 
 	//https://leetcode.com/problems/integer-to-roman/
-// trick: initialize array, start with the highest value also considering 9's like 900 90 etc.
-// start dividing up the number from the highest value values[0]
-//lastnight
+	// trick: initialize array, start with the highest value also considering 9's like 900 90 etc.
+	// start dividing up the number from the highest value values[0]
+	//lastnight
 	public String intToRoman(int num) {
 		String[] romanChars = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
 		int[] values = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};

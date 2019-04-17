@@ -33,15 +33,15 @@ public class TestArrays {
      int oi = 0, oj = 0;
      
      for(int i = 0; i < r; i++) {
-    	 	for(int j = 0; j < c; j++) {
-    	 		reshapedMatrix[i][j] = nums[oi][oj % originalColumns];
-    	 		
-    	 		// column of the original array increases after each number is visited
-    	 		// so should be mod of columnNo
-    	 		oj++;
-    	 		// row of the original array increases after each row is done for all columns
-    	 		if(oj % originalColumns == 0) oi++;
-    	 	}
+	 	for(int j = 0; j < c; j++) {
+	 		reshapedMatrix[i][j] = nums[oi][oj % originalColumns];
+	 		
+	 		// column of the original array increases after each number is visited
+	 		// so should be mod of columnNo
+	 		oj++;
+	 		// row of the original array increases after each row is done for all columns
+	 		if(oj % originalColumns == 0) oi++;
+	 	}
      }
      
      return reshapedMatrix;
@@ -139,7 +139,7 @@ public class TestArrays {
 
         int uniqueNumbers = 1;
         
-        // At this step we mark all duplicate numbers as -1
+        //at this step we mark all duplicate numbers as -1
         for( int i = 1; i < A.length;)
         {
         	// as long as it is the same number we keep increasing i
@@ -480,9 +480,9 @@ public class TestArrays {
         int red = 0, white = 0, blue = 0;
         
         for(int i = 0; i < A.length; i++){
-            if(A[i]==0) red++;
-            if(A[i]==1) white++;
-            if(A[i]==2) blue++;
+            if(A[i] == 0) red++;
+            if(A[i] == 1) white++;
+            if(A[i] == 2) blue++;
         }
         
         for(int i=0; i < red; i++){
