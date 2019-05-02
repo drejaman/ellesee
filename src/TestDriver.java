@@ -1,4 +1,4 @@
-
+import javathread.TestThreads;
 
 public class TestDriver {
 	public static void main(String[] args) throws Exception {
@@ -18,5 +18,17 @@ public class TestDriver {
 //		numbers.TestNumbers tester= new numbers.TestNumbers();
 //		linklist.TestLinkList tester = new linklist.TestLinkList();
 //		tester.test();		
+		threadDemo();
 	}
+	
+	private static void threadDemo() throws InterruptedException{
+        int n = 8; // Number of threads 
+        
+        for (int i = 0; i < n; i++) 
+        { 
+        		TestThreads object = new TestThreads(); 
+            object.start(); 
+        } 
+	}
+	
 }

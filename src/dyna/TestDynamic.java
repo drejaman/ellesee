@@ -121,6 +121,7 @@ public class TestDynamic {
     //a variation of the previous problem
     int palinLength = 0;
     String palinString = "";
+    
     public String longestPalindrome(String s) {
         if(s == null || s.isEmpty()) return palinString;
         
@@ -163,6 +164,7 @@ public class TestDynamic {
 			{
 				dp[i] = dp[i - 1] + 1;
 			}
+			//else is not required as dp[i] = 0 is already initialized
 			
 			sum += dp[i];
 		}
@@ -171,6 +173,7 @@ public class TestDynamic {
     }
     
     //https://leetcode.com/problems/perfect-squares/
+    //lastnight
     public int numSquares(int n) {
 		int[] dp = new int[n + 1];
 		Arrays.fill(dp, Integer.MAX_VALUE);

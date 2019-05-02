@@ -18,8 +18,8 @@ public class MyWay<T> {
 		return oldest.size() + newest.size();
 	}
 	
-	//implementation clue:
-	// addition always goes to newest and newest keeps the new elements
+	//logic:
+	// addition always goes to newest that keeps the new elements
 	// top of the newest is actually end of the queue 
 	// whenever we get a new element we just push into newest without any thought
 	// removal always from oldest. top of oldest is the first of queue

@@ -124,20 +124,20 @@ public class CommonBacktracking {
     //if it already exists in result set
     private void miniSubsetDup(List<List<Integer>> sets, List<Integer> set, int []nums, int startIndex)
     {
-    	// in the subset case we always add the new set that came in
-    	if(!sets.contains(set))
-    	{
-        	sets.add(new ArrayList<Integer>(set));    		
-    	}
-    	
-    	for(int i = startIndex; i < nums.length; i++)
-    	{
-    		set.add(nums[i]);
-    		//add the next possible number
-    		miniSubsetDup(sets, set, nums, i + 1);
-    		//backtrack
-    		set.remove(set.size() - 1);
-    	}
+	    	// in the subset case we always add the new set that came in
+	    	if(!sets.contains(set))
+	    	{
+	        	sets.add(new ArrayList<Integer>(set));    		
+	    	}
+	    	
+	    	for(int i = startIndex; i < nums.length; i++)
+	    	{
+	    		set.add(nums[i]);
+	    		//add the next possible number
+	    		miniSubsetDup(sets, set, nums, i + 1);
+	    		//backtrack
+	    		set.remove(set.size() - 1);
+	    	}
     }
     
     // https://leetcode.com/problems/combination-sum/
@@ -199,7 +199,7 @@ public class CommonBacktracking {
 	    		// Output without the line below: [[1,1,6],[1,2,5],[1,7],[1,2,5],[1,7],[2,6]] 
 	    		// so there are some repeats
 	    		// Output with the line below: [[1,1,6],[1,2,5],[1,7],[2,6]]
-		        if (i > startIndex && candidates[i] == candidates[i-1]) continue;
+		    if (i > startIndex && candidates[i] == candidates[i-1]) continue;
 	
 	    		combination.add(candidates[i]);
 	    		singleCombination(combinations, combination, candidates, target - candidates[i], i);
@@ -234,8 +234,8 @@ public class CommonBacktracking {
 	    	//trick: using i + 1 in the recursive call makes sure we are using 
 	    	for(int i = start; i <= 9; i++)
 	    	{
-				combination.add(i);
-				SingleCombination(k, remainderSum - i, i + 1, combinations, combination);
+			combination.add(i);
+			SingleCombination(k, remainderSum - i, i + 1, combinations, combination);
 	    		combination.remove(combination.size() - 1);
 	    	}
     }

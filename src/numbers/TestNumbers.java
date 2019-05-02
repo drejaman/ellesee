@@ -23,10 +23,10 @@ public class TestNumbers {
         
         for(int i = left ; i <= right; i++)
         {
-    		if(isSelfDividingNumber(i))
-    		{
-    			selfDividingNumbers.add(i);
-    		}
+	    		if(isSelfDividingNumber(i))
+	    		{
+	    			selfDividingNumbers.add(i);
+	    		}
         }
         
         return selfDividingNumbers;
@@ -138,7 +138,6 @@ public class TestNumbers {
 			int index = Math.abs(num) - 1;
 			
 			if(nums[index] > 0) nums[index] = -nums[index];
-			
 			// otherwise it was already negated once
 			// so num is duplicate and so index = num - 1 is visited twice
 			else
@@ -155,46 +154,47 @@ public class TestNumbers {
     //Output: 4
     //Explanation: n is 2, and the maximum sum of pairs is 4 = min(1, 2) + min(3, 4).
     public int arrayPairSum(int[] nums) {
-    	int len = nums.length;
-    	int sum = 0;
-    	
-    	// sort the array with built in algorithm using O(nlogn) time
-    	Arrays.sort(nums);
-    	
-    	for(int i = 0; i < len; i++)
-    	{
-    		// the first number of the set will be added only as we would pick min (a1, b1)
-    		if(i % 2 == 0) sum += nums[i];
-    	}
-    	
-    	return sum;
+	    	int sum = 0;
+	    	int len = nums.length;
+	    	
+	    	// sort the array with built in algorithm using O(n log n) time
+	    	Arrays.sort(nums);
+	    	
+	    	for(int i = 0; i < len; i++)
+	    	{
+	    		// the first number of the set will be added only as we would pick min (a1, b1)
+	    		if(i % 2 == 0) sum += nums[i];
+	    	}
+	    	
+	    	return sum;
     }
     
     // https://leetcode.com/problems/monotonic-array/
     public boolean isMonotonic(int[] A) {
-    	// the tricky part is to determine whether it is increasing or decreasing
-    	// specially for the cases like [2,2,2,3] or [2,2,2,1]
+	    	// the tricky part is to determine whether 
+    		// it is increasing or decreasing
+	    	// specially for the cases like [2,2,2,3] or [2,2,2,1]
         int i = 1;
         
-        while(i < A.length && A[i] - A[i-1] == 0) i++; 
+        while (i < A.length && A[i] - A[i-1] == 0) i++; 
         
         boolean increasing = (i < A.length && (A[i] - A[i-1]) >= 0) ? true : false;
         
         if(increasing)
         {
-        	for( ; i < A.length; i++)
-        	{
-        		if(A[i] - A[i-1] >= 0) continue;
-        		return false;
-        	}        	
-        }
-        else
-        {
-        	for(; i < A.length; i++)
-        	{
-        		if(A[i] - A[i-1] <= 0) continue;
-        		return false;
-        	}        	        	
+	        	for( ; i < A.length; i++)
+	        	{
+	        		if(A[i] - A[i-1] >= 0) continue;
+	        		return false;
+	        	}        	
+	        }
+	        else
+	        {
+	        	for(; i < A.length; i++)
+	        	{
+	        		if(A[i] - A[i-1] <= 0) continue;
+	        		return false;
+	        	}        	        	
         }
         
         return true;
@@ -204,7 +204,7 @@ public class TestNumbers {
     public int findPeakElement(int[] nums) {
         if(nums == null || nums.length == 0) return -1;
 
-    	int len = nums.length;
+    		int len = nums.length;
         int maxIndex = 0;
         int maxPeak = 0;
         
@@ -213,24 +213,24 @@ public class TestNumbers {
         //check the first if this is the peak
         if(nums[0] > nums[1]) 
         {
-        	maxIndex = 0;
-        	maxPeak = nums[0];
+	        	maxIndex = 0;
+	        	maxPeak = nums[0];
         }
         
         for(int i = 1; i < len - 1; i++)
         {
-        	if(nums[i] > nums[i-1] && nums[i] > nums[i+1] && nums[i] > maxPeak)
-        	{
-            	maxIndex = i;
-            	maxPeak = nums[i];        		
-        	}
+	        	if(nums[i] > nums[i-1] && nums[i] > nums[i+1] && nums[i] > maxPeak)
+	        	{
+	            	maxIndex = i;
+	            	maxPeak = nums[i];        		
+	        	}
         }
 
         //check the last if the last is peak
         if(nums[len - 1] > nums[len - 2]) 
         {
-        	maxIndex = len - 1;
-        	maxPeak = nums[len - 1];
+	        	maxIndex = len - 1;
+	        	maxPeak = nums[len - 1];
         }
 
         return maxIndex;
@@ -248,21 +248,21 @@ public class TestNumbers {
         
         for(int i = 1; i < A.length; i++)
         {
-        	if(increasing)
-        	{
-        		if(A[i] > A[i-1]) continue;
-        		else//we already arrived at peak and now should decreasing
-        		{
-        			increasing = false;
-        			//so the previous index was peak
-        			peakIndex = i - 1;
-        		}   
-        	}
-        	//or it is going downhill and A[i] has to be less thans A[i-1]
-        	else if(!increasing && A[i] < A[i-1]) continue;
-        	//there could multiple peaks so find the next one
-        	//going uphill again
-        	else increasing = true;
+	        	if(increasing)
+	        	{
+	        		if(A[i] > A[i-1]) continue;
+	        		else//we already arrived at peak and now should decreasing
+	        		{
+	        			increasing = false;
+	        			//so the previous index was peak
+	        			peakIndex = i - 1;
+	        		}   
+	        	}
+	        	//or it is going downhill and A[i] has to be less thans A[i-1]
+	        	else if(!increasing && A[i] < A[i-1]) continue;
+	        	//there could multiple peaks so find the next one
+	        	//going uphill again
+	        	else increasing = true;
         }
         
         // the following logic handles the case like 0, 1, 2, 3, 4, 5
@@ -371,18 +371,18 @@ public class TestNumbers {
         
         for(Entry<Integer, Boolean> entry : mapper.entrySet())
         {
-        	if(entry.getValue())
-        	{
-        		keysWithMatchingValues.add(entry.getKey());
-        		i++;
-        	}
+	        	if(entry.getValue())
+	        	{
+	        		keysWithMatchingValues.add(entry.getKey());
+	        		i++;
+	        	}
         }
 
         int[] singleNumbers = new int[i];
 
         for(int j = 0; j < i; j++)
         {
-        	singleNumbers[j] = keysWithMatchingValues.get(j);
+        		singleNumbers[j] = keysWithMatchingValues.get(j);
         }
         
         return singleNumbers;
@@ -437,6 +437,7 @@ public class TestNumbers {
 		while(iterate.hasNext())
 		{
 			int current = iterate.next();
+			
 			if(numberList.get(current)==1)
 				{
 					return current;
@@ -465,17 +466,14 @@ public class TestNumbers {
 
         int[] finalProduct = new int[numLen];
 
-        //initialize left array
-        leftProduct[0] = 1;
+        //initialize left and right array
+        leftProduct[0] = rightProduct[numLen - 1] = 1;
 
         //calculate left product
         for (int i = 1; i < numLen; i++)
         {
             leftProduct[i] = leftProduct[i - 1] * nums[i-1]; 
         }
-
-        //initialize right array
-        rightProduct[numLen - 1] = 1;
 
         //calculate right product
         for (int i = numLen - 2; i >= 0; i--)

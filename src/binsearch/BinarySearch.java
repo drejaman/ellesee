@@ -16,26 +16,26 @@ public class BinarySearch {
     
     private int binarySearchIndex(int[] nums, int target, int start, int end)
     {
-    	if(start > end) return -1;
-    	
-    	int mid = (start + end)/2;
-    	
-    	//the number already exists and this is the right position
-    	if(nums[mid] == target) return mid;
-    	
-    	else if(target < nums[mid])
-    	{
-    		//less than nums[mid] but also greater than nums[mid -1], so right position is mid
-    		if(mid - 1 >= 0 && target > nums[mid - 1]) return mid;
-    		return binarySearchIndex(nums, target, start, mid - 1);
-    	}
-    	
-		//greater than nums[mid] but also less than nums[mid + 1], so right position is mid + 1
-    	if(target > nums[mid] && mid + 1 <= nums.length - 1 && target < nums[mid + 1]) {
-    		return mid + 1;
-    	}
-
-    	return binarySearchIndex(nums, target,  mid + 1, end);
+	    	if(start > end) return -1;
+	    	
+	    	int mid = (start + end)/2;
+	    	
+	    	//the number already exists and this is the right position
+	    	if(nums[mid] == target) return mid;
+	    	
+	    	else if(target < nums[mid])
+	    	{
+	    		//less than nums[mid] but also greater than nums[mid -1], so right position is mid
+	    		if(mid - 1 >= 0 && target > nums[mid - 1]) return mid;
+	    		return binarySearchIndex(nums, target, start, mid - 1);
+	    	}
+	    	
+			//greater than nums[mid] but also less than nums[mid + 1], so right position is mid + 1
+	    	if(target > nums[mid] && mid + 1 <= nums.length - 1 && target < nums[mid + 1]) {
+	    		return mid + 1;
+	    	}
+	
+	    	return binarySearchIndex(nums, target,  mid + 1, end);
     }
     
     //https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/
@@ -49,20 +49,20 @@ public class BinarySearch {
         
         while(left < right && nums[left] >= nums[right])//nums[4] < nums[5] so break
         {
-        	int mid = (left + right) / 2;//index = 3, 5
-        	
-        	// if nums[mid] is greater than nums[right] that 
-        	// means the whole left side can't contain min
-        	if(nums[mid] > nums[right])
-        	{
-        		left = mid + 1; //4
-        	}
-        	else
-        	{
-        		// right = mid is important instead of right = mid - 1 to make sure 
-        		// it doesn't skip the mid number
-        		right = mid;//5
-        	}
+	        	int mid = (left + right) / 2;//index = 3, 5
+	        	
+	        	// if nums[mid] is greater than nums[right] that 
+	        	// means the whole left side can't contain min
+	        	if(nums[mid] > nums[right])
+	        	{
+	        		left = mid + 1; //4
+	        	}
+	        	else
+	        	{
+	        		// right = mid is important instead of right = mid - 1 to make sure 
+	        		// it doesn't skip the mid number
+	        		right = mid;//5
+	        	}
         }
         
         return nums[left];//return nums[4]
@@ -73,75 +73,75 @@ public class BinarySearch {
     //lastnight
     public int searchRotated(int[] nums, int left, int right, int x)
     {
-    	if(nums == null || nums.length == 0) return -1;
-    	
-    	if(right < left) return -1;
-
-    	/* Skipping the duplicates when duplicates exist to solve another variation of the same problem
-	    //https://leetcode.com/problems/search-in-rotated-sorted-array-ii/
-	    //when duplicates do exist
-	    //[3,1,1], 3
-	    // skip duplicates from the left
-	    while (left < right && nums[left] == nums[left + 1]) left++; 
-	    
-	    // skip duplicates from the right
-	    while (left < right && nums[right] == nums[right - 1]) right--; 
-    	*/
-    	int mid = (left + right) / 2;
-    	
-    	if(nums[mid] == x) return mid;
-    	
-    	//case - 1: left is normally ordered
-    	if(nums[left] < nums[mid])
-    	{
-    		//and x exists in the left portion
-    		if(x >= nums[left] && x < nums[mid])
-    		{
-    			return searchRotated(nums, left, mid - 1, x);
-    		}
-    		else
-    		{
-    			return searchRotated(nums, mid + 1, right, x);
-    		}
-    	}
-    	//case - 2: right is normally ordered
-    	else if(nums[mid] < nums[right])
-    	{
-    		//and x exists in the right portion
-    		if(x > nums[mid] && x <= nums[right])
-    		{
-    			return searchRotated(nums, mid + 1, right, x);
-    		}
-    		else
-    		{
-    			return searchRotated(nums, left, mid - 1, x);
-    		}
-    	}
-    	//case - 3: left/right half is same number
-    	else if(nums[left] == nums[mid])
-    	{
-    		// right half is not same so search in the right half
-    		if(nums[mid] != nums[right])
-    		{
-    			return searchRotated(nums, mid + 1, right, x);
-    		}
-    		// worst case: need to search in both half
-    		else
-    		{
-    			int result = searchRotated(nums, left, mid - 1, x);
-    			
-    			if(result == -1)
-    			{
-    				return searchRotated(nums, mid + 1, right, x);
-    			}
-    			else
-    			{
-    				return result;
-    			}    			
-    		}
-    	}
-    	
-    	return -1;
+	    	if(nums == null || nums.length == 0) return -1;
+	    	
+	    	if(right < left) return -1;
+	
+	    	/* Skipping the duplicates when duplicates exist to solve another variation of the same problem
+		    //https://leetcode.com/problems/search-in-rotated-sorted-array-ii/
+		    //when duplicates do exist
+		    //[3,1,1], 3
+		    // skip duplicates from the left
+		    while (left < right && nums[left] == nums[left + 1]) left++; 
+		    
+		    // skip duplicates from the right
+		    while (left < right && nums[right] == nums[right - 1]) right--; 
+	    	*/
+	    	int mid = (left + right) / 2;
+	    	
+	    	if(nums[mid] == x) return mid;
+	    	
+	    	//case - 1: left is normally ordered
+	    	if(nums[left] < nums[mid])
+	    	{
+	    		//and x exists in the left portion
+	    		if(x >= nums[left] && x < nums[mid])
+	    		{
+	    			return searchRotated(nums, left, mid - 1, x);
+	    		}
+	    		else
+	    		{
+	    			return searchRotated(nums, mid + 1, right, x);
+	    		}
+	    	}
+	    	//case - 2: right is normally ordered
+	    	else if(nums[mid] < nums[right])
+	    	{
+	    		//and x exists in the right portion
+	    		if(x > nums[mid] && x <= nums[right])
+	    		{
+	    			return searchRotated(nums, mid + 1, right, x);
+	    		}
+	    		else
+	    		{
+	    			return searchRotated(nums, left, mid - 1, x);
+	    		}
+	    	}
+	    	//case - 3: left/right half is same number
+	    	else if(nums[left] == nums[mid])
+	    	{
+	    		// right half is not same so search in the right half
+	    		if(nums[mid] != nums[right])
+	    		{
+	    			return searchRotated(nums, mid + 1, right, x);
+	    		}
+	    		// worst case: need to search in both half
+	    		else
+	    		{
+	    			int result = searchRotated(nums, left, mid - 1, x);
+	    			
+	    			if(result == -1)
+	    			{
+	    				return searchRotated(nums, mid + 1, right, x);
+	    			}
+	    			else
+	    			{
+	    				return result;
+	    			}    			
+	    		}
+	    	}
+	    	
+	    	return -1;
     }
 
     //Cracking 10.5 searchSparse(String[] strings, int left, int right, String needle)

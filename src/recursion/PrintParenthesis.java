@@ -49,7 +49,7 @@ public List<String> generateParenthesis(int n) {
 
     if(n == 0) 
     {
-    	result.add("");
+    		result.add("");
     }
     else
     {
@@ -59,22 +59,22 @@ public List<String> generateParenthesis(int n) {
     return result;
 }
 
-private void generateParenthesis(List<String> result, int left, int right, String currentList)
+private void generateParenthesis(List<String> result, int left, int right, String currentSequence)
 {
 	if(right == 0) 
 	{
-		result.add(currentList);
+		result.add(currentSequence);
 		return;
 	}
 	
 	if(right > left)
 	{
-		generateParenthesis(result, left, right - 1, currentList + ")");
+		generateParenthesis(result, left, right - 1, currentSequence + ")");
 	}
 	
     if(left > 0)
 	{
-		generateParenthesis(result, left - 1, right, currentList + "(");		
+		generateParenthesis(result, left - 1, right, currentSequence + "(");		
 	}
 }
 

@@ -55,6 +55,8 @@ public boolean checkAnagram(String str1, String str2)
 	return false;
 }
 
+//TODO Anagram difference (super important in HackerRank
+
 public boolean checkPalinDrome(String str)
 {
 	char[] chars = str.toCharArray();
@@ -589,6 +591,29 @@ public int strStr(String haystack, String needle) {
 	return -1;
 }
 
+public int isSubstring(String haystack, String needle)
+{
+	int hLen = haystack.length();
+	int nLen = needle.length();
+	
+	for(int i = 0 ; i < hLen - nLen; i++)
+	{
+		int j = 0;
+		
+		for(; j < nLen; j++)
+		{
+			if(haystack.charAt(i) != needle.charAt(j))
+			{
+				break;
+			}
+		}
+		
+		if(j == nLen) return i;
+	}
+	
+	return -1;
+}
+
 	//https://leetcode.com/problems/length-of-last-word/
 	public int LengthOfLastWord(String s) {
 	    char[] sentenceArray = s.trim().toCharArray();
@@ -738,33 +763,33 @@ public int strStr(String haystack, String needle) {
   	//	      number = number * 10 + digit;
   	// the rest is handling the corner cases
     public int myAtoi(String str) { 
-    	// need to return 0 as required by Leetcode
-    	if(str == null || str.isEmpty()) return 0;
-    	
-    	// required to handle overflow
-    	int maxDiv10 = Integer.MAX_VALUE / 10;
-    	
-    	int i = 0;
-    	int len = str.length();
-    	
-    	while(i < len && Character.isWhitespace(str.charAt(i))) i++;
-    	
-    	int number = 0;
-    	int sign = 1;
-
-    	if(i < len && str.charAt(i) == '-')
+	    	// need to return 0 as required by Leetcode
+	    	if(str == null || str.isEmpty()) return 0;
+	    	
+	    	// required to handle overflow
+	    	int maxDiv10 = Integer.MAX_VALUE / 10;
+	    	
+	    	int i = 0;
+	    	int len = str.length();
+	    	
+	    	while(i < len && Character.isWhitespace(str.charAt(i))) i++;
+	    	
+	    	int number = 0;
+	    	int sign = 1;
+	
+	    	if(i < len && str.charAt(i) == '-')
 		{
 			sign = -1;
 			i++;
 		}
-    	else if(i < len && str.charAt(i) == '+')
+	    	else if(i < len && str.charAt(i) == '+')
 		{
 			i++;
 		}
-
-	    	// as required by Leetcode any non alphanumeric character will result into 0
-    	while(i < len && Character.isDigit(str.charAt(i)))
-    	{
+	
+		    	// as required by Leetcode any non alphanumeric character will result into 0
+	    	while(i < len && Character.isDigit(str.charAt(i)))
+	    	{
 	      int digit = Character.getNumericValue(str.charAt(i));       
 	      
 	      // required to handle overflow		      
@@ -775,70 +800,70 @@ public int strStr(String haystack, String needle) {
 		
 	      number = number * 10 + digit;
 		  i++;
-    	}
-
-    	/* alternate implementation
-    	 * case like "why this is 987" will return 987
-    	while(i < len)
-    	{	
-    		if(Character.isDigit(str.charAt(i)))
-    		{	
-	      int digit = Character.getNumericValue(str.charAt(i));       
-	      
-	      // required to handle overflow		      
-	      if (number > maxDiv10 || number == maxDiv10 && digit >= 8) 
-	      {          
-	    	  return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;       
-	      }
-			number = number * 10 + digit;
-		}
-    		i++;
-    	}
-    	*/
-
-    	return sign * number;
+	    	}
+	
+	    	/* alternate implementation
+	    	 * case like "why this is 987" will return 987
+	    	while(i < len)
+	    	{	
+	    		if(Character.isDigit(str.charAt(i)))
+	    		{	
+		      int digit = Character.getNumericValue(str.charAt(i));       
+		      
+		      // required to handle overflow		      
+		      if (number > maxDiv10 || number == maxDiv10 && digit >= 8) 
+		      {          
+		    	  return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;       
+		      }
+				number = number * 10 + digit;
+			}
+	    		i++;
+	    	}
+	    	*/
+	
+	    	return sign * number;
     }
     
     //cracking1.5
     //lastnight
     public boolean oneEditDistanceAway(String s1, String s2)
     {
-    	if(Math.abs(s1.length() - s2.length()) > 1) return false;
-    	
-    	String shorter = s1.length() < s2.length() ? s1 : s2;
-    	String longer = s1.length() < s2.length() ? s2 : s1;
-    	
-    	boolean foundMismatch = false;
-    	
-    	int index1 = 0, index2 = 0;
-    	
-    	while(index1 < shorter.length() && index2 < longer.length())
-    	{
-    		// the characters are not matched. so it has to be insert or replace
-    		if(shorter.charAt(index1) != longer.charAt(index2))
-    		{
-    			// already one mismatch found before. so another mismatch means not one edit distance away
-    			if(foundMismatch) return false;
-    			//otherwise mark the first mismatch
-    			foundMismatch = true;
-    			
-    			//if the lengths are same that means it is a replace. so move shorter pointer
-    	   		if(shorter.length() == longer.length())
-        		{
-        			index1++;
-        		}
-    	   		//otherwise is an insert. so no short pointer is changed
-        	}
-    		//they are matching so move both pointers are increased
-    		else
-    		{
-    			index1++;
-    		}
-    		//longer pointer is always increased
-    		index2++;
-    	}
-    	
-    	return true;
+	    	if(Math.abs(s1.length() - s2.length()) > 1) return false;
+	    	
+	    	String shorter = s1.length() < s2.length() ? s1 : s2;
+	    	String longer = s1.length() < s2.length() ? s2 : s1;
+	    	
+	    	boolean foundMismatch = false;
+	    	
+	    	int index1 = 0, index2 = 0;
+	    	
+	    	while(index1 < shorter.length() && index2 < longer.length())
+	    	{
+	    		// the characters are not matched. so it has to be insert or replace
+	    		if(shorter.charAt(index1) != longer.charAt(index2))
+	    		{
+	    			// already one mismatch found before. so another mismatch means not one edit distance away
+	    			if(foundMismatch) return false;
+	    			//otherwise mark the first mismatch
+	    			foundMismatch = true;
+	    			
+	    			//if the lengths are same that means it is a replace. so move shorter pointer
+	    	   		if(shorter.length() == longer.length())
+	        		{
+	        			index1++;
+	        		}
+	    	   		//otherwise is an insert. so no short pointer is changed
+	        	}
+	    		//they are matching so move both pointers are increased
+	    		else
+	    		{
+	    			index1++;
+	    		}
+	    		//longer pointer is always increased
+	    		index2++;
+	    	}
+	    	
+	    	return true;
     }
     
     //https://leetcode.com/problems/split-array-into-fibonacci-sequence/
@@ -921,24 +946,25 @@ public int strStr(String haystack, String needle) {
     public List<List<String>> groupAnagrams(String[] strs) {
         List<List<String>> wordList = new ArrayList<List<String>>();
 	        
-    	if(strs == null || strs.length == 0) return wordList;
-    	
-    	HashMap<String, List<String>> hashList = new HashMap<String, List<String>>();
-    	
-    	for(String str : strs)
-    	{
-			char[] strChars = str.toCharArray();
-			Arrays.sort(strChars);
-			String sorted = new String(strChars);
-	    		
-    		//gives you the list based on the key 'sorted' or a new List of Strings
-	        List<String> list = hashList.getOrDefault(sorted, new ArrayList<String>());
-	        list.add(str);
-	        hashList.put(sorted, list);
-    	}
+	    	if(strs == null || strs.length == 0) return wordList;
 	    	
-	    for (String key: hashList.keySet()) {
-    		wordList.add(hashList.get(key));
+	    	HashMap<String, List<String>> anaList = new HashMap<String, List<String>>();
+	    	
+	    	for(String str : strs)
+	    	{
+				char[] strChars = str.toCharArray();
+				Arrays.sort(strChars);
+				String sorted = new String(strChars);
+		    		
+	    		//gives you the list based on the key 'sorted' or a new List of Strings
+		        List<String> list = anaList.getOrDefault(sorted, new ArrayList<String>());
+		        list.add(str);
+		        anaList.put(sorted, list);
+	    	}
+	    	
+	    	//in the resule we only need the list not the key
+	    for (String key: anaList.keySet()) {
+    			wordList.add(anaList.get(key));
 	    }
         
         return wordList;
@@ -956,7 +982,7 @@ public int strStr(String haystack, String needle) {
 
         for (char ch : parens)
         {
-        	//trick: don't use switch/case as that will not give you the right result
+        		//trick: don't use switch/case as that will not give you the right result
             if (ch == '(' || ch == '{' || ch == '[')
             {
                 tracker.push(ch);
@@ -1026,34 +1052,84 @@ public int strStr(String haystack, String needle) {
     //Output: 5 
     //lastnight
     public int lengthOfLongestSubstring(String s) {
-    	boolean exists[] = new boolean[256];
-    	
-    	int maxLen = 0, i = 0;
-    	
-    	for(int j = 0; j < s.length(); j++)
-    	{
-    		while(i < s.length() && exists[s.charAt(j)])//for j = 4 this will become true
-    		{
+		boolean exists[] = new boolean[256];
+		
+		int maxLen = 0, i = 0;
+		
+		for(int j = 0; j < s.length(); j++)
+		{
+			while(i < s.length() && exists[s.charAt(j)])//for j = 4 this will become true
+			{
 				// keep on incrementing i until we past the first occurrence of the repeated character
 				// in the current substring
 				// for example in abcdcefg, j = 4 when we get the current max substring abcd
 				// the next possible non repeated substring will start from index, i = 3 (d) as then
 				// so after i is increased to 2 then exists[c] is reset resulting into i = 3 and this while 
 				// loop breaks
-    			//then it will reset exists[s.charAt(i)] from i = 0 to 2
-    			//like exists[a], exists[b], exists[c] all will reset to false
+					//then it will reset exists[s.charAt(i)] from i = 0 to 2
+					//like exists[a], exists[b], exists[c] all will reset to false
 				exists[s.charAt(i)] = false;
 				i++;
-    		}
-    		
-    		// case when the character doesn't already exist in 
-    		// current ongoing longest substring consideration
-    		exists[s.charAt(j)] = true;//exists[c] will be set to true second time here
-    		maxLen = Math.max(j - i + 1, maxLen);
-    	}
-    	
-    	return maxLen;
+			}
+			
+			// case when the character doesn't already exist in 
+			// current ongoing longest substring consideration
+			exists[s.charAt(j)] = true;//exists[c] will be set to true second time here
+			maxLen = Math.max(j - i + 1, maxLen);
+		}
+		
+		return maxLen;
     }    
+    
+    //https://leetcode.com/problems/excel-sheet-column-number/
+    public int TitleToNumber(String s) {
+        int columnValue = 0;
+
+        if (s == null || s.length() == 0)
+        {
+            return columnValue;
+        }
+
+        int len = s.length() - 1;
+
+        char[] excelColumn = s.toCharArray();
+
+        //logic: the left most letter need to be exponentialized to with decreasing order
+        //ACE -> ('A' - 'A' + 1 ) * 26 ^ (3-0) + ('C' - 'A' + 1 ) * 26 ^ (3-1) + ('E' - 'A' + 1 ) * 26 ^ (3-2)
+        for (int i = 0; i <= len; i++)
+        {
+            columnValue += (excelColumn[i] - 'A' + 1) * (int) Math.pow(26, len - i);
+        }
+
+        return columnValue;        
+    }
+
+    // https://leetcode.com/problems/complex-number-multiplication/description/
+    public String complexNumberMultiply(String a, String b) {
+        int[] complexNumberA = extractComplexNumbers(a);
+        int[] complexNumberB = extractComplexNumbers(b);
+        
+        int resultNumber = complexNumberA[0] * complexNumberB[0] + (-1) * complexNumberA[1] * complexNumberB[1];
+        int resultComplex  = complexNumberA[0] * complexNumberB[1] + complexNumberA[1] * complexNumberB[0];
+        
+        return resultNumber + "+" +  resultComplex + "i"; 
+    }
+    
+    // the format of complex number here is a + bi. so we can split the String representation in 2 parts using '+' split
+    private int[] extractComplexNumbers(String complexNumber)
+    {
+	    	if(complexNumber == null || complexNumber.isEmpty()) return null;
+	    	
+	    	int[] complexPortions = new int[2];
+	    	
+	    	String[] stringRepresentations = complexNumber.split("\\+");
+    	
+  		complexPortions[0] = Integer.parseInt(stringRepresentations[0]);
+  		//complexPortions[1] = Integer.parseInt(stringRepresentations[1]);
+  		complexPortions[1] = Integer.parseInt(stringRepresentations[1].substring(0, stringRepresentations[1].indexOf('i')).trim());
+  		
+  		return complexPortions;
+    }
     
     //https://leetcode.com/problems/valid-palindrome/
     public boolean isPalindrome(String s) {
@@ -1063,7 +1139,7 @@ public int strStr(String haystack, String needle) {
         
         while(i < j)
         {
-        	//removed characters that 
+        		//removed characters that 
             while( i < j && !Character.isLetterOrDigit(s.charAt(i))) i++; 
             while( i < j && !Character.isLetterOrDigit(s.charAt(j))) j--;
             
@@ -1127,11 +1203,11 @@ public int strStr(String haystack, String needle) {
         if (b == null || b.isEmpty()) return a;
 
 
-        int aLen = a.length();
-        int bLen = b.length();
         int sum = 0;
         int carry = 0;
         int aVal = 0, bVal = 0;
+        int aLen = a.length();
+        int bLen = b.length();
 
         StringBuilder builder = new StringBuilder();
 
@@ -1175,59 +1251,6 @@ public int strStr(String haystack, String needle) {
         //return new String(chars);
         return builder.toString();
     }
-
-    
-    //https://leetcode.com/problems/decode-ways/
-    //TODO
-//    public int numDecodings(String s) {
-//        
-//    }
-    
-    //https://leetcode.com/problems/valid-parenthesis-string/
-    //https://leetcode.com/problems/valid-parenthesis-string/discuss/107577/Short-Java-O(n)-time-O(1)-space-one-pass
-    //TODO
-//    public boolean checkValidString(String s) {
-//        
-//    }
-
-  //notworking
-  // https://leetcode.com/problems/decoded-string-at-index/description/
-  // Works for regular cases but for complicated case memory limit exceeds
-  // Sample non working example - "y959q969u3hb22odq595", 222280369
-  public String decodeAtIndex(String S, int K) {
-      StringBuilder builder = new StringBuilder();
-      String searchCharacter = "";
-          
-      char[] chars = S.toCharArray();
-      
-      for(char ch : chars)
-      {
-      		boolean isNumeric = (ch - '0' >= 0 && ch -'0' <= 9);
-      			
-      		if(!isNumeric)
-      		{
-      			builder.append(ch);
-      		}
-      		else
-      		{
-      			String currentString = builder.toString();
-          		int repeat = ch - '0';    			
-      			
-          		for(int i = 1; i < repeat ; i++)
-      			{
-          			builder.append(currentString);
-      			}
-      		}
-
-      		if(builder.length() >= K)
-      		{
-      			searchCharacter = builder.charAt(K - 1) + "";
-      			break;
-      		}
-      }
-      
-      return searchCharacter;
-  }
   
   //https://leetcode.com/problems/bulls-and-cows/
   public String GetHint(String secret, String guess) {
@@ -1283,57 +1306,61 @@ public int strStr(String haystack, String needle) {
       return aBull + "A" + bCow + "B";
   }
 
-  // https://leetcode.com/problems/complex-number-multiplication/description/
-  public String complexNumberMultiply(String a, String b) {
-      int[] complexNumberA = extractComplexNumbers(a);
-      int[] complexNumberB = extractComplexNumbers(b);
-      
-      int resultNumber = complexNumberA[0] * complexNumberB[0] + (-1) * complexNumberA[1] * complexNumberB[1];
-      int resultComplex  = complexNumberA[0] * complexNumberB[1] + complexNumberA[1] * complexNumberB[0];
-      
-      return resultNumber + "+" +  resultComplex + "i"; 
-  }
-  
-  // the format of complex number here is a + bi. so we can split the String representation in 2 parts using '+' split
-  private int[] extractComplexNumbers(String complexNumber)
-  {
-  	if(complexNumber == null || complexNumber.isEmpty()) return null;
-  	
-  	int[] complexPortions = new int[2];
-  	
-  	String[] stringRepresentations = complexNumber.split("\\+");
-  	
-		complexPortions[0] = Integer.parseInt(stringRepresentations[0]);
-		//complexPortions[1] = Integer.parseInt(stringRepresentations[1]);
-		complexPortions[1] = Integer.parseInt(stringRepresentations[1].substring(0, stringRepresentations[1].indexOf('i')).trim());
-		
-		return complexPortions;
-  }
-  
-  //https://leetcode.com/problems/excel-sheet-column-number/
-  public int TitleToNumber(String s) {
-      int columnValue = 0;
-
-      if (s == null || s.length() == 0)
-      {
-          return columnValue;
-      }
-
-      int len = s.length() - 1;
-
-      char[] excelColumn = s.toCharArray();
-
-      for (int i = 0; i <= len; i++)
-      {
-          columnValue += (excelColumn[i] - 'A' + 1) * (int) Math.pow(26, len - i);
-      }
-
-      return columnValue;        
-  }
-
   //https://leetcode.com/problems/valid-anagram/submissions/
   //TODO get the solved solution here
   
+  //https://leetcode.com/problems/decode-ways/
+  //TODO
+//  public int numDecodings(String s) {
+//      
+//  }
+  
+  //https://leetcode.com/problems/valid-parenthesis-string/
+  //https://leetcode.com/problems/valid-parenthesis-string/discuss/107577/Short-Java-O(n)-time-O(1)-space-one-pass
+  //TODO
+//  public boolean checkValidString(String s) {
+//      
+//  }
+
+//notworking
+// https://leetcode.com/problems/decoded-string-at-index/description/
+// Works for regular cases but for complicated case memory limit exceeds
+// Sample non working example - "y959q969u3hb22odq595", 222280369
+public String decodeAtIndex(String S, int K) {
+    StringBuilder builder = new StringBuilder();
+    String searchCharacter = "";
+        
+    char[] chars = S.toCharArray();
+    
+    for(char ch : chars)
+    {
+    		boolean isNumeric = (ch - '0' >= 0 && ch -'0' <= 9);
+    			
+    		if(!isNumeric)
+    		{
+    			builder.append(ch);
+    		}
+    		else
+    		{
+    			String currentString = builder.toString();
+        		int repeat = ch - '0';    			
+    			
+        		for(int i = 1; i < repeat ; i++)
+    			{
+        			builder.append(currentString);
+    			}
+    		}
+
+    		if(builder.length() >= K)
+    		{
+    			searchCharacter = builder.charAt(K - 1) + "";
+    			break;
+    		}
+    }
+    
+    return searchCharacter;
+}
+
   //notworking
   // this will not give the right result for cases like 23:51, 23:58, 00:01
   // with this implementation the answer will be 7 where it should be 3

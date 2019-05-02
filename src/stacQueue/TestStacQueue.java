@@ -5,6 +5,9 @@ import java.util.Stack;
 public class TestStacQueue {
 
 	//Cracking3.5
+	//runtime O(N^2) 
+	// as every time an element need to be placed in helper stack
+	// it might take O(N) time
 	public void sort(Stack<Integer> s)
 	{
 		//this stack is used to sort

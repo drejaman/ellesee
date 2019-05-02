@@ -10,11 +10,6 @@ import java.util.Stack;
 import bst.TreeNode;
 
 public class TestGraphs {
-	public TestGraphs()
-	{
-		
-	}
-	
 	// https://leetcode.com/problems/all-paths-from-source-to-target/description/
 	//trick: regular dfs. we start from node 0
 	//graph[node] represents the others nodes that can be reachable from node
@@ -49,9 +44,9 @@ public class TestGraphs {
     			path.add(nextNode);
     			//call dfsSearch recursively with this reachable node
     			dfsSearch(nextNode, graph, paths, path);
-	            // this is important to ensure the path is rolled back for failure cases 
-	            // where we haven't reached to the destination (n-1) the node
-	            path.remove(path.size() - 1);
+            // this is important to ensure the path is rolled back for failure cases 
+            // where we haven't reached to the destination (n-1) the node
+            path.remove(path.size() - 1);
     		}
     }
     
@@ -67,9 +62,9 @@ public class TestGraphs {
         
         for(int i = 0; i < len; i++)
         {
-    		//we will call dfsVisit for each row to checks friendship for each person
-    		//but this check will reduce the call in case 
-        	//that row's relations are already checked out
+	    		//we will call dfsVisit for each row to checks friendship for each person
+	    		//but this check will reduce the call in case 
+	        	//that row's relations are already checked out
 			if(M[i][i] == 1)
 			{
 				this.dfsVisitFriend(M, i, len);
@@ -112,15 +107,15 @@ public class TestGraphs {
         
         for(int i = 0; i < row; i++)
         {
-    		for(int j = 0; j < col; j++)
-    		{
-    			//if we are not allowed to change the matrix then we can 
-    			if(grid[i][j] == '1')
-    			{
-    				this.dfsVisitIsland(grid, i, j, row, col);
-    				count++;
-    			}
-    		}
+	    		for(int j = 0; j < col; j++)
+	    		{
+	    			//if we are not allowed to change the matrix then we can 
+	    			if(grid[i][j] == '1')
+	    			{
+	    				this.dfsVisitIsland(grid, i, j, row, col);
+	    				count++;
+	    			}
+	    		}
         }
         
         return count;
@@ -170,7 +165,7 @@ public class TestGraphs {
     //ensures that one cell is not counted twice when area calculation is ongoing
     private int maxAreaVisit(int[][] grid, int r, int c, boolean[][] visit)
     {
-		//we need to check the indices at first otherwise it could be array index out of founds exception
+		//we need to check the indices at first otherwise it could be array index out of bounds exception
 		//also check if the cell is already visited
 		if(r < 0 || c < 0 || r >= grid.length || c >= grid[0].length || grid[r][c] == 0 || visit[r][c])
 			return 0;
@@ -200,38 +195,38 @@ public class TestGraphs {
         // pass - 1a: check column 0 and column n-1
         for(int i = 0; i < rows ; i++)
         {
-        	//check column 0 of each row
-        	if(board[i][0] == 'O') expandBorderDfs(board, i, 0);
-
-        	//check last column 0 of each row
-        	if(board[i][cols - 1] == 'O') expandBorderDfs(board, i, cols - 1);
+	        	//check column 0 of each row
+	        	if(board[i][0] == 'O') expandBorderDfs(board, i, 0);
+	
+	        	//check last column 0 of each row
+	        	if(board[i][cols - 1] == 'O') expandBorderDfs(board, i, cols - 1);
         }
         
         // pass - 1b: check row 0 and row n-1
         for(int j = 0; j < cols ; j++)
         {
-        	//check every column of row 0
-        	if(board[0][j] == 'O') expandBorderDfs(board, 0, j);
-
-        	//check every column of last row
-        	if(board[rows - 1][j] == 'O') expandBorderDfs(board, rows - 1, j);
+	        	//check every column of row 0
+	        	if(board[0][j] == 'O') expandBorderDfs(board, 0, j);
+	
+	        	//check every column of last row
+	        	if(board[rows - 1][j] == 'O') expandBorderDfs(board, rows - 1, j);
         }
         
         // pass - 2: turn remaining Os into X and turn back Bs to Os
         //now expand X
         for(int i = 0; i < rows; i++ )
         {
-    		for(int j = 0; j < cols ; j++)
-    		{
-    			if(board[i][j] == 'O')
-    			{        				
-    				board[i][j] = 'X';
-    			}
-    			else if(board[i][j] == 'B')
-    			{
-    				board[i][j] = 'O';        				
-    			}
-    		}
+	    		for(int j = 0; j < cols ; j++)
+	    		{
+	    			if(board[i][j] == 'O')
+	    			{        				
+	    				board[i][j] = 'X';
+	    			}
+	    			else if(board[i][j] == 'B')
+	    			{
+	    				board[i][j] = 'O';        				
+	    			}
+	    		}
         }
     }    
     
@@ -240,18 +235,18 @@ public class TestGraphs {
     //the key here is to look for indices so that it doesn't go beyond boundary
     private void expandBorderDfs(char[][] board, int i, int j)
     {
-    	if(i < 0 || i > board.length - 1 || j < 0 || j > board[0].length - 1) return;
-    	
-    	if (board[i][j] == 'O')
-    		board[i][j] = 'B';
-    	
-    	//check the adjacent rows up and down
-    	if(i > 1 && board[i - 1][j] == 'O') expandBorderDfs(board, i - 1, j);
-    	if(i < board.length - 2 && board[i + 1][j] == 'O') expandBorderDfs(board, i + 1, j);
-
-    	//check the adjacent columns left and right 
-    	if(j > 1 && board[i][j - 1] == 'O') expandBorderDfs(board, i, j - 1);
-    	if(j < board[i].length - 2 && board[i][j + 1] == 'O') expandBorderDfs(board, i, j + 1);
+	    	if(i < 0 || i > board.length - 1 || j < 0 || j > board[0].length - 1) return;
+	    	
+	    	if (board[i][j] == 'O')
+	    		board[i][j] = 'B';
+	    	
+	    	//check the adjacent rows up and down
+	    	if(i > 1 && board[i - 1][j] == 'O') expandBorderDfs(board, i - 1, j);
+	    	if(i < board.length - 2 && board[i + 1][j] == 'O') expandBorderDfs(board, i + 1, j);
+	
+	    	//check the adjacent columns left and right 
+	    	if(j > 1 && board[i][j - 1] == 'O') expandBorderDfs(board, i, j - 1);
+	    	if(j < board[i].length - 2 && board[i][j + 1] == 'O') expandBorderDfs(board, i, j + 1);
     }    
 
     //https://leetcode.com/problems/word-search/
@@ -261,14 +256,14 @@ public class TestGraphs {
         //the matching can start at any cell
         for(int i = 0; i < board.length; i++)
         {
-    		for(int j = 0; j < board[0].length; j++)
-    		{
-    			if(board[i][j] == word.charAt(0))
-    			{
-    				if(wordExist(board, i, j, word, 0, new boolean[board.length][board[0].length]))
-    					return true;
-    			}
-    		}
+	    		for(int j = 0; j < board[0].length; j++)
+	    		{
+	    			if(board[i][j] == word.charAt(0))
+	    			{
+	    				if(wordExist(board, i, j, word, 0, new boolean[board.length][board[0].length]))
+	    					return true;
+	    			}
+	    		}
         }
         
         return false;
@@ -348,19 +343,20 @@ public class TestGraphs {
     int maxHeight = Integer.MIN_VALUE;
 
     public int findBottomLeftValue(TreeNode root) {
-    	if(root == null) return -1;
     	
-    	findBottomLeftHeight(root, 1);
-    	
-    	return minLeftValue;
+	    	if(root == null) return -1;
+	    	
+	    	findBottomLeftHeight(root, 1);
+	    	
+	    	return minLeftValue;
     }
     
     private void findBottomLeftHeight(TreeNode root, int currentHeight)
     {
-    	if( root == null) return;
+	    	if( root == null) return;
 
-    	//for each node check if the currentHeight is greater than max at that time
-    	//and if that is the case update the value and max height
+	    	//for each node check if the currentHeight is greater than max at that time
+	    	//and if that is the case update the value and max height
 		if(currentHeight > maxHeight)
 		{
 			minLeftValue = root.val;
@@ -369,9 +365,9 @@ public class TestGraphs {
 		
 		//it will at first call the left child recursively 
 		//that will make sure we get the bottom most left child's value 
-    	if(root.left != null) findBottomLeftHeight(root.left, 1 + currentHeight);
-    	
-    	if(root.right != null) findBottomLeftHeight(root.right, 1 + currentHeight);
+	    	if(root.left != null) findBottomLeftHeight(root.left, 1 + currentHeight);
+	    	
+	    	if(root.right != null) findBottomLeftHeight(root.right, 1 + currentHeight);
     }	    
     
     //https://leetcode.com/problems/house-robber-iii/
@@ -391,15 +387,16 @@ public class TestGraphs {
     //nodeRobVal[1] = so far robbed value without adding this node's value
     private int[] dfsRob(TreeNode node)
     {
-    	if(node == null) return new int[2];
+		int[] nodeRobVal = new int[2];
+
+		if(node == null) return nodeRobVal;
 	
 		int[] left = dfsRob(node.left);
 		int[] right = dfsRob(node.right);
 		
-		int[] nodeRobVal = new int[2];
-		
 		//max value adding this node's value
 		//as we are considering this node's value
+		//we can't add left[0] and right[0]
 		nodeRobVal[0] = node.val + left[1] + right[1];
 		
 		//as we haven't added this node's value we can add the max of each child's 

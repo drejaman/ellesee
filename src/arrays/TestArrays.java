@@ -91,40 +91,41 @@ public class TestArrays {
     
     //https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/
     public int removeDuplicates(int[] nums) {
-        if(nums == null || nums.length == 0) return 0;
         
-    	int uniquePos = 0;
-    	
-    	//trick:
-    	//uniquePos gets increased only for the unique number
-    	//i always gets increased even for duplicate numbers
-    	for(int i = 0; i < nums.length - 1; i++, uniquePos++)
-    	{
-    		// for array like this [1,1,1,2,2,2,2,3,3,3,3,4] this line 
-    		// at first copies a[0] = 1 and after the while loop it also copies the last same number a[2] = 1
-    		// which will give the result [1,1,2,2,3,3,4]
-    		// removing the line i-- after while will make sure the result is [1,2,3,4]
-    		nums[uniquePos] = nums[i];
-
-    		if(nums[i] == nums[i + 1])
-    		{
-    			//make sure to only increase i for duplicates
-    			while(i < nums.length - 1 && nums[i] == nums[i+1])
-    			{
-    				i++;
-    			}
-    			// remove only the line below if you want to make sure 
-    			// the result array will only contain non-dups
-    			// removing this line makes sure we skip all duplicates
-    			// and only keep one copy of every unique number
-    			i--;
-    		}
-    	}
-    	
-    	//the final update
-    	nums[uniquePos] = nums[nums.length - 1];
-    	
-    	return uniquePos + 1;
+    		if(nums == null || nums.length == 0) return 0;
+        
+	    	int uniquePos = 0;
+	    	
+	    	//trick:
+	    	//uniquePos gets increased only for the unique number
+	    	//i always gets increased even for duplicate numbers
+	    	for(int i = 0; i < nums.length - 1; i++, uniquePos++)
+	    	{
+	    		// for array like this [1,1,1,2,2,2,2,3,3,3,3,4] this line 
+	    		// at first copies a[0] = 1 and after the while loop it also copies the last same number a[2] = 1
+	    		// which will give the result [1,1,2,2,3,3,4]
+	    		// removing the line i-- after while will make sure the result is [1,2,3,4]
+	    		nums[uniquePos] = nums[i];
+	
+	    		if(nums[i] == nums[i + 1])
+	    		{
+	    			//make sure to only increase i for duplicates
+	    			while(i < nums.length - 1 && nums[i] == nums[i+1])
+	    			{
+	    				i++;
+	    			}
+	    			// remove only the line below if you want to make sure 
+	    			// the result array will only contain non-dups
+	    			// removing this line makes sure we skip all duplicates
+	    			// and only keep one copy of every unique number
+	    			i--;
+	    		}
+	    	}
+	    	
+	    	//the final update
+	    	nums[uniquePos] = nums[nums.length - 1];
+	    	
+	    	return uniquePos + 1;
     }    
     
     //https://leetcode.com/problems/remove-duplicates-from-sorted-array/
@@ -178,8 +179,8 @@ public class TestArrays {
                     A[i] = A[len];
                     len--;
                 }
-            }
-        }
+            	}
+        	}
         
         return len + 1;
     }
@@ -242,8 +243,8 @@ public class TestArrays {
         
         for(int i = zeroIndex; zeroIndex > -1 && i < nums.length && zeroIndex < nums.length; i++)
         {
-        	// find a zeroIndex
-        	// we only set zI when i is lessthan
+	        	// find a zeroIndex
+	        	// we only set zI when i is lessthan
             if(nums[i] == 0 && i < zeroIndex) zeroIndex = i;
             
             //we have found an index that doesn't contain 0 and we haven't just set the zeroIndex
@@ -303,17 +304,17 @@ public class TestArrays {
 		{
 	     sumCount++;
 		}
-
-    	 for(int j = i + 1; j < nums.length; j++)
-    	 {
-    		 sum += nums[j];
-             
-    		 if(sum == k)
-    		 {
-    			 sumCount++;
-    			 break;
-    		 }
-    	 }
+	
+	    	 for(int j = i + 1; j < nums.length; j++)
+	    	 {
+	    		 sum += nums[j];
+	             
+	    		 if(sum == k)
+	    		 {
+	    			 sumCount++;
+	    			 break;
+	    		 }
+	    	 }
      }
 
      return sumCount;
@@ -407,19 +408,19 @@ public class TestArrays {
         
         for(int i = 0, j = height.length - 1; i < j; )
         {
-        	int left = height[i];
-        	int right = height[j];
-        	int width = j - i;
-        	int minHeight = left > right ? right : left;
-        	int area = minHeight * width;
-        	
-        	if(area > maxArea)
-        	{
-        		maxArea = area;
-        	}
-        	
-        	if(left <= right) i++;
-        	else j--;
+	        	int left = height[i];
+	        	int right = height[j];
+	        	int width = j - i;
+	        	int minHeight = left > right ? right : left;
+	        	int area = minHeight * width;
+	        	
+	        	if(area > maxArea)
+	        	{
+	        		maxArea = area;
+	        	}
+	        	
+	        	if(left <= right) i++;
+	        	else j--;
         }
         
         return maxArea;
@@ -432,44 +433,44 @@ public class TestArrays {
     //O(N) runtime and O(N) space. Need to check if it can be improved to run with constant space
     public int partitionDisjoint(int[] A)
     {
-    	if(A == null || A.length == 0) return -1;
-    	int len = A.length;
-
-    	//hold max up to that index starting at 0
-    	int[] maxLeft = new int[len];
-    	
-    	//hold min up to that index starting at len - 1
-    	int[] minRight = new int[len];
-    	
-    	int max = A[0];
-    	
-    	for(int i = 0; i < len ; i++)
-    	{
-    		//fill in with max value up to index i
-    		//maxLeft[i] = Math.max(max, A[i]);	//this line doesn't work
-    		max = Math.max(max, A[i]);	
-    		maxLeft[i] = max;
-    	}
-
-    	int min = A[len - 1];
-    	
-    	for(int i = len - 1; i >= 0 ; i--)
-    	{
-    		//fill in with min value up to index i starting from end
-    		//minRight[i] = Math.min(min, A[i]);// this doesn't work!
-    		min = Math.min(min, A[i]);	
+	    	if(A == null || A.length == 0) return -1;
+	    	int len = A.length;
+	
+	    	//hold max up to that index starting at 0
+	    	int[] maxLeft = new int[len];
+	    	
+	    	//hold min up to that index starting at len - 1
+	    	int[] minRight = new int[len];
+	    	
+	    	int max = A[0];
+	    	
+	    	for(int i = 0; i < len ; i++)
+	    	{
+	    		//fill in with max value up to index i
+	    		//maxLeft[i] = Math.max(max, A[i]);	//this line doesn't work
+	    		max = Math.max(max, A[i]);	
+	    		maxLeft[i] = max;
+	    	}
+	
+	    	int min = A[len - 1];
+	    	
+	    	for(int i = len - 1; i >= 0 ; i--)
+	    	{
+	    		//fill in with min value up to index i starting from end
+	    		//minRight[i] = Math.min(min, A[i]);// this doesn't work!
+	    		min = Math.min(min, A[i]);	
             minRight[i] = min;
-    	}
-    	
-    	//now find the index where it can be partitioned
-    	//the index where min of right is same or greater 
-    	//than max of left
-    	for(int i = 1; i < len; i++)
-    	{
-    		if(maxLeft[i - 1] <= minRight[i]) return i;
-    	}
-    	
-    	return -1;
+	    	}
+	    	
+	    	//now find the index where it can be partitioned
+	    	//the index where min of right is same or greater 
+	    	//than max of left
+	    	for(int i = 1; i < len; i++)
+	    	{
+	    		if(maxLeft[i - 1] <= minRight[i]) return i;
+	    	}
+	    	
+	    	return -1;
     }
     
     //https://leetcode.com/problems/sort-colors/
@@ -565,15 +566,15 @@ public class TestArrays {
         //if the rest elements in nums2 are smaller than nums1
         while(j >= 0)
         {
-                nums1[k] = nums2[j];
-                j--;
-                k--;
+            nums1[k] = nums2[j];
+            j--;
+            k--;
         }
     }
     
     //https://leetcode.com/problems/pascals-triangle/
     public List<List<Integer>> generate(int numRows) {
-    	List<List<Integer>> triangle = new ArrayList<List<Integer>>();
+    		List<List<Integer>> triangle = new ArrayList<List<Integer>>();
 
 		ArrayList<Integer> previousRow = new ArrayList<Integer>();
 		

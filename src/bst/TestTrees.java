@@ -85,9 +85,10 @@ public class TestTrees {
         
         if( maxIndex >= 0)
         {
-        	root = new TreeNode(nums[maxIndex]);
-            if(maxIndex >= start) root.left = constructMaximumBinaryTree(nums, start, maxIndex - 1);
-        	if(maxIndex <= end) root.right = constructMaximumBinaryTree(nums, maxIndex + 1, end); 
+	        	root = new TreeNode(nums[maxIndex]);
+	        
+	        	if(maxIndex >= start) root.left = constructMaximumBinaryTree(nums, start, maxIndex - 1);
+	        	if(maxIndex <= end) root.right = constructMaximumBinaryTree(nums, maxIndex + 1, end); 
         }
         
         return root;
@@ -99,21 +100,21 @@ public class TestTrees {
      */
     private static int FindMaxIndex(int[] nums, int start, int end)
     {
-    	if(nums == null || nums.length == 0) return -1;
-    	
-    	int max = Integer.MIN_VALUE;
-    	int maxPosition = -1;
-    	
-    	for(int i = start; i <= end; i++)
-    	{
-    		if(nums[i] > max) 
-    			{
-    				maxPosition = i;
-    				max = nums[i];
-    			}
-    	}
-    	
-    	return maxPosition;
+	    	if(nums == null || nums.length == 0) return -1;
+	    	
+	    	int max = Integer.MIN_VALUE;
+	    	int maxPosition = -1;
+	    	
+	    	for(int i = start; i <= end; i++)
+	    	{
+	    		if(nums[i] > max) 
+	    			{
+	    				maxPosition = i;
+	    				max = nums[i];
+	    			}
+	    	}
+	    	
+	    	return maxPosition;
     }
     
     //https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/
@@ -124,13 +125,13 @@ public class TestTrees {
     }
     
     private TreeNode ArrayToBST(int[] num, int min, int max){
-        int rootIndex = (min + max) / 2;
+        int midIndex = (min + max) / 2;
         
-        if(min > max || rootIndex < 0 || rootIndex >= num.length) return null;
+        if(min > max || midIndex < 0 || midIndex >= num.length) return null;
         
-        TreeNode root = new TreeNode(num[rootIndex]);
-        root.left = ArrayToBST(num, min, rootIndex-1);
-        root.right = ArrayToBST(num, rootIndex+1, max);
+        TreeNode root = new TreeNode(num[midIndex]);
+        root.left = ArrayToBST(num, min, midIndex-1);
+        root.right = ArrayToBST(num, midIndex+1, max);
         
         return root;
     }
@@ -166,14 +167,14 @@ public class TestTrees {
     
     public TreeNode sortedListToBST(ListNode head) {
         
-    	ListNode p = head;
+    		ListNode p = head;
         int n = 0;
         
         // determine the length of the list
         while( p != null)
         {
-        	p = p.next;
-        	n++;
+	        	p = p.next;
+	        	n++;
         }
         
         // set the head to begin with. this is KEY
@@ -224,29 +225,30 @@ public class TestTrees {
     static Stack<TreeNode> treeStack = new Stack<TreeNode>();
     
     public static TreeNode flattenTree(TreeNode root) {
-    	if(root == null) return null;
-    	
-    	if(root.left == null && root.right != null) flattenTree(root.right);
-    	else if(root.right != null) treeStack.push(root.right);
-    	
-    	if(root.left != null) 
-    	{
-    		//root.right is already pushed to stack. so assign left to right
-        	root.right = root.left;
-        	root.left = null;
-    	}
-    	
-    	//after reassignment root.right shouldn't be null if root is not leaf
-    	if(root.right != null) flattenTree(root.right);
-    	
-    	//after flattenTree is done on right then we pop the element from stack
-    	//and flatten the popped element
-    	if(!treeStack.isEmpty())
-    	{
-    		root.right = flattenTree(treeStack.pop());        		
-    	}
-    	
-		return root;
+	    	if(root == null) return null;
+	    	
+	    	if(root.left == null && root.right != null) flattenTree(root.right);
+	    	else if(root.right != null) treeStack.push(root.right);
+	    	
+	    	if(root.left != null) 
+	    	{
+	    		//root.right is already pushed to stack. so assign left to right
+	        	root.right = root.left;
+	        	root.left = null;
+	    	}
+	    	
+	    	//after reassignment root.right shouldn't be null if root is not leaf
+	    	if(root.right != null) flattenTree(root.right);
+	    	
+	    	//after flattenTree is done on right then we pop the element from stack
+	    	//and flatten the popped element
+	    	if(!treeStack.isEmpty())
+	    	{
+	    		//trick: you need to keep this in your mind
+	    		root.right = flattenTree(treeStack.pop());        		
+	    	}
+	    	
+			return root;
     }
     
     // here is the alternate solution
@@ -255,20 +257,20 @@ public class TestTrees {
     
     public void flatten(TreeNode root)
     {
-    	if(root == null) return;
-    	
-    	// at first recursively flatten right and left subtrees
-    	flatten(root.right);
-    	flatten(root.left);
-    	
-    	// when the right subtree is flattened then the head of right subtree becomes prev 
-    	// and tail of left subtree is root
-    	// tailLeftST(root).right <- prev(headRightST)
-    	root.right = prev;
-    	// in the flatten process left is always set to null
-    	root.left = null;
-    	// required to keep track of linking
-    	prev = root;
+	    	if(root == null) return;
+	    	
+	    	// at first recursively flatten right and left subtrees
+	    	flatten(root.right);
+	    	flatten(root.left);
+	    	
+	    	// when the right subtree is flattened then the head of right subtree becomes prev 
+	    	// and tail of left subtree is root
+	    	// tailLeftST(root).right <- prev(headRightST)
+	    	root.right = prev;
+	    	// in the flatten process left is always set to null
+	    	root.left = null;
+	    	// required to keep track of linking
+	    	prev = root;
     }
 
     //https://leetcode.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/
@@ -281,7 +283,8 @@ public class TestTrees {
     
     private TreeNode constructFromPrePost(int[] pre, int preStart, int preEnd,
     		int[] post, int postStart, int postEnd) {
-        // Base cases.
+        
+    		// Base cases.
         if (preStart > preEnd) {
             return null;
         }
@@ -342,11 +345,11 @@ public class TestTrees {
 	// and take the next tree with the merged tree 
     public TreeNode mergeTrees(TreeNode t1, TreeNode t2) {
 		// Terminating condition
-    	if(t1 == null && t2 == null) return null;
-    	
-    	TreeNode mergedRoot = new TreeNode((t1 != null ? t1.val : 0) + (t2 != null ? t2.val : 0));
-    	mergedRoot.left = mergeTrees(t1 != null ? t1.left : null, t2 != null ? t2.left : null);
-    	mergedRoot.right = mergeTrees(t1 != null ? t1.right : null, t2 != null ? t2.right : null);
+	    	if(t1 == null && t2 == null) return null;
+	    	
+	    	TreeNode mergedRoot = new TreeNode((t1 != null ? t1.val : 0) + (t2 != null ? t2.val : 0));
+	    	mergedRoot.left = mergeTrees(t1 != null ? t1.left : null, t2 != null ? t2.left : null);
+	    	mergedRoot.right = mergeTrees(t1 != null ? t1.right : null, t2 != null ? t2.right : null);
 	     
 	    return mergedRoot;
     }
@@ -354,42 +357,43 @@ public class TestTrees {
     //Cracking4.10
     public boolean contains(TreeNode t1, TreeNode t2)
     {
-    	// null tree is always a subTree
-    	if(t2 == null) return true;
-
-    	return isSubtree(t1, t2);
+	    	// null tree is always a subTree
+	    	if(t2 == null) return true;
+	
+	    	return isSubtree(t1, t2);
     }
 
     //https://leetcode.com/problems/subtree-of-another-tree/
     public boolean isSubtree(TreeNode s, TreeNode t) {
-    	// the big tree is null and we still haven't found the match
-    	if(s == null) return false;
-    	
-    	//the values matched now try matching the whole tree
-    	if(s != null && t != null && s.val == t.val && matchTree(s, t))
+	    	// the big tree is null and we still haven't found the match
+	    	if(s == null) return false;
+	    	
+	    	//the values matched now try matching the whole tree
+	    	if(s != null && t != null && s.val == t.val && matchTree(s, t))
 		{
 			return true;
 		}
 
-    	// ended up the subtree not matching in full
-    	// otherwise continue the search on big tree's left and right
+	    	// ended up the subtree not matching in full
+	    	// otherwise continue the search on big tree's left and right
         boolean inLeft = false, inRight = false;
         
         if(s.left != null) inLeft = isSubtree(s.left, t);
         if(s.right != null) inRight = isSubtree(s.right, t);
-    	return (inLeft || inRight);
+        
+        return (inLeft || inRight);
     }
         
     private boolean matchTree(TreeNode t1, TreeNode t2)
     {
-    	//both are null so they match
-    	if(t1 == null && t2 == null) return true;
-    	//one of then null so no match
-    	else if(t1 == null || t2 == null) return false;
-    	//value doesn't match. don't need this check
-    	else if(t1 != null && t2 != null && t1.val != t2.val) return false;
-    	//t1 and t2's values match so check their left and right subtree
-    	else return matchTree(t1.left, t2.left) && matchTree(t1.right, t2.right);
+	    	//both are null so they match
+	    	if(t1 == null && t2 == null) return true;
+	    	//one of then null so no match
+	    	else if(t1 == null || t2 == null) return false;
+	    	//value doesn't match. don't need this check
+	    	else if(t1 != null && t2 != null && t1.val != t2.val) return false;
+	    	//t1 and t2's values match so check their left and right subtree
+	    	else return matchTree(t1.left, t2.left) && matchTree(t1.right, t2.right);
     }
     
     //https://leetcode.com/problems/most-frequent-subtree-sum/
@@ -397,31 +401,31 @@ public class TestTrees {
     HashMap<Integer, Integer> freqSumMap = new HashMap<Integer, Integer>();
     
     public int[] findFrequentTreeSum(TreeNode root) {
-    	int[] result = new int[freqSumMap.size()];
-    	
-    	findSubtreeSum(root);
-    	
-    	for(Entry<Integer, Integer> entry : freqSumMap.entrySet())
-    	{
-    		entry.getKey();
-    	}
-    	
-    	return result;
+	    	int[] result = new int[freqSumMap.size()];
+	    	
+	    	findSubtreeSum(root);
+	    	
+	    	for(Entry<Integer, Integer> entry : freqSumMap.entrySet())
+	    	{
+	    		entry.getKey();
+	    	}
+	    	
+	    	return result;
     }
     
     private int findSubtreeSum(TreeNode node)
     {
-    	if(node == null) return 0;
-    	
-    	int sum = node.val;
-    	
-    	sum += findSubtreeSum(node.left);
-    	sum += findSubtreeSum(node.right);
-    	
-    	//increase the frequency of the sum by 1
-    	freqSumMap.put(sum, freqSumMap.getOrDefault(sum, 0) + 1);
-    	
-    	return sum;
+	    	if(node == null) return 0;
+	    	
+	    	int sum = node.val;
+	    	
+	    	sum += findSubtreeSum(node.left);
+	    	sum += findSubtreeSum(node.right);
+	    	
+	    	//increase the frequency of the sum by 1
+	    	freqSumMap.put(sum, freqSumMap.getOrDefault(sum, 0) + 1);
+	    	
+	    	return sum;
     }
     
     //https://leetcode.com/problems/same-tree/
@@ -465,10 +469,10 @@ public class TestTrees {
     private List<TreeNode> answer;
     
     public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
-    	subtreeCount = new HashMap<String, Integer>();
-    	answer = new ArrayList<TreeNode>();
-    	this.serializeToFindDuplicate(root);
-    	return answer;
+	    	subtreeCount = new HashMap<String, Integer>();
+	    	answer = new ArrayList<TreeNode>();
+	    	this.serializeToFindDuplicate(root);
+	    	return answer;
     }
     
     //		5
@@ -478,30 +482,30 @@ public class TestTrees {
     //	1  2 1	  2 
     private String serializeToFindDuplicate(TreeNode node)
     {
-    	if(node == null) return "#";
-    	
-    	//this contains the serialization of the subtree rooted at node 
-    	String currentSerial = node.val + "," + 
-    							serializeToFindDuplicate(node.left) + "," + 
-    							serializeToFindDuplicate(node.right);
-    	
-    	//for the above example when it traverse left 4 it will create serialization like 4,1,#,#,2,#,#
-    	//and put it into subtreeCount hashMap
-    	subtreeCount.put(currentSerial, subtreeCount.getOrDefault(currentSerial, 0) + 1);
-    	
-    	//then later when it traverses right 4 it will create the same serialization 
-    	//then this will become true and the duplicate node will be added to answer
-    	if(subtreeCount.get(currentSerial) == 2)
-    	{
-    		answer.add(node);
-    	}
-    	
-    	return currentSerial;
+	    	if(node == null) return "#";
+	    	
+	    	//this contains the serialization of the subtree rooted at node 
+	    	String currentSerial = node.val + "," + 
+	    							serializeToFindDuplicate(node.left) + "," + 
+	    							serializeToFindDuplicate(node.right);
+	    	
+	    	//for the above example when it traverse left 4 it will create serialization like 4,1,#,#,2,#,#
+	    	//and put it into subtreeCount hashMap
+	    	subtreeCount.put(currentSerial, subtreeCount.getOrDefault(currentSerial, 0) + 1);
+	    	
+	    	//then later when it traverses right 4 it will create the same serialization 
+	    	//then this will become true and the duplicate node will be added to answer
+	    	if(subtreeCount.get(currentSerial) == 2)
+	    	{
+	    		answer.add(node);
+	    	}
+	    	
+	    	return currentSerial;
     }
     
     
     //CAT: LEVEL ORDER
-    //------------------
+    //-----------------
 
     //https://leetcode.com/problems/binary-tree-level-order-traversal/
     //most important
@@ -526,26 +530,26 @@ public class TestTrees {
         
         while(!previous.isEmpty())
         {
-        	List<TreeNode> current = new ArrayList<TreeNode>();
-        	List<Integer> valueList = new ArrayList<Integer>();
-        	
-        	for(TreeNode node : previous)
-        	{
-        		if(node.left != null)
-        		{
-        			current.add(node.left);
-        		}
-        		
-        		if(node.right != null)
-        		{
-        			current.add(node.right);
-        		}
-
-        		valueList.add(node.val);
-        	}
-        	
-        	treeValues.add(valueList);
-        	previous = current;
+	        	List<TreeNode> currentNodes = new ArrayList<TreeNode>();
+	        	List<Integer> currentValues = new ArrayList<Integer>();
+	        	
+	        	for(TreeNode node : previous)
+	        	{
+	        		if(node.left != null)
+	        		{
+	        			currentNodes.add(node.left);
+	        		}
+	        		
+	        		if(node.right != null)
+	        		{
+	        			currentNodes.add(node.right);
+	        		}
+	
+	        		currentValues.add(node.val);
+	        	}
+	        	
+	        	treeValues.add(currentValues);
+	        	previous = currentNodes;
         }
         
         return treeValues;
@@ -575,41 +579,41 @@ public class TestTrees {
         
         while(!previous.isEmpty())
         {
-        	List<TreeNode> current = new ArrayList<TreeNode>();
-        	List<Integer> valueList = new ArrayList<Integer>();
+	        	List<TreeNode> current = new ArrayList<TreeNode>();
+	        	List<Integer> valueList = new ArrayList<Integer>();
+	        	
+	        	for(TreeNode node : previous)
+	        	{
+	        		if((treeValues.size() + 1) % 2 == 0)
+	        		{
+	            		if(node.left != null)
+	            		{
+	            			current.add(node.left);
+	            		}
+	
+	            		if(node.right != null)
+	            		{
+	            			current.add(node.right);
+	            		}
+	        		}
+	        		else
+	        		{
+	            		if(node.right != null)
+	            		{
+	            			current.add(node.right);
+	            		}
+	
+	            		if(node.left != null)
+	            		{
+	            			current.add(node.left);
+	            		}
+	        		}
+	        		
+	        		valueList.add(node.val);
+	        	}
         	
-        	for(TreeNode node : previous)
-        	{
-        		if((treeValues.size() + 1) % 2 == 0)
-        		{
-            		if(node.left != null)
-            		{
-            			current.add(node.left);
-            		}
-
-            		if(node.right != null)
-            		{
-            			current.add(node.right);
-            		}
-        		}
-        		else
-        		{
-            		if(node.right != null)
-            		{
-            			current.add(node.right);
-            		}
-
-            		if(node.left != null)
-            		{
-            			current.add(node.left);
-            		}
-        		}
-        		
-        		valueList.add(node.val);
-        	}
-        	
-        	treeValues.add(valueList);
-        	previous = current;
+		    	treeValues.add(valueList);
+		    	previous = current;
         }
         
         return treeValues;
@@ -645,6 +649,7 @@ public class TestTrees {
         for(List<Integer> current : nodeValues)
         {
 	        	//trick:careful about this Collections.max
+        		//available after Java 8
 	        	largeValues.add(Collections.max(current));        	
         }
         
@@ -660,26 +665,26 @@ public class TestTrees {
     public int findTilt(TreeNode root) {
         if(root == null) return 0;
         
-        navigate(root);
+        nodeSum(root);
         
         return tilt;
     }
     
     // navigate returns the total value in this node
-    // node.val + nav(node.left) + nav(node.right)
-    private int navigate(TreeNode root)
+    // node.val + nodeSum(node.left) + nodeSum(node.right)
+    private int nodeSum(TreeNode root)
     {
-    	if(root == null) return 0;
-    	
-    	int left = navigate(root.left);
-    	int right = navigate(root.right);
-    	
-    	//on a node, tilt is the difference 
-    	//between left and right subtree
-    	tilt += Math.abs(left-right);
-    	
-    	//in a node the sum is node's value and left, right subtree
-    	return root.val + left + right;
+	    	if(root == null) return 0;
+	    	
+	    	int left = nodeSum(root.left);
+	    	int right = nodeSum(root.right);
+	    	
+	    	//on a node, tilt is the difference 
+	    	//between left and right subtree
+	    	tilt += Math.abs(left-right);
+	    	
+	    	//on a node the sum is node's value and left, right subtree
+	    	return root.val + left + right;
     }
     
 	//https://leetcode.com/problems/path-sum/
@@ -710,32 +715,32 @@ public class TestTrees {
 	//lastnight
     public int countPathsWithSum(TreeNode node, int targetSum)
     {
-    	if(node == null) return 0;
-    	
-    	int pathsFromRoot = countPathsWithSumFromNode(node, targetSum, 0);
-    	
-    	int pathsFromLeft = countPathsWithSum(node.left, targetSum);
-    	int pathsFromRight = countPathsWithSum(node.right, targetSum);
-    	
-    	return pathsFromRoot + pathsFromLeft + pathsFromRight;
-    }
-    
+	    	if(node == null) return 0;
+	    	
+	    	int pathsFromRoot = countPathsWithSumFromNode(node, targetSum, 0);
+	    	
+	    	int pathsFromLeft = countPathsWithSum(node.left, targetSum);
+	    	int pathsFromRight = countPathsWithSum(node.right, targetSum);
+	    	
+	    	return pathsFromRoot + pathsFromLeft + pathsFromRight;
+	}
+	    
     private int countPathsWithSumFromNode(TreeNode node, int targetSum, int currentSum)
     {
-    	if(node == null) return 0;
-    	
-    	currentSum += node.val;
-    	
-    	int totalWays = 0;
-    	
-    	//can't we return totalWays here?
-    	if(currentSum == targetSum) totalWays++;
-    	
-    	//check in both left and right subtree after adding current node's value to currentsum
-    	totalWays += countPathsWithSumFromNode(node.left, targetSum, currentSum);
-    	totalWays += countPathsWithSumFromNode(node.right, targetSum, currentSum);
-    	
-    	return totalWays;
+	    	if(node == null) return 0;
+	    	
+	    	currentSum += node.val;
+	    	
+	    	int totalWays = 0;
+	    	
+	    	//can't we return totalWays here?
+	    	if(currentSum == targetSum) totalWays++;
+	    	
+	    	//check in both left and right subtree after adding current node's value to currentsum
+	    	totalWays += countPathsWithSumFromNode(node.left, targetSum, currentSum);
+	    	totalWays += countPathsWithSumFromNode(node.right, targetSum, currentSum);
+	    	
+	    	return totalWays;
     }
     
     //https://leetcode.com/problems/kth-smallest-element-in-a-bst/
@@ -752,21 +757,21 @@ public class TestTrees {
     // so we keep a global counter and stop when reach the value k
     private void kthSmallestTraversal(TreeNode root, int k)
     {
-    	if(root == null) return;
-    	
-    	kthSmallestTraversal(root.left, k);  
+	    	if(root == null) return;
+	    	
+	    	kthSmallestTraversal(root.left, k);  
 
         currentCount++;
         
         //as this is inOrder
         //the check needs to be in the middle
-    	if(currentCount == k) 
-    	{
-    		smallest = root.val;
-    		return;
-    	}
-    	
-    	kthSmallestTraversal(root.right, k);
+	    	if(currentCount == k) 
+	    	{
+	    		smallest = root.val;
+	    		return;
+	    	}
+	    	
+	    	kthSmallestTraversal(root.right, k);
     }
     
     //CAT: OTHERS
@@ -785,13 +790,13 @@ public class TestTrees {
         
         for(int i = 0; i < nodes.size() - 1; i++)
         {
-        	TreeNode current = nodes.get(i);
-        	TreeNode next = nodes.get(i + 1);
-        	
-        	if(Math.abs(next.val - current.val) < min)
-        	{
-        		min = Math.abs(next.val - current.val);
-        	}
+	        	TreeNode current = nodes.get(i);
+	        	TreeNode next = nodes.get(i + 1);
+	        	
+	        	if(Math.abs(next.val - current.val) < min)
+	        	{
+	        		min = Math.abs(next.val - current.val);
+	        	}
         }
         
         return min;
@@ -800,15 +805,15 @@ public class TestTrees {
     // In Order traversal and Store the nodes in a list
     private List<TreeNode> InOrderTraversal(TreeNode node)
     {
-    	if(node == null) return null;
-    	
-    	ArrayList<TreeNode> nodes = new ArrayList<TreeNode>();
-    	
-    	if(node.left != null) nodes.addAll(InOrderTraversal(node.left));
-    	nodes.add(node);
-    	if(node.right != null) nodes.addAll(InOrderTraversal(node.right));
-
-    	return nodes;    	
+	    	if(node == null) return null;
+	    	
+	    	ArrayList<TreeNode> nodes = new ArrayList<TreeNode>();
+	    	
+	    	if(node.left != null) nodes.addAll(InOrderTraversal(node.left));
+	    	nodes.add(node);
+	    	if(node.right != null) nodes.addAll(InOrderTraversal(node.right));
+	
+	    	return nodes;    	
     }
     
     //https://leetcode.com/problems/binary-tree-inorder-traversal/
@@ -824,11 +829,11 @@ public class TestTrees {
     
     public static void InOrderPrint(TreeNode node)
     {
-    	if(node == null) return;
-    	
-    	if(node.left != null) InOrderPrint(node.left);
-    	System.out.print(node.val + ", ");
-    	if(node.right != null) InOrderPrint(node.right);
+	    	if(node == null) return;
+	    	
+	    	if(node.left != null) InOrderPrint(node.left);
+	    	System.out.print(node.val + ", ");
+	    	if(node.right != null) InOrderPrint(node.right);
     }
     
 	//https://leetcode.com/problems/binary-tree-preorder-traversal/
@@ -847,7 +852,7 @@ public class TestTrees {
     //https://leetcode.com/problems/binary-tree-pruning/description/
     //lastnight
     public TreeNode pruneTree(TreeNode root) {
-    	return HasOneInTree(root) ? root : null;
+	    	return HasOneInTree(root) ? root : null;
     }
 
     // HasOneInTree(root) does two things: 
@@ -856,18 +861,18 @@ public class TestTrees {
     // If for example, node.left does not contain a one, then we should prune it via node.left = null.
     private boolean HasOneInTree(TreeNode root)
     {
-    	if(root == null) return false;
-    	
-    	//the ordering is important
-    	boolean leftOne = HasOneInTree(root.left);
-    	boolean rightOne = HasOneInTree(root.right);
-    	
-    	//setting the subtree to null if the subtree doesn't contain a 1
-    	if(!leftOne) root.left = null;
-    	if(!rightOne) root.right = null;
-    	
-    	// there is at least one 1 in this subtree rooted at root
-    	return root.val == 1 || leftOne || rightOne;
+	    	if(root == null) return false;
+	    	
+	    	//the ordering is important
+	    	boolean leftOne = HasOneInTree(root.left);
+	    	boolean rightOne = HasOneInTree(root.right);
+	    	
+	    	//setting the subtree to null if the subtree doesn't contain a 1
+	    	if(!leftOne) root.left = null;
+	    	if(!rightOne) root.right = null;
+	    	
+	    	// there is at least one 1 in this subtree rooted at root
+	    	return root.val == 1 || leftOne || rightOne;
     }
     
     //https://leetcode.com/problems/balanced-binary-tree/
@@ -884,9 +889,9 @@ public class TestTrees {
     //https://leetcode.com/problems/maximum-depth-of-binary-tree/
     public int maxDepth(TreeNode node)
     {
-    	if(node == null) return 0;
-    	
-    	return Math.max(maxDepth(node.left), maxDepth(node.right)) + 1;
+	    	if(node == null) return 0;
+	    	
+	    	return Math.max(maxDepth(node.left), maxDepth(node.right)) + 1;
     }
     
     //https://leetcode.com/problems/minimum-depth-of-binary-tree/

@@ -20,20 +20,20 @@ public class DayBefore {
         
         while(left < right && nums[left] >= nums[right])//nums[4] < nums[5] so break
         {
-        	int mid = (left + right) / 2;//index = 3, 5
-        	
-        	// if nums[mid] is greater than nums[right] that 
-        	// means the whole left side can't contain min
-        	if(nums[mid] > nums[right])
-        	{
-        		left = mid + 1; //4
-        	}
-        	else
-        	{
-        		// right = mid is important instead of right = mid - 1 to make sure 
-        		// it doesn't skip the mid number
-        		right = mid;//5
-        	}
+	        	int mid = (left + right) / 2;//index = 3, 5
+	        	
+	        	// if nums[mid] is greater than nums[right] that 
+	        	// means the whole left side can't contain min
+	        	if(nums[mid] > nums[right])
+	        	{
+	        		left = mid + 1; //4
+	        	}
+	        	else
+	        	{
+	        		// right = mid is important instead of right = mid - 1 to make sure 
+	        		// it doesn't skip the mid number
+	        		right = mid;//5
+	        	}
         }
         
         return nums[left];//return nums[4]
@@ -44,75 +44,75 @@ public class DayBefore {
     //lastnight
     public int searchRotated(int[] nums, int left, int right, int x)
     {
-    	if(nums == null || nums.length == 0) return -1;
-    	
-    	if(right < left) return -1;
-
-    	/* Skipping the duplicates when duplicates exist to solve another variation of the same problem
-	    //https://leetcode.com/problems/search-in-rotated-sorted-array-ii/
-	    //when duplicates do exist
-	    //[3,1,1], 3
-	    // skip duplicates from the left
-	    while (left < right && nums[left] == nums[left + 1]) left++; 
-	    
-	    // skip duplicates from the right
-	    while (left < right && nums[right] == nums[right - 1]) right--; 
-    	*/
-    	int mid = (left + right) / 2;
-    	
-    	if(nums[mid] == x) return mid;
-    	
-    	//case - 1: left is normally ordered
-    	if(nums[left] < nums[mid])
-    	{
-    		//and x exists in the left portion
-    		if(x >= nums[left] && x < nums[mid])
-    		{
-    			return searchRotated(nums, left, mid - 1, x);
-    		}
-    		else
-    		{
-    			return searchRotated(nums, mid + 1, right, x);
-    		}
-    	}
-    	//case - 2: right is normally ordered
-    	else if(nums[mid] < nums[right])
-    	{
-    		//and x exists in the right portion
-    		if(x > nums[mid] && x <= nums[right])
-    		{
-    			return searchRotated(nums, mid + 1, right, x);
-    		}
-    		else
-    		{
-    			return searchRotated(nums, left, mid - 1, x);
-    		}
-    	}
-    	//case - 3: left/right half is same number
-    	else if(nums[left] == nums[mid])
-    	{
-    		// right half is not same so search in the right half
-    		if(nums[mid] != nums[right])
-    		{
-    			return searchRotated(nums, mid + 1, right, x);
-    		}
-    		// worst case: need to search in both half
-    		else
-    		{
-    			int result = searchRotated(nums, left, mid - 1, x);
-    			
-    			if(result == -1)
-    			{
-    				return searchRotated(nums, mid + 1, right, x);
-    			}
-    			else
-    			{
-    				return result;
-    			}    			
-    		}
-    	}
-    	
-    	return -1;
+	    	if(nums == null || nums.length == 0) return -1;
+	    	
+	    	if(right < left) return -1;
+	
+	    	/* Skipping the duplicates when duplicates exist to solve another variation of the same problem
+		    //https://leetcode.com/problems/search-in-rotated-sorted-array-ii/
+		    //when duplicates do exist
+		    //[3,1,1], 3
+		    // skip duplicates from the left
+		    while (left < right && nums[left] == nums[left + 1]) left++; 
+		    
+		    // skip duplicates from the right
+		    while (left < right && nums[right] == nums[right - 1]) right--; 
+	    	*/
+	    	int mid = (left + right) / 2;
+	    	
+	    	if(nums[mid] == x) return mid;
+	    	
+	    	//case - 1: left is normally ordered
+	    	if(nums[left] < nums[mid])
+	    	{
+	    		//and x exists in the left portion
+	    		if(x >= nums[left] && x < nums[mid])
+	    		{
+	    			return searchRotated(nums, left, mid - 1, x);
+	    		}
+	    		else
+	    		{
+	    			return searchRotated(nums, mid + 1, right, x);
+	    		}
+	    	}
+	    	//case - 2: right is normally ordered
+	    	else if(nums[mid] < nums[right])
+	    	{
+	    		//and x exists in the right portion
+	    		if(x > nums[mid] && x <= nums[right])
+	    		{
+	    			return searchRotated(nums, mid + 1, right, x);
+	    		}
+	    		else
+	    		{
+	    			return searchRotated(nums, left, mid - 1, x);
+	    		}
+	    	}
+	    	//case - 3: left/right half is same number
+	    	else if(nums[left] == nums[mid])
+	    	{
+	    		// right half is not same so search in the right half
+	    		if(nums[mid] != nums[right])
+	    		{
+	    			return searchRotated(nums, mid + 1, right, x);
+	    		}
+	    		// worst case: need to search in both half
+	    		else
+	    		{
+	    			int result = searchRotated(nums, left, mid - 1, x);
+	    			
+	    			if(result == -1)
+	    			{
+	    				return searchRotated(nums, mid + 1, right, x);
+	    			}
+	    			else
+	    			{
+	    				return result;
+	    			}    			
+	    		}
+	    	}
+	    	
+	    	return -1;
     }
     
 	//====================== TREES =====================================    
@@ -122,20 +122,20 @@ public class DayBefore {
     
     public void flatten(TreeNode root)
     {
-    	if(root == null) return;
-    	
-    	// at first recursively flatten right and left subtrees
-    	flatten(root.right);
-    	flatten(root.left);
-    	
-    	// when the right subtree is flattened then the head of right subtree becomes prev 
-    	// and tail of left subtree is root
-    	// tailLeftST(root).right <- prev(headRightST)
-    	root.right = prev;
-    	// in the flatten process left is always set to null
-    	root.left = null;
-    	// required to keep track of linking
-    	prev = root;
+	    	if(root == null) return;
+	    	
+	    	// at first recursively flatten right and left subtrees
+	    	flatten(root.right);
+	    	flatten(root.left);
+	    	
+	    	// when the right subtree is flattened then the head of right subtree becomes prev 
+	    	// and tail of left subtree is root
+	    	// tailLeftST(root).right <- prev(headRightST)
+	    	root.right = prev;
+	    	// in the flatten process left is always set to null
+	    	root.left = null;
+	    	// required to keep track of linking
+	    	prev = root;
     }
 
     //https://leetcode.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/
@@ -188,7 +188,7 @@ public class DayBefore {
     //https://leetcode.com/problems/binary-tree-pruning/description/
     //lastnight
     public TreeNode pruneTree(TreeNode root) {
-    	return HasOneInTree(root) ? root : null;
+    		return HasOneInTree(root) ? root : null;
     }
 
     // HasOneInTree(root) does two things: 
@@ -197,18 +197,18 @@ public class DayBefore {
     // If for example, node.left does not contain a one, then we should prune it via node.left = null.
     private boolean HasOneInTree(TreeNode root)
     {
-    	if(root == null) return false;
-    	
-    	//the ordering is important
-    	boolean leftOne = HasOneInTree(root.left);
-    	boolean rightOne = HasOneInTree(root.right);
-    	
-    	//setting the subtree to null if the subtree doesn't contain a 1
-    	if(!leftOne) root.left = null;
-    	if(!rightOne) root.right = null;
-    	
-    	// there is at least one 1 in this subtree rooted at root
-    	return root.val == 1 || leftOne || rightOne;
+	    	if(root == null) return false;
+	    	
+	    	//the ordering is important
+	    	boolean leftOne = HasOneInTree(root.left);
+	    	boolean rightOne = HasOneInTree(root.right);
+	    	
+	    	//setting the subtree to null if the subtree doesn't contain a 1
+	    	if(!leftOne) root.left = null;
+	    	if(!rightOne) root.right = null;
+	    	
+	    	// there is at least one 1 in this subtree rooted at root
+	    	return root.val == 1 || leftOne || rightOne;
     }
     
     //https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/
@@ -298,7 +298,7 @@ public class DayBefore {
     //nodeRobVal[1] = so far robbed value without adding this node's value
     private int[] dfsRob(TreeNode node)
     {
-    	if(node == null) return new int[2];
+    		if(node == null) return new int[2];
 	
 		int[] left = dfsRob(node.left);
 		int[] right = dfsRob(node.right);
@@ -323,36 +323,36 @@ public class DayBefore {
     //lastnight
     public void deleteDups(ListNode head)
     {
-    	if(head == null) return;
-    	
-    	ListNode current = head;
-    	
-    	//O(N) outer loop contributing to total of O(N2)
-    	while(current != null)
-    	{
-    		ListNode runner = current;
-    		
-    		// O(N) time
-    		// we have to have the runner.next check as we will actually 
-    		// access the value of runner.next
-    		while(runner.next != null)
-    		{
-    			//trick
-    			//when the value match and we update then it could be the case that
-    			//runner.next.next was already null (last node). so we don't do
-    			// runner = runner.next when we find the match and update only runner.next
-    			if(runner.next.val == current.val)
-    			{
-    				runner.next = runner.next.next;
-    			}
-    			else
-    			{
-    				runner = runner.next;
-    			}
-    		}
-    		
-    		current = current.next;
-    	}
+	    	if(head == null) return;
+	    	
+	    	ListNode current = head;
+	    	
+	    	//O(N) outer loop contributing to total of O(N2)
+	    	while(current != null)
+	    	{
+	    		ListNode runner = current;
+	    		
+	    		// O(N) time
+	    		// we have to have the runner.next check as we will actually 
+	    		// access the value of runner.next
+	    		while(runner.next != null)
+	    		{
+	    			//trick
+	    			//when the value match and we update then it could be the case that
+	    			//runner.next.next was already null (last node). so we don't do
+	    			// runner = runner.next when we find the match and update only runner.next
+	    			if(runner.next.val == current.val)
+	    			{
+	    				runner.next = runner.next.next;
+	    			}
+	    			else
+	    			{
+	    				runner = runner.next;
+	    			}
+	    		}
+	    		
+	    		current = current.next;
+	    	}
     }
     
     //https://leetcode.com/problems/swap-nodes-in-pairs/
@@ -800,7 +800,7 @@ public int romanToInt(String s) {
 	}
 	
 	return value;	
-	}
+}
 
 	//https://leetcode.com/problems/integer-to-roman/
 	// trick: initialize array, start with the highest value also considering 9's like 900 90 etc.
@@ -835,42 +835,42 @@ public int romanToInt(String s) {
     //lastnight
     public boolean oneEditDistanceAway(String s1, String s2)
     {
-    	if(Math.abs(s1.length() - s2.length()) > 1) return false;
-    	
-    	String shorter = s1.length() < s2.length() ? s1 : s2;
-    	String longer = s1.length() < s2.length() ? s2 : s1;
-    	
-    	boolean foundMismatch = false;
-    	
-    	int index1 = 0, index2 = 0;
-    	
-    	while(index1 < shorter.length() && index2 < longer.length())
-    	{
-    		// the characters are not matched. so it has to be insert or replace
-    		if(shorter.charAt(index1) != longer.charAt(index2))
-    		{
-    			// already one mismatch found before. so another mismatch means not one edit distance away
-    			if(foundMismatch) return false;
-    			//otherwise mark the first mismatch
-    			foundMismatch = true;
-    			
-    			//if the lengths are same that means it is a replace. so move shorter pointer
-    	   		if(shorter.length() == longer.length())
-        		{
-        			index1++;
-        		}
-    	   		//otherwise is an insert. so no short pointer is changed
-        	}
-    		//they are matching so move both pointers are increased
-    		else
-    		{
-    			index1++;
-    		}
-    		//longer pointer is always increased
-    		index2++;
-    	}
-    	
-    	return true;
+	    	if(Math.abs(s1.length() - s2.length()) > 1) return false;
+	    	
+	    	String shorter = s1.length() < s2.length() ? s1 : s2;
+	    	String longer = s1.length() < s2.length() ? s2 : s1;
+	    	
+	    	boolean foundMismatch = false;
+	    	
+	    	int index1 = 0, index2 = 0;
+	    	
+	    	while(index1 < shorter.length() && index2 < longer.length())
+	    	{
+	    		// the characters are not matched. so it has to be insert or replace
+	    		if(shorter.charAt(index1) != longer.charAt(index2))
+	    		{
+	    			// already one mismatch found before. so another mismatch means not one edit distance away
+	    			if(foundMismatch) return false;
+	    			//otherwise mark the first mismatch
+	    			foundMismatch = true;
+	    			
+	    			//if the lengths are same that means it is a replace. so move shorter pointer
+	    	   		if(shorter.length() == longer.length())
+	        		{
+	        			index1++;
+	        		}
+	    	   		//otherwise is an insert. so no short pointer is changed
+	        	}
+	    		//they are matching so move both pointers are increased
+	    		else
+	    		{
+	    			index1++;
+	    		}
+	    		//longer pointer is always increased
+	    		index2++;
+	    	}
+	    	
+	    	return true;
     }
     
     //https://leetcode.com/problems/longest-substring-without-repeating-characters/
@@ -878,32 +878,32 @@ public int romanToInt(String s) {
     //Output: 5 
     //lastnight
     public int lengthOfLongestSubstring(String s) {
-    	boolean exists[] = new boolean[256];
-    	
-    	int maxLen = 0, i = 0;
-    	
-    	for(int j = 0; j < s.length(); j++)
-    	{
-    		while(i < s.length() && exists[s.charAt(j)])//for j = 4 this will become true
-    		{
-				// keep on incrementing i until we past the first occurrence of the repeated character
-				// in the current substring
-				// for example in abcdcefg, j = 4 when we get the current max substring abcd
-				// the next possible non repeated substring will start from index, i = 3 (d) as then
-				// so after i is increased to 2 then exists[c] is reset resulting into i = 3 and this while 
-				// loop breaks
-    			//then it will reset exists[s.charAt(i)] from i = 0 to 2
-    			//like exists[a], exists[b], exists[c] all will reset to false
-				exists[s.charAt(i)] = false;
-				i++;
-    		}
-    		
-    		// case when the character doesn't already exist in 
-    		// current ongoing longest substring consideration
-    		exists[s.charAt(j)] = true;//exists[c] will be set to true second time here
-    		maxLen = Math.max(j - i + 1, maxLen);
-    	}
-    	
-    	return maxLen;
+	    	boolean exists[] = new boolean[256];
+	    	
+	    	int maxLen = 0, i = 0;
+	    	
+	    	for(int j = 0; j < s.length(); j++)
+	    	{
+	    		while(i < s.length() && exists[s.charAt(j)])//for j = 4 this will become true
+	    		{
+					// keep on incrementing i until we past the first occurrence of the repeated character
+					// in the current substring
+					// for example in abcdcefg, j = 4 when we get the current max substring abcd
+					// the next possible non repeated substring will start from index, i = 3 (d) as then
+					// so after i is increased to 2 then exists[c] is reset resulting into i = 3 and this while 
+					// loop breaks
+	    			//then it will reset exists[s.charAt(i)] from i = 0 to 2
+	    			//like exists[a], exists[b], exists[c] all will reset to false
+					exists[s.charAt(i)] = false;
+					i++;
+	    		}
+	    		
+	    		// case when the character doesn't already exist in 
+	    		// current ongoing longest substring consideration
+	    		exists[s.charAt(j)] = true;//exists[c] will be set to true second time here
+	    		maxLen = Math.max(j - i + 1, maxLen);
+	    	}
+	    	
+	    	return maxLen;
     }      
 }

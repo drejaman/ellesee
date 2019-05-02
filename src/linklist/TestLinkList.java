@@ -10,7 +10,7 @@ public class TestLinkList {
 
 	public void test()
 	{
-//		printLinkedList(createLinkedListFromArray(new int[] {1,4,3,2,5,2}));
+		//printLinkedList(createLinkedListFromArray(new int[] {1,4,3,2,5,2}));
 		//printLinkedList(partition(createLinkedListFromArray(new int[] {1,4,3,2,5,2}), 3));		
 	}
 	
@@ -55,61 +55,62 @@ public class TestLinkList {
         ListNode beforeXhead = null, afterXhead = null, 
         		 beforeXcurrent = null, afterXcurrent = null; 
         
-    	ListNode current = head;
-    	
-    	while(current != null)
-    	{
-    		if(current.val < x)
-    		{
-        		if(beforeXhead == null)
-        		{
-        			beforeXhead = current;
-        			beforeXcurrent = current;
-        		}
-        		else
-        		{
-        			beforeXcurrent.next = current;
-        			beforeXcurrent = beforeXcurrent.next;
-        		}
-    		}
-    		else
-    		{
-        		if(afterXhead == null)
-        		{
-        			afterXhead = current;
-        			afterXcurrent = current;
-        		}
-        		else
-        		{
-        			afterXcurrent.next = current;
-        			afterXcurrent = afterXcurrent.next;
-        		}    			
-    		}
-    		
-    		current = current.next;
-    	}
-    	
-    	// this step is crucial to ensure we don't fall into a loop
-    	if(afterXcurrent != null) afterXcurrent.next = null;
-    	
-    	if(beforeXhead == null) return afterXhead;
-    	
-    	beforeXcurrent.next = afterXhead;
-        return beforeXhead;
+	    	ListNode current = head;
+	    	
+	    	while(current != null)
+	    	{
+	    		if(current.val < x)
+	    		{
+	        		if(beforeXhead == null)
+	        		{
+	        			beforeXhead = current;
+	        			beforeXcurrent = current;
+	        		}
+	        		else
+	        		{
+	        			beforeXcurrent.next = current;
+	        			beforeXcurrent = beforeXcurrent.next;
+	        		}
+	    		}
+	    		else
+	    		{
+	        		if(afterXhead == null)
+	        		{
+	        			afterXhead = current;
+	        			afterXcurrent = current;
+	        		}
+	        		else
+	        		{
+	        			afterXcurrent.next = current;
+	        			afterXcurrent = afterXcurrent.next;
+	        		}    			
+	    		}
+	    		
+	    		current = current.next;
+	    	}
+	    	
+	    	// this step is crucial to ensure we don't fall into a loop
+	    	if(afterXcurrent != null) afterXcurrent.next = null;
+	    	
+	    	if(beforeXhead == null) return afterXhead;
+	    	
+	    	beforeXcurrent.next = afterXhead;
+	        return beforeXhead;
     }
     
     //https://leetcode.com/problems/add-two-numbers/
     //Cracking2.5
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
     		return addTwoNumbers(l1, l2, 0); 
-		}
+	}
 
     public ListNode addTwoNumbers(ListNode l1, ListNode l2, int carry) {
-    	if(l1 == null && l2 == null)
-    	{
-    		if(carry == 0) return null;
-    		else return new ListNode(carry);
-    	}
+
+    		if(l1 == null && l2 == null)
+	    	{
+	    		if(carry == 0) return null;
+	    		else return new ListNode(carry);
+	    	}
     	
 		int value = carry;
 		
@@ -141,10 +142,9 @@ public class TestLinkList {
         
         if(l1 != null && l2 != null)
         {
-        	//trick: the smaller one's next will point to
-        	//method call of smaller's next and the other list
-        	//then we return the smaller one
-        	
+	        	//trick: the smaller one's next will point to
+	        	//method call of smaller's next and the other list
+	        	//then we return the smaller one        	
             if(l1.val <= l2.val)
             {
                 l1.next = MergeTwoLists(l1.next, l2);
@@ -168,100 +168,101 @@ public class TestLinkList {
     //lastnight
     public void deleteDups(ListNode head)
     {
-    	if(head == null) return;
-    	
-    	ListNode current = head;
-    	
-    	//O(N) outer loop contributing to total of O(N2)
-    	while(current != null)
-    	{
-    		ListNode runner = current;
-    		
-    		// O(N) time
-    		// we have to have the runner.next check as we will actually 
-    		// access the value of runner.next
-    		while(runner.next != null)
-    		{
-    			//trick
-    			//when the value match and we update then it could be the case that
-    			//runner.next.next was already null (last node). so we don't do
-    			// runner = runner.next when we find the match and update only runner.next
-    			if(runner.next.val == current.val)
-    			{
-    				runner.next = runner.next.next;
-    			}
-    			else
-    			{
-    				runner = runner.next;
-    			}
-    		}
-    		
-    		current = current.next;
-    	}
+	    	if(head == null) return;
+	    	
+	    	ListNode current = head;
+	    	
+	    	//O(N) outer loop contributing to total of O(N2)
+	    	while(current != null)
+	    	{
+	    		ListNode runner = current;
+	    		
+	    		// O(N) time
+	    		// we have to have the runner.next check as we will actually 
+	    		// access the value of runner.next
+	    		while(runner.next != null)
+	    		{
+	    			//trick
+	    			//when the value match and we update then it could be the case that
+	    			//runner.next.next was already null (last node). so we don't do
+	    			// runner = runner.next when we find the match and update only runner.next
+	    			if(runner.next.val == current.val)
+	    			{
+	    				runner.next = runner.next.next;
+	    			}
+	    			else
+	    			{
+	    				runner = runner.next;
+	    			}
+	    		}
+	    		
+	    		current = current.next;
+	    	}
     }
     
     //Cracking 2.2
     public ListNode kthToLast(ListNode head, int k)
     {
-    	if(head == null) return null;
-    	
-    	//p2 will eventually point to k-th from last Node
-    	ListNode p1 = head, p2 = head;
-    	
-    	for(int i = 0; i < k; i++)
-    	{
-    		p1 = p1.next;
-    		
-        	// we even don't have k nodes
-    		if(p1 == null) return null;
-    	}
-
-    	// as p1 is already advanced k places p2 will have k more items left 
-    	// when p1 will reach at the end of the list
-    	while(p1 != null)
-    	{
-    		p1 = p1.next;
-    		p2 = p2.next;
-    	}
-    	
-    	return p2;
+	    	if(head == null) return null;
+	    	
+	    	//p2 will eventually point to k-th from last Node
+	    	//when the advanced node, p1 
+	    	ListNode p1 = head, p2 = head;
+	    	
+	    	for(int i = 0; i < k; i++)
+	    	{
+	    		p1 = p1.next;
+	    		
+	        	// we even don't have k nodes
+	    		if(p1 == null) return null;
+	    	}
+	
+	    	// as p1 is already advanced k places p2 will have k more items left 
+	    	// when p1 will reach at the end of the list
+	    	while(p1 != null)
+	    	{
+	    		p1 = p1.next;
+	    		p2 = p2.next;
+	    	}
+	    	
+	    	return p2;
     }
     
     //https://leetcode.com/problems/palindrome-linked-list/
     //Cracking2.6
     public boolean isPalindrome(ListNode head)
     {
-    	ListNode slow = head, fast = head;
-    	
-    	Stack<Integer> listStack = new Stack<Integer>();
-    	
-    	// this condition is important as we break either when we reach at the end (even case)
-    	// or we are one node away from the end (odd case)
-    	// also for fast we are moving 2 nodes at a time. so we don't get null pointer exception
-    	// for fast.next.next
-    	while(fast != null && fast.next != null)
-    	{
-    		listStack.push(slow.val);
-    		slow = slow.next;
-    		fast = fast.next.next;
-    	}
-    	
-    	//trick:
-    	//that means list has odd elements and skip that one middle element
-    	if(fast != null) slow = slow.next;
-    	
-    	// now the validation part    	
-    	while(slow != null)
-    	{
-    		if(slow.val != listStack.pop().intValue())
-    		{
-    			return false;
-    		}
-    		
-    		slow = slow.next;
-    	}
-    	
-    	return true;
+	    	ListNode slow = head, fast = head;
+	    	
+	    	Stack<Integer> listStack = new Stack<Integer>();
+	    	
+	    	// this condition is important as we break either when we reach at the end (even case)
+	    	// or we are one node away from the end (odd case)
+	    	// also for fast we are moving 2 nodes at a time. so we don't get null pointer exception
+	    	// for fast.next.next
+	    	while(fast != null && fast.next != null)
+	    	{
+	    		listStack.push(slow.val);
+	    		slow = slow.next;
+	    		fast = fast.next.next;
+	    	}
+	    	
+	    	//trick:
+	    	//that means list has odd elements and skip that one middle element
+	    	if(fast != null) slow = slow.next;
+	    	
+	    	// now the validation part    	
+	    	while(slow != null)
+	    	{
+	    		if(slow.val != listStack.pop().intValue())
+	    		{
+	    			return false;
+	    		}
+	    		
+	    		slow = slow.next;
+	    	}
+	    	
+	    	return true;
     }
     
     //https://leetcode.com/problems/swap-nodes-in-pairs/
@@ -309,6 +310,9 @@ public class TestLinkList {
         ListNode prev = head;
         ListNode current = head.next;
         
+        //as marker already moved n places
+        //when marker reaches at the end of list
+        //at that time current will point to n-th from end
         while(marker.next != null)
         {
             marker = marker.next;
@@ -316,6 +320,7 @@ public class TestLinkList {
             current = current.next;
         }
         
+        //we remove the n-th from end element
         prev.next = current.next;
         
         return head;
@@ -331,7 +336,7 @@ public class TestLinkList {
         // [4,4,4,4,4,4], 4
         while(head != null && head.val == val) head = head.next;
 
-        if(head == null) return null;
+        if(head == null || head.next == null) return head;
         
         //at this point we know head doesn't contain an element
         //whose value is same as val
@@ -342,7 +347,7 @@ public class TestLinkList {
         while(current!= null)
         {
             //only the deletion case
-        	//keep on skipping the elements whose value equals val
+        		//keep on skipping the elements whose value equals val
             while(current != null && current.val == val)
             {
                 current = current.next;
@@ -365,10 +370,13 @@ public class TestLinkList {
     public void deleteNode(ListNode node) {
         if(node == null) return;
 
+        //2 cases
+        //case - 1: this is the last node
         if(node.next == null)
         {
             node = null;
         }
+        // case - 2: this is in the middle of the list
         else
         {
             node.val = node.next.val;
@@ -400,6 +408,8 @@ public class TestLinkList {
         
         ListNode prev = head;
         ListNode current = prev.next;
+        //trick: make sure prev.next is set to null
+        //otherwise it will create a cycle
         prev.next = null;
                 
         while(current != null)
